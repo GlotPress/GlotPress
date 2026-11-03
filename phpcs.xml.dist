@@ -27,6 +27,11 @@
 		<exclude name="WordPress.Security.EscapeOutput.UnsafePrintingFunction" />
 	</rule>
 
+	<!-- API template files use .api.php extension by design -->
+	<rule ref="WordPress.Files.FileName.NotHyphenatedLowercase">
+		<exclude-pattern>/gp-templates/*.api.php</exclude-pattern>
+	</rule>
+
 	<rule ref="WordPress.Security.EscapeOutput">
 		<properties>
 			<property name="customEscapingFunctions" type="array">

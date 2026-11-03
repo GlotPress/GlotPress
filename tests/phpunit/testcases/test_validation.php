@@ -86,4 +86,13 @@ class GP_Test_Validation extends GP_UnitTestCase {
 		$this->assertEquals( false, $f( '-foo' ) );
 		$this->assertEquals( false, $f( 'Hello world.' ) );
 	}
+
+	function test_undefined_validation_method_throws_exception() {
+		$rules = new GP_Validation_Rules( array( 'name' ) );
+
+		$this->expectException( BadMethodCallException::class );
+		$this->expectExceptionMessage( 'Call to undefined method: GP_Validation_Rules::unknown_method().' );
+
+		$rules->unknown_method();
+	}
 }

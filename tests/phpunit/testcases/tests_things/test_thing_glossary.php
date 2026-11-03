@@ -17,6 +17,21 @@ class GP_Test_Glossary extends GP_UnitTestCase {
 		$this->assertNotEquals( $glossary_2, $new );
 	}
 
+	function test_by_locale_and_set_slug() {
+		$locale      = $this->factory->locale->create();
+		$locale_set  = $this->factory->translation_set->create( array( 'project_id' => 0, 'locale' => $locale->slug, 'slug' => 'default' ) );
+		$project     = $this->factory->project->create();
+		$project_set = $this->factory->translation_set->create( array( 'project_id' => $project->id, 'locale' => $locale->slug, 'slug' => 'default' ) );
+
+		GP::$glossary->create_and_select( array( 'translation_set_id' => $project_set->id ) );
+		$this->assertFalse( GP::$glossary->by_locale_and_set_slug( $locale->slug, 'default' ), 'A project glossary is not a locale glossary.' );
+
+		$locale_glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $locale_set->id ) );
+
+		$this->assertEquals( $locale_glossary, GP::$glossary->by_locale_and_set_slug( $locale->slug, 'default' ) );
+		$this->assertFalse( GP::$glossary->by_locale_and_set_slug( $locale->slug, 'formal' ), 'Another set slug has no locale glossary.' );
+	}
+
 	function test_by_set_or_parent_project() {
 		$locale = $this->factory->locale->create( array( 'slug' => 'bg' ) );
 
@@ -46,6 +61,36 @@ class GP_Test_Glossary extends GP_UnitTestCase {
 		$new = GP::$glossary->by_set_id( 1 );
 		$this->assertNotEquals( $glossary, $new );
 
+	}
+
+	/**
+	 * @ticket gh-1845
+	 */
+	function test_delete_removes_its_entries_and_keeps_entries_of_other_glossaries() {
+		global $wpdb;
+
+		// ID 1 is used on purpose: a malformed where clause matched every row for it.
+		$wpdb->insert( $wpdb->gp_glossaries, array( 'id' => 1, 'translation_set_id' => 1 ) );
+		$glossary       = GP::$glossary->get( 1 );
+		$other_glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => 2 ) );
+
+		GP::$glossary_entry->create( array( 'glossary_id' => $glossary->id, 'term' => 'term', 'part_of_speech' => 'noun', 'last_edited_by' => 1 ) );
+		GP::$glossary_entry->create( array( 'glossary_id' => $other_glossary->id, 'term' => 'other term', 'part_of_speech' => 'noun', 'last_edited_by' => 1 ) );
+
+		$glossary->delete();
+
+		$this->assertEmpty( GP::$glossary_entry->find_many( array( 'glossary_id' => $glossary->id ) ) );
+		$this->assertCount( 1, GP::$glossary_entry->find_many( array( 'glossary_id' => $other_glossary->id ) ) );
+	}
+
+	function test_description_defaults_to_empty_string() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		// Reload from the database so the nullable column goes through the load path.
+		$reloaded = GP::$glossary->get( $glossary->id );
+
+		$this->assertSame( '', $reloaded->description );
 	}
 
 	/**

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Templates: Edit Translation Set
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 gp_title(
 	sprintf(
 		/* translators: 1: Translation set name. 2: Project name. */
@@ -10,7 +17,7 @@ gp_title(
 gp_breadcrumb_project(
 	$project,
 	array(
-		gp_link_get( $url, $locale->english_name . 'default' !== $set->slug ? ' ' . $set->name : '' ),
+		gp_link_get( $url, $locale->english_name . ( 'default' !== $set->slug ? ' ' . $set->name : '' ) ),
 		__( 'Edit', 'glotpress' ),
 	)
 );

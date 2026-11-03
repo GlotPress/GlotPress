@@ -9,10 +9,20 @@ updates:
       - "[Type] Build Tooling"
       - dependencies
       - php
+    groups:
+      composer-version-updates:
+        applies-to: version-updates
+        patterns:
+          - "*"
+      composer-security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
     ignore:
+      # The WordPress test suite is not compatible with PHPUnit 10+.
       - dependency-name: phpunit/phpunit
         versions:
-          - "> 7.5.20"
+          - ">= 10"
 
   - package-ecosystem: npm
     directory: "/"
@@ -22,6 +32,15 @@ updates:
       - "[Type] Build Tooling"
       - dependencies
       - javascript
+    groups:
+      npm-version-updates:
+        applies-to: version-updates
+        patterns:
+          - "*"
+      npm-security-updates:
+        applies-to: security-updates
+        patterns:
+          - "*"
 
   - package-ecosystem: github-actions
     directory: "/"
@@ -30,3 +49,7 @@ updates:
     labels:
       - "[Type] Build Tooling"
       - github_actions
+    groups:
+      github-actions:
+        patterns:
+          - "*"

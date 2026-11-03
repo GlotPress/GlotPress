@@ -88,7 +88,7 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'<b>テキスト1</b>、イタリック体、テキスト2、エンファシス体、テキスト3',
 			$this->l
 		);
-		$this->assertNoWarnings( 'tags', '</a>Incorrect link</a>', '<a>Incorrect link</a>' );
+		$this->assertHasWarningsAndContainsOutput( 'tags', '</a>Incorrect link</a>', '<a>Incorrect link</a>', 'Expected </a>, got <a>.' );
 		$this->assertNoWarnings(
 			'tags',
 			' Text 1 <a href="https://wordpress.org/plugins/example-plugin/">Example plugin</a> Text 2<a href="https://wordpress.com/log-in/">Log in</a> Text 3 <img src="example.jpg" alt="Example alt text">',
@@ -151,6 +151,70 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			'<a href="%s" title="Blimp!">Baba</a>',
 			'<a href="%s" x>Баба</a>',
 			'Expected <a href="%s" title="Blimp!">, got <a href="%s" x>.'
+		);
+		// A tag that replaces one of two identical source tags must still be compared.
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'Line one<br>Line two<br>',
+			'Linea uno<hr>Linea dos<br>',
+			'Expected <br>, got <hr>.'
+		);
+		// Attributes appended after a changeable attribute (href/src/title) must not
+		// be swallowed by the attribute normalization.
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<a href="%s">Baba</a>',
+			'<a href="%s" data-info="1">Баба</a>',
+			'Expected <a href="%s">, got <a href="%s" data-info="1">.'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<a href="%s">Baba</a>',
+			'<a href="%s" data-info="1" data-extra="2">Баба</a>',
+			'Expected <a href="%s">, got <a href="%s" data-info="1" data-extra="2">.'
+		);
+		// A value change to an attribute outside the allow-list must still warn.
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<span data-role="a">%s</span>',
+			'<span data-role="b">%s</span>',
+			'Expected <span data-role="a">, got <span data-role="b">.'
+		);
+		// An allow-listed name appearing inside another attribute's value (title= within
+		// a data-* value) must still be compared, so a change to it warns. This holds
+		// whether or not the value has whitespace before the allow-listed name.
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<span data-info="title=\'a\'">Text</span>',
+			'<span data-info="title=\'b\'">Text</span>',
+			'Expected <span data-info="title=\'a\'">, got <span data-info="title=\'b\'">.'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<span data-info="x title=\'a\'">Text</span>',
+			'<span data-info="x title=\'b\'">Text</span>',
+			'Expected <span data-info="x title=\'a\'">, got <span data-info="x title=\'b\'">.'
+		);
+		// The URL compared is the tag's own href/src, not one that appears inside
+		// another attribute's value.
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<a href="https://www.example.org/docs">Docs</a>',
+			'<a href="https://www.example.com/?x=href=\'https://www.example.org/docs\'">Doku</a>',
+			'The translation appears to be missing the following URLs: https://www.example.org/docs'
+		);
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<img src="https://www.example.org/a.png" alt="A">',
+			'<img src="https://www.example.com/b.png?x=src=\'https://www.example.org/a.png\'" alt="B">',
+			'The translation appears to be missing the following URLs: https://www.example.org/a.png'
+		);
+		// href is compared on every tag that carries it, not only on <a>.
+		$this->assertHasWarningsAndContainsOutput(
+			'tags',
+			'<link href="https://www.example.org/style.css">',
+			'<link href="https://www.example.com/style.css">',
+			'The translation appears to be missing the following URLs: https://www.example.org/style.css'
 		);
 		$this->assertHasWarningsAndContainsOutput(
 			'tags',
@@ -653,6 +717,149 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 			' Original string ',
 			'   Cadea traducida   ',
 			"Expected 1 space at the beginning, got 3.\nExpected 1 space at the end, got 3." );
+	}
+
+	/**
+	 * Tests that a translation beginning with a term copied from the original
+	 * does not warn, because the case of that term comes from the original.
+	 *
+	 * Languages that reorder the sentence can begin the translation with a
+	 * different term from the original, such as a product name.
+	 *
+	 * @see https://github.com/GlotPress/GlotPress/issues/1969
+	 */
+	public function test_missing_uppercase_beginning_ignores_terms_copied_from_the_original() {
+		$this->l->slug     = 'bn';
+		$this->l->alphabet = 'bengali';
+
+		// The original begins with a deliberately lowercase product name.
+		$this->assertNoWarnings(
+			'missing_uppercase_beginning',
+			'bbPress is part of WordPress.org',
+			'WordPress.org মূলত bbPress এরই অংশ',
+			$this->l
+		);
+
+		$this->l->slug     = 'hi';
+		$this->l->alphabet = 'devanagari';
+
+		$this->assertNoWarnings(
+			'missing_uppercase_beginning',
+			'bbPress is part of WordPress.org',
+			'WordPress.org का हिस्सा bbPress है',
+			$this->l
+		);
+
+		// A name whose casing is internal rather than initial.
+		$this->assertNoWarnings(
+			'missing_uppercase_beginning',
+			'visit bbPress',
+			'bbPress पर जाएँ',
+			$this->l
+		);
+
+		// A version identifier.
+		$this->assertNoWarnings(
+			'missing_uppercase_beginning',
+			'Use v2 now',
+			'v2 का उपयोग करें',
+			$this->l
+		);
+
+		// A code identifier.
+		$this->assertNoWarnings(
+			'missing_uppercase_beginning',
+			'Set foo_bar here',
+			'foo_bar सेट करें',
+			$this->l
+		);
+	}
+
+	/**
+	 * Tests that a term which merely resembles one in the original still warns.
+	 *
+	 * @see https://github.com/GlotPress/GlotPress/issues/1969
+	 */
+	public function test_missing_uppercase_beginning_still_warns_for_marks_inside_ordinary_words() {
+		$this->l->slug     = 'hi';
+		$this->l->alphabet = 'devanagari';
+
+		/*
+		 * A leading term counts as a name only when it carries its own casing: an
+		 * uppercase letter, a digit, or one of `.`, `_`, `/` or `\\`. Marks and
+		 * punctuation that occur inside ordinary words of other scripts must not
+		 * qualify, or the warning is silently lost for those languages.
+		 */
+
+		$middle_dot = "col\u{00B7}legi";        // Catalan, ordinary word.
+		$decomposed = "e\u{0301}quipe";         // French, accent as a combining mark.
+		$hindi_word = "\u{092C}\u{0926}\u{0932}\u{0947}\u{0902}";
+
+		$this->assertHasWarningsAndContainsOutput(
+			'missing_uppercase_beginning',
+			"Change {$middle_dot} setting",
+			"{$middle_dot} {$hindi_word}",
+			'The translation appears to be missing the initial uppercase.',
+			$this->l
+		);
+
+		$this->assertHasWarningsAndContainsOutput(
+			'missing_uppercase_beginning',
+			"Change {$decomposed} setting",
+			"{$decomposed} {$hindi_word}",
+			'The translation appears to be missing the initial uppercase.',
+			$this->l
+		);
+	}
+
+	public function test_missing_uppercase_beginning_still_warns_for_terms_not_in_the_original() {
+		$this->l->slug     = 'hi';
+		$this->l->alphabet = 'devanagari';
+
+		// `word` is not a term in the original, it is only part of `WordPress`.
+		$this->assertHasWarningsAndContainsOutput(
+			'missing_uppercase_beginning',
+			'WordPress plugin',
+			'word प्लगइन',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l
+		);
+
+		// `Press` is not a term in the original, it is only part of `bbPress`.
+		$this->assertHasWarningsAndContainsOutput(
+			'missing_uppercase_beginning',
+			'bbPress forum',
+			'Press फोरम',
+			'The translation appears to be missing the initial lowercase.',
+			$this->l
+		);
+
+		// The original spells the term with a different case.
+		$this->assertHasWarningsAndContainsOutput(
+			'missing_uppercase_beginning',
+			'Settings page',
+			'settings पेज',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l
+		);
+
+		// An ordinary lowercase word is not a name, even when copied from the original.
+		$this->assertHasWarningsAndContainsOutput(
+			'missing_uppercase_beginning',
+			'Change settings',
+			'settings बदलें',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l
+		);
+
+		// A hyphenated compound is an ordinary word, not a name.
+		$this->assertHasWarningsAndContainsOutput(
+			'missing_uppercase_beginning',
+			'Check front-end settings',
+			'front-end सेटिंग्स जांचें',
+			'The translation appears to be missing the initial uppercase.',
+			$this->l
+		);
 	}
 
 	public function test_missing_uppercase_beginning() {

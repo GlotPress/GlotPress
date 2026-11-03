@@ -23,7 +23,7 @@ if ( ! $project->active ) {
 gp_breadcrumb_project(
 	$project,
 	array(
-		$translation_set->name . $inactive_bubble,
+		esc_html( $translation_set->name ) . $inactive_bubble,
 	)
 );
 gp_enqueue_scripts( array( 'gp-editor', 'gp-translations-page' ) );
@@ -36,7 +36,7 @@ wp_localize_script(
 	)
 );
 
-// localizer adds var in front of the variable name, so we can't use $gp.editor.options
+// localizer adds var in front of the variable name, so we can't use $gp.editor.options.
 $editor_options = compact( 'can_approve', 'can_write', 'url', 'discard_warning_url', 'set_priority_url', 'set_status_url', 'word_count_type' );
 
 wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
@@ -59,20 +59,20 @@ $i = 0;
 	<?php gp_link_set_delete( $translation_set, $project, null, array( 'class' => 'button is-small' ) ); ?>
 	<div class="glossary-links">
 		<?php
-		$can_create_locale_glossary      = GP::$permission->current_user_can( 'admin' );
+		$can_create_locale_glossary      = gp_can_create_locale_glossary( $translation_set->locale, $translation_set->slug );
 		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $translation_set->slug, $translation_set->locale );
-		$locale_glossary                 = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+		$locale_glossary                 = $locale_glossary_translation_set ? GP::$glossary->by_set_id( $locale_glossary_translation_set->id ) : null;
 
 		// Locale Glossary link.
-		if ( $locale_glossary ) {
-			?>
-			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $translation_set->slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Locale Glossary', 'glotpress' ); ?></a>
-			<?php
-		} elseif ( $can_create_locale_glossary ) {
-			?>
-			<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $translation_set->slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Create Locale Glossary', 'glotpress' ); ?></a>
-			<?php
-		}
+		gp_tmpl_load(
+			'locale-glossary-link',
+			array(
+				'locale'                     => $locale,
+				'set_slug'                   => $translation_set->slug,
+				'locale_glossary'            => $locale_glossary,
+				'can_create_locale_glossary' => $can_create_locale_glossary,
+			)
+		);
 
 		// Show separator if both links are shown.
 		if ( ( $locale_glossary || $can_create_locale_glossary ) && ( ( $glossary && $glossary->translation_set_id === $translation_set->id ) || $can_approve ) ) {
@@ -105,7 +105,7 @@ $i = 0;
 		$sort_values_only    = array_filter( $sort );
 		$filters_and_sort    = array_merge( $filters_values_only, $sort_values_only );
 		// Remove any non-string or non-numeric values from the array.
-		$filters_and_sort    = array_filter( $filters_and_sort, 'is_scalar' );
+		$filters_and_sort = array_filter( $filters_and_sort, 'is_scalar' );
 
 		/**
 		 * Check to see if a term or user login has been added to the filter or one of the other filter options, if so,
@@ -134,6 +134,16 @@ $i = 0;
 			'class' => 'filter-current',
 		);
 
+		// The editor updates the count of a status filter link after a change.
+		$status_filter_attributes = static function ( $filter, $count, $is_current_filter ) use ( $current_filter_class ) {
+			$attributes = array(
+				'data-filter' => $filter,
+				'data-count'  => $count,
+			);
+
+			return $is_current_filter ? $attributes + $current_filter_class : $attributes;
+		};
+
 		$is_current_filter = ( array() === array_diff( $all_filters, $filters_and_sort ) || array() === $filters_and_sort ) && ! $additional_filters && ! $warnings_filter;
 		$current_filter    = $is_current_filter ? 'all' : $current_filter;
 
@@ -151,11 +161,13 @@ $i = 0;
 		$is_current_filter = array() === array_diff( $translated_filters, $filters_and_sort ) && false === $additional_filters && ! $warnings_filter;
 		$current_filter    = $is_current_filter ? 'translated' : $current_filter;
 
+		$filter_count = number_format_i18n( $translation_set->current_count() );
+
 		$filter_links[] = gp_link_get(
 			add_query_arg( $translated_filters, $url ),
 			// Translators: %s is the translated strings count for the current translation set.
-			sprintf( __( 'Translated&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->current_count() ) ),
-			$is_current_filter ? $current_filter_class : array()
+			sprintf( __( 'Translated&nbsp;(%s)', 'glotpress' ), $filter_count ),
+			$status_filter_attributes( 'translated', $filter_count, $is_current_filter )
 		);
 
 		$untranslated_filters = array(
@@ -165,11 +177,13 @@ $i = 0;
 		$is_current_filter = array() === array_diff( $untranslated_filters, $filters_and_sort ) && false === $additional_filters && ! $warnings_filter;
 		$current_filter    = $is_current_filter ? 'untranslated' : $current_filter;
 
+		$filter_count = number_format_i18n( $translation_set->untranslated_count() );
+
 		$filter_links[] = gp_link_get(
 			add_query_arg( $untranslated_filters, $url ),
 			// Translators: %s is the untranslated strings count for the current translation set.
-			sprintf( __( 'Untranslated&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->untranslated_count() ) ),
-			$is_current_filter ? $current_filter_class : array()
+			sprintf( __( 'Untranslated&nbsp;(%s)', 'glotpress' ), $filter_count ),
+			$status_filter_attributes( 'untranslated', $filter_count, $is_current_filter )
 		);
 
 		$waiting_filters = array(
@@ -179,11 +193,13 @@ $i = 0;
 		$is_current_filter = array() === array_diff( $waiting_filters, $filters_and_sort ) && ! $additional_filters && ! $warnings_filter;
 		$current_filter    = $is_current_filter ? 'waiting' : $current_filter;
 
+		$filter_count = number_format_i18n( $translation_set->waiting_count() );
+
 		$filter_links[] = gp_link_get(
 			add_query_arg( $waiting_filters, $url ),
 			// Translators: %s is the waiting strings count for the current translation set.
-			sprintf( __( 'Waiting&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->waiting_count() ) ),
-			$is_current_filter ? $current_filter_class : array()
+			sprintf( __( 'Waiting&nbsp;(%s)', 'glotpress' ), $filter_count ),
+			$status_filter_attributes( 'waiting', $filter_count, $is_current_filter )
 		);
 
 		$changesrequested_filters = array(
@@ -193,12 +209,14 @@ $i = 0;
 		$is_current_filter = array() === array_diff( $changesrequested_filters, $filters_and_sort ) && ! $additional_filters && ! $changesrequested_filters;
 		$current_filter    = $is_current_filter ? 'changesrequested' : $current_filter;
 
-		if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) {  // todo: delete when we merge the gp-translation-helpers in GlotPress
+		if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) {  // todo: delete when we merge the gp-translation-helpers in GlotPress.
+			$filter_count = number_format_i18n( $translation_set->changesrequested_count() );
+
 			$filter_links[] = gp_link_get(
 				add_query_arg( $changesrequested_filters, $url ),
 				// Translators: %s is the changes requested strings count for the current translation set.
-				sprintf( __( 'Changes requested&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->changesrequested_count() ) ),
-				$is_current_filter ? $current_filter_class : array()
+				sprintf( __( 'Changes requested&nbsp;(%s)', 'glotpress' ), $filter_count ),
+				$status_filter_attributes( 'changesrequested', $filter_count, $is_current_filter )
 			);
 		}
 
@@ -209,11 +227,13 @@ $i = 0;
 		$is_current_filter = array() === array_diff( $fuzzy_filters, $filters_and_sort ) && ! $additional_filters && ! $warnings_filter;
 		$current_filter    = $is_current_filter ? 'fuzzy' : $current_filter;
 
+		$filter_count = number_format_i18n( $translation_set->fuzzy_count() );
+
 		$filter_links[] = gp_link_get(
 			add_query_arg( $fuzzy_filters, $url ),
 			// Translators: %s is the fuzzy strings count for the current translation set.
-			sprintf( __( 'Fuzzy&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->fuzzy_count() ) ),
-			$is_current_filter ? $current_filter_class : array()
+			sprintf( __( 'Fuzzy&nbsp;(%s)', 'glotpress' ), $filter_count ),
+			$status_filter_attributes( 'fuzzy', $filter_count, $is_current_filter )
 		);
 
 		$warning_filters = array(
@@ -223,11 +243,13 @@ $i = 0;
 		$is_current_filter = array() === array_diff( $warning_filters, $filters_and_sort ) && ! $additional_filters && ! array_key_exists( 'status', $filters_and_sort );
 		$current_filter    = $is_current_filter ? 'warning' : $current_filter;
 
+		$filter_count = number_format_i18n( $translation_set->warnings_count() );
+
 		$filter_links[] = gp_link_get(
 			add_query_arg( $warning_filters, $url ),
 			// Translators: %s is the strings with warnings count for the current translation set.
-			sprintf( __( 'Warnings&nbsp;(%s)', 'glotpress' ), number_format_i18n( $translation_set->warnings_count() ) ),
-			$is_current_filter ? $current_filter_class : array()
+			sprintf( __( 'Warnings&nbsp;(%s)', 'glotpress' ), $filter_count ),
+			$status_filter_attributes( 'warnings', $filter_count, $is_current_filter )
 		);
 
 		// If no filter has been selected yet, then add the current filter count to the end of the filter links array.
@@ -311,7 +333,7 @@ $i = 0;
 						<input type="checkbox" value="rejected" id="filters[status][rejected]" <?php gp_checked( 'either' === $selected_status || in_array( 'rejected', $selected_status_list, true ) ); ?>>
 						<?php _e( 'Rejected', 'glotpress' ); ?>
 					</label><br />
-					<?php if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) :// todo: delete when we merge the gp-translation-helpers in GlotPress ?>
+					<?php if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) :// todo: delete when we merge the gp-translation-helpers in GlotPress. ?>
 						<label for="filters[status][changesrequested]">
 							<input type="checkbox" value="changesrequested" id="filters[status][changesrequested]" <?php gp_checked( 'either' === $selected_status || in_array( 'changesrequested', $selected_status_list, true ) ); ?>>
 							<?php _e( 'Changes requested', 'glotpress' ); ?>
@@ -495,7 +517,7 @@ do_action( 'gp_after_translation_table', get_defined_vars() );
 		<div><strong><?php _e( 'Legend:', 'glotpress' ); ?></strong></div>
 		<?php
 		foreach ( GP::$translation->get_static( 'statuses' ) as $legend_status ) :
-			if ( ( 'changesrequested' == $legend_status ) && ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
+			if ( ( 'changesrequested' == $legend_status ) && ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress.
 				continue;
 			}
 			?>
@@ -519,7 +541,7 @@ do_action( 'gp_after_translation_table', get_defined_vars() );
 						_e( 'Rejected', 'glotpress' );
 						break;
 					case 'changesrequested':
-						if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
+						if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress.
 							_e( 'Changes requested', 'glotpress' );
 						} else {
 							_e( 'Rejected', 'glotpress' );

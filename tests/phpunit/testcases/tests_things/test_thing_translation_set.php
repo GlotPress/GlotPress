@@ -152,6 +152,45 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 
 	}
 
+	function test_filter_translation_set_import_warnings() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string with %s' ) );
+
+		$translations_for_import = new Translations;
+		$translations_for_import->add_entry( array( 'singular' => 'A string with %s', 'translations' => array( 'No Placeholder' ) ) );
+
+		add_filter( 'gp_translation_set_import_warnings', '__return_empty_array' );
+		$set->import( $translations_for_import );
+		remove_filter( 'gp_translation_set_import_warnings', '__return_empty_array' );
+
+		$translations = GP::$translation->all();
+		$this->assertEquals( 'current', $translations[0]->status );
+		$this->assertNull( $translations[0]->warnings );
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string with %s' ) );
+
+		$custom_warnings = array(
+			array(
+				'warning'   => 'custom_warning',
+				'position'  => 0,
+				'reference' => 'singular',
+			),
+		);
+
+		$custom_callback = function () use ( $custom_warnings ) {
+			return $custom_warnings;
+		};
+
+		add_filter( 'gp_translation_set_import_warnings', $custom_callback );
+		$set->import( $translations_for_import );
+		remove_filter( 'gp_translation_set_import_warnings', $custom_callback );
+
+		$translations = GP::$translation->all();
+		$this->assertSame( $custom_warnings, $translations[1]->warnings );
+		$this->assertEquals( 'waiting', $translations[1]->status );
+	}
+
 	function test_filter_translation_set_import_over_existing() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );
@@ -240,6 +279,60 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 	}
 
 	/**
+	 * @ticket gh-1845
+	 */
+	function test_delete_removes_its_glossary_and_keeps_other_glossaries() {
+		$set       = $this->factory->translation_set->create_with_project_and_locale();
+		$other_set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$glossary       = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+		$other_glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $other_set->id ) );
+
+		GP::$glossary_entry->create( array( 'glossary_id' => $glossary->id, 'term' => 'term', 'part_of_speech' => 'noun', 'last_edited_by' => 1 ) );
+		$this->factory->translation->create_with_original_for_translation_set( $set );
+
+		$set->delete();
+
+		$this->assertFalse( GP::$glossary->by_set_id( $set->id ) );
+		$this->assertEmpty( GP::$glossary_entry->find_many( array( 'glossary_id' => $glossary->id ) ) );
+		$this->assertEmpty( GP::$translation->find_many( array( 'translation_set_id' => $set->id ) ) );
+		$this->assertEquals( $other_glossary->id, GP::$glossary->by_set_id( $other_set->id )->id );
+	}
+
+	/**
+	 * Validator permissions are inherited by sub-projects and can exist without a set.
+	 *
+	 * @ticket gh-2153
+	 */
+	function test_delete_keeps_validator_permissions() {
+		$user = $this->factory->user->create();
+		$set  = $this->factory->translation_set->create_with_project_and_locale();
+
+		GP::$validator_permission->create( array( 'user_id' => $user, 'action' => 'approve', 'project_id' => $set->project_id, 'locale_slug' => $set->locale, 'set_slug' => $set->slug ) );
+
+		$set->delete();
+
+		$this->assertCount( 1, GP::$validator_permission->by_project_id( $set->project_id ) );
+	}
+
+	/**
+	 * @ticket gh-2153
+	 */
+	function test_delete_removes_translation_set_permissions() {
+		$user      = $this->factory->user->create();
+		$set       = $this->factory->translation_set->create_with_project_and_locale();
+		$other_set = $this->factory->translation_set->create_with_project_and_locale();
+
+		GP::$permission->create( array( 'user_id' => $user, 'action' => 'approve', 'object_type' => 'translation-set', 'object_id' => $set->id ) );
+		GP::$permission->create( array( 'user_id' => $user, 'action' => 'approve', 'object_type' => 'translation-set', 'object_id' => $other_set->id ) );
+
+		$set->delete();
+
+		$this->assertEmpty( GP::$permission->find_many( array( 'object_type' => 'translation-set', 'object_id' => $set->id ) ) );
+		$this->assertCount( 1, GP::$permission->find_many( array( 'object_type' => 'translation-set', 'object_id' => $other_set->id ) ) );
+	}
+
+	/**
 	 * @ticket gh-397
 	 */
 	function test_update_status_breakdown_updates_pre_2_1_cached_values() {
@@ -256,7 +349,7 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 
 		$num_queries = $wpdb->num_queries;
 		$set->update_status_breakdown();
-		$this->assertEquals( $num_queries + 9, $wpdb->num_queries );
+		$this->assertEquals( $num_queries + 6, $wpdb->num_queries );
 	}
 
 	public function test_created_action_is_called() {
@@ -320,5 +413,75 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertEquals( $initial_set, $previous_set );
 		$this->assertEquals( $previous_set->name, 'Before' );
 		$this->assertEquals( $translation_set->name, 'After' );
+	}
+
+	function test_name_with_locale_escapes_the_set_name() {
+		$name = '<b>abc123</b>';
+		$set  = $this->factory->translation_set->create_with_project_and_locale( array( 'name' => $name, 'slug' => 'markup' ) );
+
+		$html = $set->name_with_locale();
+
+		$this->assertStringNotContainsString( $name, $html );
+		$this->assertStringContainsString( esc_html( $name ), $html );
+	}
+
+	function test_locale_is_reduced_to_slug_characters() {
+		$project = $this->factory->project->create();
+
+		$set = new GP_Translation_Set(
+			array(
+				'name'       => 'Set',
+				'slug'       => 'default',
+				'project_id' => $project->id,
+				'locale'     => '<b>de</b>',
+			)
+		);
+
+		$this->assertSame( 'de', $set->locale, 'A locale is reduced to slug characters.' );
+		$this->assertTrue( $set->validate() );
+	}
+
+	function test_locale_that_reduces_to_nothing_is_invalid() {
+		$project = $this->factory->project->create();
+
+		$set = new GP_Translation_Set(
+			array(
+				'name'       => 'Set',
+				'slug'       => 'default',
+				'project_id' => $project->id,
+				'locale'     => '<script>`',
+			)
+		);
+
+		$this->assertSame( '', $set->locale );
+		$this->assertFalse( $set->validate(), 'A locale left empty by the reduction does not validate.' );
+	}
+
+	function test_locale_keeps_the_characters_real_locale_slugs_use() {
+		$project = $this->factory->project->create();
+
+		foreach ( array( 'de', 'pt-br', 'zh-hk', 'art-xemoji' ) as $slug ) {
+			$set = new GP_Translation_Set(
+				array(
+					'name'       => 'Set',
+					'slug'       => 'default',
+					'project_id' => $project->id,
+					'locale'     => $slug,
+				)
+			);
+
+			$this->assertSame( $slug, $set->locale, 'A real locale slug is kept unchanged.' );
+		}
+	}
+
+	function test_non_db_field_names_are_declared_properties() {
+		$set = new GP_Translation_Set();
+
+		foreach ( $set->non_db_field_names as $field ) {
+			$this->assertTrue(
+				property_exists( $set, $field ),
+				"Non-DB field '$field' must be a declared property so assigning it does not create a dynamic property."
+			);
+		}
 	}
 }

@@ -14,20 +14,60 @@
  */
 class GP_Glossary extends GP_Thing {
 
-	var $table_basename           = 'gp_glossaries';
-	var $field_names              = array( 'id', 'translation_set_id', 'description' );
-	var $int_fields               = array( 'id', 'translation_set_id' );
+	/**
+	 * Name of the database table.
+	 *
+	 * @var string $table_basename
+	 */
+	var $table_basename = 'gp_glossaries';
+
+	/**
+	 * List of field names for a glossary.
+	 *
+	 * @var array $field_names
+	 */
+	var $field_names = array( 'id', 'translation_set_id', 'description' );
+
+	/**
+	 * List of field names which have an integer value.
+	 *
+	 * @var array $int_fields
+	 */
+	var $int_fields = array( 'id', 'translation_set_id' );
+
+	/**
+	 * List of field names which cannot be updated.
+	 *
+	 * @var array $non_updatable_attributes
+	 */
 	var $non_updatable_attributes = array( 'id' );
 
+	/**
+	 * ID of the glossary.
+	 *
+	 * @var int $id
+	 */
 	public $id;
+
+	/**
+	 * ID of the translation set.
+	 *
+	 * @var int $translation_set_id
+	 */
 	public $translation_set_id;
+
+	/**
+	 * Description of the glossary.
+	 *
+	 * @var string $description
+	 */
 	public $description;
 
 	/**
 	 * Caches the array of Glossary_Entry objects.
 	 *
 	 * @since 2.3.0
-	 * @var entries
+	 * @var GP_Glossary_Entry[] $entries
 	 */
 	private $entries = array();
 
@@ -40,6 +80,23 @@ class GP_Glossary extends GP_Thing {
 	 */
 	public function restrict_fields( $rules ) {
 		$rules->translation_set_id_should_not_be( 'empty' );
+	}
+
+	/**
+	 * Normalizes an array with key-value pairs representing a glossary.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param array $args Arguments for a glossary.
+	 * @return array Normalized arguments for a glossary.
+	 */
+	public function normalize_fields( $args ) {
+		// The description column is nullable; keep it a string for its consumers.
+		if ( array_key_exists( 'description', $args ) ) {
+			$args['description'] = (string) $args['description'];
+		}
+
+		return parent::normalize_fields( $args );
 	}
 
 	/**
@@ -58,29 +115,28 @@ class GP_Glossary extends GP_Thing {
 	 * Get the glossary by set/project.
 	 * If there's no glossary for this specific project, get the nearest parent glossary
 	 *
-	 * @param GP_Project         $project
-	 * @param GP_Translation_Set $translation_set
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 * @param GP_Project         $project         The project.
 	 *
 	 * @return GP_Glossary|bool
 	 */
 	public function by_set_or_parent_project( $translation_set, $project ) {
 		$glossary = $this->by_set_id( $translation_set->id );
 
-		if ( ! $glossary ) {
-			if ( 0 === $project->id ) {
-				// Auto-create the Locale Glossary.
-				$glossary = $this->create( array( 'translation_set_id' => $translation_set->id ) );
-			} elseif ( $project->parent_project_id ) {
-				$locale = $translation_set->locale;
-				$slug   = $translation_set->slug;
+		if ( ! $glossary && $project->parent_project_id ) {
+			$locale = $translation_set->locale;
+			$slug   = $translation_set->slug;
 
-				while ( ! $glossary && $project->parent_project_id ) {
-					$project         = GP::$project->get( $project->parent_project_id );
-					$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $slug, $locale );
+			while ( ! $glossary && $project->parent_project_id ) {
+				$project = GP::$project->get( $project->parent_project_id );
+				if ( ! $project ) {
+					break;
+				}
 
-					if ( $translation_set ) {
-						$glossary = $this->by_set_id( $translation_set->id );
-					}
+				$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $slug, $locale );
+
+				if ( $translation_set ) {
+					$glossary = $this->by_set_id( $translation_set->id );
 				}
 			}
 		}
@@ -88,6 +144,31 @@ class GP_Glossary extends GP_Thing {
 		return $glossary;
 	}
 
+	/**
+	 * Retrieves the locale glossary for a locale and translation set slug.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $locale_slug Slug of the locale.
+	 * @param string $set_slug    Slug of the translation set.
+	 * @return GP_Glossary|false The locale glossary, false if there is none.
+	 */
+	public function by_locale_and_set_slug( $locale_slug, $set_slug ) {
+		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( 0, $set_slug, $locale_slug );
+
+		if ( ! $locale_glossary_translation_set ) {
+			return false;
+		}
+
+		return $this->by_set_id( $locale_glossary_translation_set->id );
+	}
+
+	/**
+	 * Get the glossary by set id.
+	 *
+	 * @param int $set_id The translation set ID.
+	 * @return GP_Glossary|bool
+	 */
 	public function by_set_id( $set_id ) {
 		return $this->one(
 			"
@@ -95,7 +176,6 @@ class GP_Glossary extends GP_Thing {
 		    WHERE translation_set_id = %d LIMIT 1",
 			$set_id
 		);
-
 	}
 
 	/**
@@ -107,18 +187,38 @@ class GP_Glossary extends GP_Thing {
 	 * @return array Array of Glossary_Entry.
 	 */
 	public function merge_with_glossary( GP_Glossary $merge ) {
-		$entry_map = array();
-		foreach ( $this->get_entries() as $i => $entry ) {
-			$entry_map[ $entry->key() ] = $i;
+		$entries       = $this->get_entries();
+		$merge_entries = $merge->get_entries();
+		$this->entries = self::merge_entries( $entries ? $entries : array(), $merge_entries ? $merge_entries : array() );
+
+		return $this->entries;
+	}
+
+	/**
+	 * Merges two lists of glossary entries.
+	 *
+	 * An entry of the first list takes precedence over an entry of the second
+	 * list with the same term and part of speech.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param GP_Glossary_Entry[] $entries       The entries that take precedence.
+	 * @param GP_Glossary_Entry[] $merge_entries The entries to merge into the first list.
+	 * @return GP_Glossary_Entry[] The merged entries.
+	 */
+	public static function merge_entries( array $entries, array $merge_entries ) {
+		$keys = array();
+		foreach ( $entries as $entry ) {
+			$keys[ $entry->key() ] = true;
 		}
 
-		foreach ( $merge->get_entries() as $entry ) {
-			if ( ! isset( $entry_map[ $entry->key() ] ) ) {
-				$this->entries[] = $entry;
+		foreach ( $merge_entries as $entry ) {
+			if ( ! isset( $keys[ $entry->key() ] ) ) {
+				$entries[] = $entry;
 			}
 		}
 
-		return $this->entries;
+		return $entries;
 	}
 
 	/**
@@ -145,7 +245,7 @@ class GP_Glossary extends GP_Thing {
 	 * Copies glossary items from a glossary to the current one
 	 * This function does not merge then, just copies unconditionally. If a translation already exists, it will be duplicated.
 	 *
-	 * @param int $source_glossary_id
+	 * @param int $source_glossary_id The source glossary ID.
 	 *
 	 * @return mixed
 	 */
@@ -175,7 +275,7 @@ class GP_Glossary extends GP_Thing {
 	 * @return bool
 	 */
 	public function delete() {
-		GP::$glossary_entry->delete_many( array( 'glossary_id', $this->id ) );
+		GP::$glossary_entry->delete_many( array( 'glossary_id' => $this->id ) );
 
 		return parent::delete();
 	}

@@ -45,4 +45,15 @@ class GP_Test_Template_Functions extends GP_UnitTestCase {
 		$entry = new Translation_Entry ( array( 'singular' => 'ganoush', 'warnings' => null, 'priority'=> '1', 'translation_status' =>'untranslated' ) );
 		$this->assertEqualsCanonicalizing( array( 'status-untranslated', 'no-warnings', 'priority-high', 'no-translations' ), gp_get_translation_row_classes( $entry ) );
 	}
+
+	function test_gp_breadcrumb_project_escapes_project_name() {
+		$name    = '<b>abc123</b>';
+		$project = $this->factory->project->create( array( 'name' => $name, 'slug' => 'markup-name' ) );
+
+		gp_breadcrumb_project( $project );
+		$html = gp_breadcrumb();
+
+		$this->assertStringNotContainsString( $name, $html );
+		$this->assertStringContainsString( esc_html( $name ), $html );
+	}
 }

@@ -6,6 +6,8 @@
  * @since 1.0.0
  */
 
+// phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound
+
 /**
  * Class used to handle translation warnings.
  *
@@ -286,31 +288,19 @@ class GP_Builtin_Translation_Warnings {
 		rsort( $original_parts );
 		rsort( $translation_parts );
 
-		$changeable_attributes = array(
-			// We allow certain attributes to be different in translations.
-			'title',
-			'aria-label',
-			// src and href will be checked separately.
-			'src',
-			'href',
-		);
-
-		$attribute_regex       = '/(\s*(?P<attr>%s))=([\'"])(?P<value>.+)\\3(\s*)/i';
-		$attribute_replace     = '$1=$3...$3$5';
-		$changeable_attr_regex = sprintf( $attribute_regex, implode( '|', $changeable_attributes ) );
-
-		// Items are sorted, so if all is well, will match up.
-		$parts_tags = array_combine( $original_parts, $translation_parts );
-
 		$warnings = array();
-		foreach ( $parts_tags as $original_tag => $translation_tag ) {
+
+		// The tags are sorted and equal in count, so compare them by position.
+		foreach ( $original_parts as $i => $original_tag ) {
+			$translation_tag = $translation_parts[ $i ];
 			if ( $original_tag === $translation_tag ) {
 				continue;
 			}
 
-			// Remove any attributes that can be expected to differ.
-			$original_filtered_tag    = preg_replace( $changeable_attr_regex, $attribute_replace, $original_tag );
-			$translation_filtered_tag = preg_replace( $changeable_attr_regex, $attribute_replace, $translation_tag );
+			// Blank the values of attributes whose contents may legitimately differ so
+			// that only structural tag changes are compared.
+			$original_filtered_tag    = $this->blank_changeable_attribute_values( $original_tag );
+			$translation_filtered_tag = $this->blank_changeable_attribute_values( $translation_tag );
 
 			if ( $original_filtered_tag !== $translation_filtered_tag ) {
 				$warnings[] = sprintf(
@@ -661,7 +651,74 @@ class GP_Builtin_Translation_Warnings {
 	}
 
 	/**
+	 * Blanks the values of attributes whose contents may legitimately differ between a
+	 * source string and its translation, leaving only structural tag changes to compare.
+	 *
+	 * Each attribute is matched as a whole name="value" unit and only allow-listed names
+	 * are blanked. Consuming the quoted value as a unit means an allow-listed name that
+	 * appears inside another attribute's value is skipped, so a change to it is still
+	 * compared. The href and src URLs are validated separately.
+	 *
+	 * @since 4.1.0
+	 * @access private
+	 *
+	 * @param string $tag An HTML tag.
+	 * @return string The tag with allow-listed attribute values blanked.
+	 */
+	private function blank_changeable_attribute_values( string $tag ): string {
+		$changeable_attributes = array( 'title', 'aria-label', 'alt', 'lang', 'src', 'href' );
+
+		return preg_replace_callback(
+			'/(\s)([\w-]+)=("[^"]*"|\'[^\']*\')/',
+			static function ( $matches ) use ( $changeable_attributes ) {
+				if ( ! in_array( strtolower( $matches[2] ), $changeable_attributes, true ) ) {
+					return $matches[0];
+				}
+
+				$quote = $matches[3][0];
+				return $matches[1] . $matches[2] . '=' . $quote . '...' . $quote;
+			},
+			$tag
+		);
+	}
+
+	/**
+	 * Parses the quoted attributes of a single HTML tag.
+	 *
+	 * Each attribute is matched as a whole name="value" unit, so a name that appears
+	 * inside another attribute's value is not mistaken for an attribute of its own.
+	 * Where a name is repeated, the first occurrence wins, which is the one a browser
+	 * uses.
+	 *
+	 * @since 4.1.0
+	 * @access private
+	 *
+	 * @param string $tag An HTML tag.
+	 * @return array Attribute values keyed by lowercased attribute name.
+	 */
+	private function get_tag_attributes( string $tag ): array {
+		$attributes = array();
+
+		if ( ! preg_match_all( '/\s([\w-]+)=("[^"]*"|\'[^\']*\')/', $tag, $matches, PREG_SET_ORDER ) ) {
+			return $attributes;
+		}
+
+		foreach ( $matches as $match ) {
+			$name = strtolower( $match[1] );
+
+			if ( ! isset( $attributes[ $name ] ) ) {
+				$attributes[ $name ] = substr( $match[2], 1, -1 );
+			}
+		}
+
+		return $attributes;
+	}
+
+	/**
 	 * Returns the values from the href and the src
+	 *
+	 * Every tag carrying one of the two attributes is covered, so that the set of URLs
+	 * compared here matches the set blanked by blank_changeable_attribute_values().
 	 *
 	 * @since 3.0.0
 	 * @access private
@@ -670,9 +727,22 @@ class GP_Builtin_Translation_Warnings {
 	 * @return array
 	 */
 	private function get_values_from_href_src( array $content ): array {
-		preg_match_all( '/<a[^>]+href=([\'"])(?<href>.+?)\1[^>]*>/i', implode( ' ', $content ), $href_values );
-		preg_match_all( '/<[^>]+src=([\'"])(?<src>.+?)\1[^>]*>/i', implode( ' ', $content ), $src_values );
-		return array_merge( $href_values['href'], $src_values['src'] );
+		$href_values = array();
+		$src_values  = array();
+
+		foreach ( $content as $tag ) {
+			$attributes = $this->get_tag_attributes( $tag );
+
+			if ( isset( $attributes['href'] ) ) {
+				$href_values[] = $attributes['href'];
+			}
+
+			if ( isset( $attributes['src'] ) ) {
+				$src_values[] = $attributes['src'];
+			}
+		}
+
+		return array_merge( $href_values, $src_values );
 	}
 
 	/**
@@ -895,13 +965,103 @@ class GP_Builtin_Translation_Warnings {
 		$is_first_letter_uppercase_translation = preg_match( '/^\p{Lu}/u', $translation );
 		$is_first_letter_lowercase_original    = preg_match( '/^\p{Ll}/u', $original );
 		$is_first_letter_lowercase_translation = preg_match( '/^\p{Ll}/u', $translation );
-		if ( $is_first_letter_uppercase_original && $is_first_letter_lowercase_translation ) {
-			return __( 'The translation appears to be missing the initial uppercase.', 'glotpress' );
-		}
-		if ( $is_first_letter_lowercase_original && $is_first_letter_uppercase_translation ) {
-			return __( 'The translation appears to be missing the initial lowercase.', 'glotpress' );
+
+		$missing_uppercase = $is_first_letter_uppercase_original && $is_first_letter_lowercase_translation;
+		$missing_lowercase = $is_first_letter_lowercase_original && $is_first_letter_uppercase_translation;
+
+		if ( ! $missing_uppercase && ! $missing_lowercase ) {
+			return true;
 		}
 
-		return true;
+		/*
+		 * The check compares the first letter of the original with the first letter
+		 * of the translation, which assumes both sentences begin with the same term.
+		 * Languages that reorder the sentence can begin the translation with a name
+		 * carried over from the original, such as `WordPress.org`, `bbPress`, `v2`,
+		 * or `foo_bar`. The case of such a name comes from the original rather than
+		 * from the translator, so there is nothing to correct.
+		 */
+		if ( $this->begins_with_name_from_original( $original, $translation ) ) {
+			return true;
+		}
+
+		if ( $missing_uppercase ) {
+			return __( 'The translation appears to be missing the initial uppercase.', 'glotpress' );
+		}
+
+		return __( 'The translation appears to be missing the initial lowercase.', 'glotpress' );
+	}
+
+	/**
+	 * Determines whether the translation begins with a name copied from the original.
+	 *
+	 * Only names are considered, meaning terms that carry their own casing, such as
+	 * `WordPress.org`, `bbPress`, `v2` or `foo_bar`. Ordinary words, including
+	 * hyphenated compounds such as `front-end`, are not names, so a translation
+	 * beginning with one is still checked.
+	 *
+	 * The comparison is case sensitive and matches whole terms, so a translation
+	 * beginning with `Word` is not treated as a copy of `WordPress`.
+	 *
+	 * @since 4.2.0
+	 * @access private
+	 *
+	 * @param string $original    The source string.
+	 * @param string $translation The translation.
+	 *
+	 * @return bool True if the translation begins with a name from the original.
+	 */
+	private function begins_with_name_from_original( string $original, string $translation ): bool {
+		if ( ! preg_match( '/^\S+/u', $translation, $matches ) ) {
+			return false;
+		}
+
+		$first_term = $this->trim_punctuation( $matches[0] );
+
+		if ( '' === $first_term || ! preg_match( '/[\p{Lu}\p{Ll}]/u', $first_term ) ) {
+			return false;
+		}
+
+		/*
+		 * A name carries its own casing: an uppercase letter, or one of the
+		 * characters identifiers use and ordinary words do not, meaning a digit,
+		 * `.`, `_`, `/` or `\`. Marks and punctuation that occur inside ordinary
+		 * words are deliberately excluded, so a dash as in `front-end`, an
+		 * apostrophe as in `don't`, a middle dot as in `col·legi` and a
+		 * combining accent as in a decomposed `équipe` all stay ordinary words.
+		 *
+		 * The consequence is that an all-lowercase hyphenated identifier such as
+		 * `wp-admin` is also read as an ordinary word, because it is shaped
+		 * exactly like `front-end`. Telling the two apart needs a dictionary
+		 * rather than a boundary rule, so the check keeps the warning for both
+		 * instead of risking the loss of a real one.
+		 */
+		$carries_own_case = preg_match( '/\p{Lu}/u', $first_term ) || preg_match( '/[\p{N}._\/\\\\]/u', $first_term );
+
+		if ( ! $carries_own_case ) {
+			return false;
+		}
+
+		foreach ( preg_split( '/\s+/u', $original, -1, PREG_SPLIT_NO_EMPTY ) as $term ) {
+			if ( $first_term === $this->trim_punctuation( $term ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Removes leading and trailing punctuation from a term.
+	 *
+	 * @since 4.2.0
+	 * @access private
+	 *
+	 * @param string $term The term to trim.
+	 *
+	 * @return string The trimmed term.
+	 */
+	private function trim_punctuation( string $term ): string {
+		return (string) preg_replace( '/^[\p{P}\p{S}]+|[\p{P}\p{S}]+$/u', '', $term );
 	}
 }

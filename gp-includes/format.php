@@ -1,16 +1,77 @@
 <?php
+/**
+ * GlotPress Format
+ *
+ * @package GlotPress
+ */
 
 /**
  * GlotPress Format base class. It is supposed to be inherited.
  */
 abstract class GP_Format {
 
-	public $name             = '';
-	public $extension        = '';
-	public $alt_extensions   = array();
+	/**
+	 * Name of file format, used in file format dropdowns.
+	 *
+	 * @var string
+	 */
+	public $name = '';
+
+	/**
+	 * File extension of the file format, used to autodetect formats and when creating the output file names.
+	 *
+	 * @var string
+	 */
+	public $extension = '';
+
+	/**
+	 * Alternative file extensions of the file format, used to autodetect formats.
+	 *
+	 * @var string[]
+	 */
+	public $alt_extensions = array();
+
+	/**
+	 * Pattern used to generate the output file names.
+	 *
+	 * @var string
+	 */
 	public $filename_pattern = '%s-%s';
 
+	/**
+	 * Maximum length of a single value included in a log message.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @var int
+	 */
+	const LOG_VALUE_MAX_LENGTH = 200;
+
+	/**
+	 * Generates a string that contains the $entries to export in the specific file format.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param GP_Project          $project         The project the strings are being exported for, not used
+	 *                                             in this format but part of the scaffold of the parent object.
+	 * @param GP_Locale           $locale          The locale object the strings are being exported for. not used
+	 *                                             in this format but part of the scaffold of the parent object.
+	 * @param GP_Translation_Set  $translation_set The locale object the strings are being
+	 *                                             exported for. not used in this format but part
+	 *                                             of the scaffold of the parent object.
+	 * @param Translation_Entry[] $entries         The entries to export.
+	 * @return string The exported strings string.
+	 */
 	abstract public function print_exported_file( $project, $locale, $translation_set, $entries );
+
+	/**
+	 * Reads a set of original strings from a file.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $file_name The name of the uploaded strings file.
+	 * @return Translations|bool The extracted originals on success, false on failure.
+	 */
 	abstract public function read_originals_from_file( $file_name );
 
 	/**
@@ -24,6 +85,52 @@ abstract class GP_Format {
 		return array_merge( array( $this->extension ), $this->alt_extensions );
 	}
 
+	/**
+	 * Prepares a value read from an uploaded file for inclusion in a log message.
+	 *
+	 * Whitespace is collapsed and the length is capped so that the value stays on one
+	 * readable line whatever the file contained.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param string $value The value to prepare.
+	 * @return string The prepared value.
+	 */
+	protected function sanitize_for_log( $value ) {
+		$value = (string) $value;
+
+		// A value read from an uploaded file is not guaranteed to be valid UTF-8. Both
+		// steps use the byte-wise functions when it is not, so that neither depends on
+		// an encoding the value does not have.
+		if ( preg_match( '//u', $value ) ) {
+			$value = preg_replace( '/\s+/u', ' ', $value );
+
+			if ( mb_strlen( $value ) > self::LOG_VALUE_MAX_LENGTH ) {
+				$value = mb_substr( $value, 0, self::LOG_VALUE_MAX_LENGTH ) . '…';
+			}
+
+			return $value;
+		}
+
+		$value = preg_replace( '/\s+/', ' ', $value );
+
+		if ( strlen( $value ) > self::LOG_VALUE_MAX_LENGTH ) {
+			$value = substr( $value, 0, self::LOG_VALUE_MAX_LENGTH ) . '...';
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Reads a set of translations from a file.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string     $file_name The filename of the uploaded file.
+	 * @param GP_Project $project   The project object to read the translations in to.
+	 *
+	 * @return Translations|bool
+	 */
 	public function read_translations_from_file( $file_name, $project = null ) {
 		if ( is_null( $project ) ) {
 			return false;
@@ -40,7 +147,7 @@ abstract class GP_Format {
 
 		foreach ( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file
-			// so we need to swap singular and translation
+			// so we need to swap singular and translation.
 			if ( $entry->context == $entry->singular ) {
 				$entry->translations = array();
 			} else {
@@ -61,7 +168,7 @@ abstract class GP_Format {
 					sprintf(
 						/* translators: 1: Context. 2: Project ID. */
 						__( 'Missing context %1$s in project #%2$d', 'glotpress' ),
-						$entry->context,
+						$this->sanitize_for_log( $entry->context ),
 						$project->id
 					)
 				);
@@ -106,5 +213,4 @@ abstract class GP_Format {
 
 		return $ret;
 	}
-
 }

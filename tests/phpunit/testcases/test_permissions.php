@@ -154,4 +154,54 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 		$this->assertTrue( (bool) GP::$permission->user_can( $user, 'import-waiting', 'translation-set', $set2->id ) );
 		$this->assertFalse( (bool) GP::$permission->user_can( $user, 'import-waiting', 'translation-set', $set->id ) );
 	}
+
+	/**
+	 * An anonymous request must never be treated as an administrator, even when a
+	 * permission row with an empty (NULL) user_id happens to exist in the database.
+	 *
+	 * A permission is always tied to a specific user, so a NULL user_id must not
+	 * match any user via `user_id IS NULL`.
+	 */
+	function test_anonymous_user_is_not_admin_when_null_user_id_admin_row_exists() {
+		// user_id 0 is normalized to NULL by GP_Permission, mimicking a row a
+		// userless activation could leave behind.
+		GP::$permission->create( array( 'user_id' => 0, 'action' => 'admin' ) );
+		$this->assertNotFalse( GP::$permission->find_one( array( 'action' => 'admin', 'user_id' => null ) ), 'Expected an admin row with a NULL user_id to be stored for the test.' );
+
+		wp_set_current_user( 0 );
+		$this->assertFalse( (bool) GP::$permission->current_user_can( 'admin' ) );
+		$this->assertFalse( (bool) GP::$permission->user_can( 0, 'admin' ) );
+		$this->assertFalse( (bool) GP::$permission->user_can( 0, 'write', 'project', 1 ) );
+
+		// Control: a real user with a proper admin row is still an administrator.
+		$admin = $this->factory->user->create_admin();
+		$this->assertTrue( (bool) GP::$permission->user_can( $admin, 'admin' ) );
+	}
+
+	/**
+	 * Activation must not seed an administrator when no user is logged in
+	 * (e.g. WP-CLI or programmatic activation).
+	 */
+	function test_activation_does_not_seed_admin_without_current_user() {
+		$this->assertFalse( GP::$permission->find_one( array( 'action' => 'admin' ) ), 'Test expects no administrators to exist beforehand.' );
+
+		wp_set_current_user( 0 );
+		gp_activate_plugin();
+
+		$this->assertFalse( GP::$permission->find_one( array( 'action' => 'admin' ) ), 'No administrator should be created without a logged-in user.' );
+	}
+
+	/**
+	 * Activation seeds the user performing it as the administrator.
+	 */
+	function test_activation_seeds_current_user_as_admin() {
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		gp_activate_plugin();
+
+		$admin = GP::$permission->find_one( array( 'action' => 'admin' ) );
+		$this->assertNotFalse( $admin );
+		$this->assertEquals( $user, $admin->user_id );
+	}
 }

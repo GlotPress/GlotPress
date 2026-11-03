@@ -7,6 +7,9 @@ module.exports = function( grunt ) {
 	grunt.initConfig( {
 		uglify: {
 			options: {
+				compress: {
+					arrows: false
+				},
 				output: {
 					ascii_only: true
 				}
