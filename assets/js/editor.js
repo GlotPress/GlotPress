@@ -1,12 +1,12 @@
-/* global $gp_editor_options, $gp, wp, Event, setTimeout, clearTimeout */
+/* global $gp_editor_options, $gp, wp, Event */
 /* eslint camelcase: "off" */
 $gp.editor = (
 	function( $ ) {
 		return {
 			current: null,
 			original_translations: null,
-			filter_counts_timer: null,
 			filter_counts_request: null,
+			filter_counts_stale: false,
 			init: function( table ) {
 				var $previewRows;
 
@@ -27,28 +27,36 @@ $gp.editor = (
 				return row_id.split( '-' )[ 1 ];
 			},
 			/*
-			 * Updates the status filter counts once the translator pauses, instead of after every
-			 * change, as counting them goes through the whole translation set.
+			 * Updates the status filter counts after a change. Counting them goes through the whole
+			 * translation set, so there is only one request at a time: the changes made while it
+			 * runs are picked up by a single request once it ends, instead of one request each.
 			 */
 			schedule_filter_counts: function() {
-				clearTimeout( $gp.editor.filter_counts_timer );
-
-				// A request that started before this change could bring older counts.
 				if ( $gp.editor.filter_counts_request ) {
-					$gp.editor.filter_counts_request.abort();
-					$gp.editor.filter_counts_request = null;
+					$gp.editor.filter_counts_stale = true;
+					return;
 				}
 
-				$gp.editor.filter_counts_timer = setTimeout( $gp.editor.update_filter_counts, 1000 );
+				$gp.editor.update_filter_counts();
 			},
 			update_filter_counts: function() {
+				$gp.editor.filter_counts_stale = false;
 				$gp.editor.filter_counts_request = $.ajax( {
 					type: 'GET',
 					url: $gp_editor_options.filter_counts_url,
 					dataType: 'json',
+					// The counts change with every edit, a cached response would be outdated.
+					cache: false,
 					success: function( counts ) {
-						$gp.editor.filter_counts_request = null;
 						$gp.editor.set_filter_counts( counts );
+					},
+					complete: function() {
+						$gp.editor.filter_counts_request = null;
+
+						// The counts that just arrived may not include the changes made meanwhile.
+						if ( $gp.editor.filter_counts_stale ) {
+							$gp.editor.update_filter_counts();
+						}
 					},
 				} );
 			},
