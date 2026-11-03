@@ -822,19 +822,19 @@ class GP_Translation extends GP_Thing {
 		}
 
 		/*
-		 * A translation which doesn't have a translation for every plural form of the locale is not a
-		 * valid translation, so it can't become the current one, no matter how it made it to the database.
-		 */
-		if ( 'current' === $status && ! $this->has_all_translations() ) {
-			return false;
-		}
-
-		/*
 		 * A row that is already current is not being approved. Callers create rows as
 		 * current and then call this to supersede the other translations of the original,
 		 * which must still happen or the original ends up with two current translations.
 		 */
 		if ( 'current' === $status && 'current' !== $this->status ) {
+			/*
+			 * A translation which doesn't have a translation for every plural form of the locale is not
+			 * a valid translation, so it can't become the current one.
+			 */
+			if ( ! $this->has_all_translations() ) {
+				return false;
+			}
+
 			$translation_errors = $this->get_translation_errors();
 			if ( $translation_errors ) {
 				$this->errors = $translation_errors;
