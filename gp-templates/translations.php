@@ -91,6 +91,9 @@ $i = 0;
 	</div>
 </div>
 
+<?php if ( ! empty( $search_error ) ) : ?>
+	<div class="error"><?php echo esc_html( $search_error ); ?></div>
+<?php endif; ?>
 <div class="filter-toolbar">
 	<form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
 		<div>

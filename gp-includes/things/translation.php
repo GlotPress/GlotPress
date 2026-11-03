@@ -186,6 +186,15 @@ class GP_Translation extends GP_Thing {
 	public $found_rows;
 
 	/**
+	 * Error message of an invalid regular expression in the last for_translation() search, if any.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string $regex_error
+	 */
+	public $regex_error = '';
+
+	/**
 	 * List of valid statuses.
 	 *
 	 * @var array $statuses
@@ -368,14 +377,22 @@ class GP_Translation extends GP_Thing {
 			'desc' => 'DESC',
 		);
 		$sort_how  = gp_array_get( $sort_hows, gp_array_get( $sort, 'how' ), gp_array_get( $sort_hows, $default_sort['how'] ) );
-		$regex     = 'yes' === gp_array_get( $filters, 'regex' ) ? true : false;
-		$collation = 'yes' === gp_array_get( $filters, 'case_sensitive' ) ? 'BINARY' : '';
+
+		$regex          = 'yes' === gp_array_get( $filters, 'regex' );
+		$case_sensitive = 'yes' === gp_array_get( $filters, 'case_sensitive' );
+		$collation      = $case_sensitive ? 'BINARY' : '';
+
+		$this->regex_error = '';
 
 		$where = array();
 		if ( gp_array_get( $filters, 'term' ) ) {
-			// Check wether to do a regex or regular search.
+			// Check whether to do a regex or regular search.
 			if ( $regex ) {
-				$condition = "REGEXP $collation '" . ( esc_sql( gp_array_get( $filters, 'term' ) ) ) . "'";
+				$condition = $this->get_regex_condition( gp_array_get( $filters, 'term' ), $case_sensitive );
+
+				if ( ! $this->is_valid_regex_condition( $condition ) ) {
+					$this->regex_error = __( 'The search term is not a valid regular expression.', 'glotpress' );
+				}
 			} else {
 				$condition = "LIKE $collation '%" . ( esc_sql( $wpdb->esc_like( gp_array_get( $filters, 'term' ) ) ) ) . "%'";
 			}
@@ -410,7 +427,8 @@ class GP_Translation extends GP_Thing {
 				$scope_array
 			);
 
-			$where[] = '(' . implode( ' OR ', $mapped_scope_array ) . ')';
+			// Nothing can match an invalid pattern, and some servers fail the whole query if it's in it.
+			$where[] = $this->regex_error ? '0 = 1' : '(' . implode( ' OR ', $mapped_scope_array ) . ')';
 		}
 		if ( gp_array_get( $filters, 'before_date_added' ) ) {
 			$where[] = $wpdb->prepare( 't.date_added > %s', gp_array_get( $filters, 'before_date_added' ) );
@@ -878,6 +896,74 @@ class GP_Translation extends GP_Thing {
 		}
 
 		return array_unique( gp_array_flatten( (array) GP::$translation_errors->check( $original, $this->translations(), $locale ) ) );
+	}
+
+	/**
+	 * Builds the SQL condition of a regular expression search.
+	 *
+	 * The regular expression engine depends on the database server: MySQL 8.0.4 and later use ICU, where
+	 * `REGEXP BINARY` fails on a non-binary column, and MariaDB uses PCRE. Both support the inline `(?-i)`
+	 * flag for a case-sensitive match. Older MySQL versions don't, but compare binary strings case-sensitively.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $pattern        The regular expression.
+	 * @param bool   $case_sensitive Whether the match is case-sensitive.
+	 * @return string The SQL condition, to be placed after a column name.
+	 */
+	private function get_regex_condition( $pattern, $case_sensitive ) {
+		if ( ! $case_sensitive ) {
+			return "REGEXP '" . esc_sql( $pattern ) . "'";
+		}
+
+		if ( $this->regex_supports_inline_flags() ) {
+			return "REGEXP '" . esc_sql( '(?-i)' . $pattern ) . "'";
+		}
+
+		return "REGEXP BINARY '" . esc_sql( $pattern ) . "'";
+	}
+
+	/**
+	 * Checks whether the regular expression engine of the database server supports inline flags.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @return bool True for MySQL 8.0.4 and later, and for MariaDB, false otherwise.
+	 */
+	private function regex_supports_inline_flags() {
+		global $wpdb;
+
+		static $supports = null;
+
+		if ( is_null( $supports ) ) {
+			$server_version = (string) $wpdb->get_var( 'SELECT VERSION()' );
+
+			$supports = false !== stripos( $server_version, 'mariadb' ) || version_compare( $server_version, '8.0.4', '>=' );
+		}
+
+		return $supports;
+	}
+
+	/**
+	 * Checks whether the database server accepts the regular expression of a search condition.
+	 *
+	 * The pattern is checked by the database server, which runs it, as the regular expression syntax
+	 * differs between the servers and from PHP.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $condition The SQL condition, as returned by get_regex_condition().
+	 * @return bool True if the regular expression is valid, false otherwise.
+	 */
+	private function is_valid_regex_condition( $condition ) {
+		global $wpdb;
+
+		$suppress_errors = $wpdb->suppress_errors( true );
+		$wpdb->query( "SELECT '' $condition" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The condition is escaped by get_regex_condition().
+		$is_valid = '' === $wpdb->last_error;
+		$wpdb->suppress_errors( $suppress_errors );
+
+		return $is_valid;
 	}
 
 	/**
