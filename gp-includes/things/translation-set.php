@@ -913,6 +913,58 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 
+	/**
+	 * Keeps a single current translation for each original of the set.
+	 *
+	 * An original with more than one current translation keeps the most recently modified one,
+	 * or the most recently created one if they were modified at the same time, and the others
+	 * are set as old.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param bool $dry_run Optional. Whether to only find the duplicate current translations,
+	 *                      without setting them as old. Default false.
+	 * @return array[] The originals with more than one current translation, keyed by original ID.
+	 *                 Each is an array with the ID of the translation kept as `kept` and the IDs
+	 *                 of the ones set as old as `superseded`.
+	 */
+	public function supersede_multiple_currents( $dry_run = false ) {
+		global $wpdb;
+
+		$original_ids = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT original_id FROM $wpdb->gp_translations WHERE translation_set_id = %d AND status = 'current' GROUP BY original_id HAVING COUNT(*) > 1",
+				$this->id
+			)
+		);
+
+		$duplicates = array();
+		foreach ( $original_ids as $original_id ) {
+			$current = GP::$translation->find_many(
+				array(
+					'translation_set_id' => $this->id,
+					'original_id'        => $original_id,
+					'status'             => 'current',
+				),
+				'date_modified DESC, id DESC'
+			);
+			$kept    = array_shift( $current );
+
+			$duplicates[ (int) $original_id ] = array(
+				'kept'       => (int) $kept->id,
+				'superseded' => array_map( 'intval', wp_list_pluck( $current, 'id' ) ),
+			);
+
+			if ( ! $dry_run ) {
+				foreach ( $current as $translation ) {
+					$translation->save( array( 'status' => 'old' ) );
+				}
+			}
+		}
+
+		return $duplicates;
+	}
+
 	public function percent_translated() {
 		$original_counts = GP::$original->count_by_project_id( $this->project_id, 'all' );
 
