@@ -879,7 +879,15 @@ class GP_Translation_Set extends GP_Thing {
 	 * Copies translations from a translation set to the current one
 	 *
 	 * This function doesn't merge then, just copies unconditionally. If a translation already exists, it will be duplicated.
-	 * When copying translations from another project, it will search to find the original first.
+	 * When copying translations from another project, it will search to find the original first, with the same status
+	 * if there is one.
+	 *
+	 * @since 4.2.0 Matches the originals of another project by status too, and keeps a single current
+	 *              translation for each original.
+	 *
+	 * @param int $source_translation_set_id The ID of the translation set to copy from.
+	 * @return int|bool|null The number of translations copied from the same project, false on error,
+	 *                       null when copying from another project.
 	 */
 	public function copy_translations_from( $source_translation_set_id ) {
 		global $wpdb;
@@ -888,28 +896,66 @@ class GP_Translation_Set extends GP_Thing {
 		$source_set = GP::$translation_set->get( $source_translation_set_id );
 		if ( $source_set->project_id != $this->project_id ) {
 			$translations = GP::$translation->find_many_no_map( "translation_set_id = '{$source_set->id}'" );
+			$copies       = array();
+			$current      = array();
 			foreach ( $translations as $entry ) {
 				$source_original = GP::$original->get( $entry->original_id );
-				$original        = GP::$original->by_project_id_and_entry( $this->project_id, $source_original );
-				if ( $original ) {
-					$entry->original_id        = $original->id;
-					$entry->translation_set_id = $this->id;
-					GP::$translation->create( $entry );
+
+				/*
+				 * An obsolete and an active original can have the same text, and both their
+				 * translations would otherwise go to the first of them.
+				 */
+				$original = GP::$original->by_project_id_and_entry( $this->project_id, $source_original, $source_original->status );
+				if ( ! $original ) {
+					$original = GP::$original->by_project_id_and_entry( $this->project_id, $source_original );
+				}
+
+				if ( ! $original ) {
+					continue;
+				}
+
+				$entry->original_id        = $original->id;
+				$entry->translation_set_id = $this->id;
+				$copies[]                  = $entry;
+
+				// The copies are all modified now, so the most recently modified current translation is chosen here.
+				if ( 'current' === $entry->status ) {
+					$kept = isset( $current[ $original->id ] ) ? $current[ $original->id ] : null;
+					if ( ! $kept || array( $entry->date_modified, (int) $entry->id ) > array( $kept->date_modified, (int) $kept->id ) ) {
+						$current[ $original->id ] = $entry;
+					}
 				}
 			}
+
+			foreach ( $copies as $entry ) {
+				if ( 'current' === $entry->status && $current[ $entry->original_id ] !== $entry ) {
+					$entry->status = 'old';
+				}
+				GP::$translation->create( $entry );
+			}
+			$copied = null;
 		} else {
-			return $this->query(
+			$copied = $this->query(
 				"INSERT INTO $wpdb->gp_translations (
 					original_id,       translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added,       date_modified, warnings
 				)
 				SELECT
 					original_id, %s AS translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added, %s AS date_modified, warnings
-				FROM $wpdb->gp_translations WHERE translation_set_id = %s",
+				FROM $wpdb->gp_translations WHERE translation_set_id = %s ORDER BY $wpdb->gp_translations.date_modified, $wpdb->gp_translations.id",
 				$this->id,
 				$current_date,
 				$source_translation_set_id
 			);
 		}
+
+		/*
+		 * Translations copied over existing ones, or duplicates in the source set, would be current twice.
+		 * The copies are all modified now, and the ones copied from the same project in the order they were
+		 * modified, so the most recently modified current translation of the source set is kept.
+		 */
+		$this->supersede_multiple_currents();
+
+		return $copied;
 	}
 
 

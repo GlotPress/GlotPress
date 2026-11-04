@@ -585,4 +585,46 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$set = GP::$translation_set->get( $set->id );
 		$this->assertSame( 1, $set->current_count() );
 	}
+
+
+	public function test_copy_translations_from_the_same_project_keeps_a_single_current_translation() {
+		$source   = $this->factory->translation_set->create_with_project_and_locale();
+		$target   = $this->factory->translation_set->create( array( 'project_id' => $source->project_id, 'locale' => 'de', 'slug' => 'default' ) );
+		$original = $this->factory->original->create( array( 'project_id' => $source->project_id ) );
+		$existing = $this->create_translation_modified_at( $target, $original->id, 'current', '2020-01-01 00:00:00' );
+		$this->create_translation_modified_at( $source, $original->id, 'current', '2021-01-01 00:00:00' );
+
+		$this->assertSame( 1, $target->copy_translations_from( $source->id ) );
+
+		$current = GP::$translation->find_many( array( 'translation_set_id' => $target->id, 'original_id' => $original->id, 'status' => 'current' ) );
+		$this->assertCount( 1, $current );
+		$this->assertNotEquals( $existing->id, $current[0]->id, 'The copied translation replaces the existing one.' );
+		$this->assertSame( 'old', GP::$translation->get( $existing->id )->status );
+	}
+
+
+	public function test_copy_translations_from_the_same_project_keeps_the_most_recently_modified_current_translation() {
+		$source = $this->factory->translation_set->create_with_project_and_locale();
+		$target = $this->factory->translation_set->create( array( 'project_id' => $source->project_id, 'locale' => 'de', 'slug' => 'default' ) );
+
+		// The most recently modified translation is created first for one original, and last for the other.
+		$newest = array();
+		foreach ( array( array( '2021-01-01 00:00:00', '2020-01-01 00:00:00' ), array( '2020-01-01 00:00:00', '2021-01-01 00:00:00' ) ) as $dates ) {
+			$original = $this->factory->original->create( array( 'project_id' => $source->project_id ) );
+			foreach ( $dates as $date_modified ) {
+				$translation = $this->create_translation_modified_at( $source, $original->id, 'current', $date_modified );
+				if ( '2021-01-01 00:00:00' === $date_modified ) {
+					$newest[ $original->id ] = $translation->translation_0;
+				}
+			}
+		}
+
+		$target->copy_translations_from( $source->id );
+
+		foreach ( $newest as $original_id => $translation_0 ) {
+			$current = GP::$translation->find_many( array( 'translation_set_id' => $target->id, 'original_id' => $original_id, 'status' => 'current' ) );
+			$this->assertCount( 1, $current );
+			$this->assertSame( $translation_0, $current[0]->translation_0 );
+		}
+	}
 }
