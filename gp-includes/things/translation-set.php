@@ -482,7 +482,17 @@ class GP_Translation_Set extends GP_Thing {
 				// Check for errors.
 				$translation = GP::$translation->create( $entry );
 				if ( is_object( $translation ) ) {
-					$translation->set_status( $entry->status );
+					if ( 'current' === $entry->status ) {
+						/*
+						 * The row is already current, so the other translations of the original are
+						 * superseded whether or not the current user may approve it. set_status() would
+						 * refuse without that permission, a WP-CLI import without a user for example,
+						 * and the original would end up with two current translations.
+						 */
+						$translation->set_as_current();
+					} else {
+						$translation->set_status( $entry->status );
+					}
 					$translations_added       += 1;
 					$created_translation_ids[] = $translation->id;
 				}
