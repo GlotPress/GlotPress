@@ -1,3 +1,12 @@
+<?php
+/**
+ * Templates: Footer
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
+?>
 	</div>
 	<footer id="gp-footer" class="gp-footer">
 		<div class="gp-footer-credits">
