@@ -646,47 +646,68 @@ class GP_Translation extends GP_Thing {
 	 * Sets as old the other current, waiting, fuzzy and changesrequested translations for the same original,
 	 * setting the current one as current.
 	 *
+	 * Both happen in a single statement, which updates every translation of the original in the set. Two
+	 * translations of the same original approved at the same time then wait for each other, and the one
+	 * approved last supersedes the other, instead of both ending up current.
+	 *
+	 * @since 1.0.0
+	 * @since 4.2.0 Supersedes the other translations and sets this one as current in a single statement.
+	 *
 	 * @return bool
 	 */
 	public function set_as_current() {
-		return $this->update(
-			array( 'status' => 'old' ),
-			array(
-				'original_id'        => $this->original_id,
-				'translation_set_id' => $this->translation_set_id,
-				'status'             => 'current',
-			)
-		)
-		&& $this->update(
-			array( 'status' => 'old' ),
-			array(
-				'original_id'        => $this->original_id,
-				'translation_set_id' => $this->translation_set_id,
-				'status'             => 'waiting',
-			)
-		)
-		&& $this->update(
-			array( 'status' => 'old' ),
-			array(
-				'original_id'        => $this->original_id,
-				'translation_set_id' => $this->translation_set_id,
-				'status'             => 'fuzzy',
-			)
-		)
-		&& $this->update(
-			array( 'status' => 'old' ),
-			array(
-				'original_id'        => $this->original_id,
-				'translation_set_id' => $this->translation_set_id,
-				'status'             => 'changesrequested',
-			)
-		)
-		&& $this->save(
+		$translation_before = clone $this;
+
+		$promote = $this->prepare_fields_for_save(
 			array(
 				'status'                => 'current',
 				'user_id_last_modified' => get_current_user_id(),
 			)
 		);
+		$demote  = $this->prepare_fields_for_save( array( 'status' => 'old' ) );
+
+		/*
+		 * The status is assigned last, as MySQL assigns from left to right and the other
+		 * fields check the status the translation had before.
+		 */
+		$fields = array_keys( $promote + $demote );
+		$fields = array_merge( array_diff( $fields, array( 'status' ) ), array( 'status' ) );
+
+		$assignments = array();
+		$args        = array();
+		foreach ( $fields as $field ) {
+			$assignment = "`$field` = CASE WHEN id = %d THEN ";
+			$args[]     = $this->id;
+			if ( array_key_exists( $field, $promote ) ) {
+				$assignment .= '%s';
+				$args[]      = $promote[ $field ];
+			} else {
+				$assignment .= "`$field`";
+			}
+			if ( array_key_exists( $field, $demote ) ) {
+				$assignment .= " WHEN status IN ( 'current', 'waiting', 'fuzzy', 'changesrequested' ) THEN %s";
+				$args[]      = $demote[ $field ];
+			}
+			$assignments[] = $assignment . " ELSE `$field` END";
+		}
+		$args[] = $this->original_id;
+		$args[] = $this->translation_set_id;
+
+		/*
+		 * Every translation of the original in the set matches, not only the ones to supersede,
+		 * so the statement locks them all, whatever the isolation level.
+		 */
+		$updated = $this->query(
+			"UPDATE $this->table SET " . implode( ', ', $assignments ) . ' WHERE original_id = %d AND translation_set_id = %d',
+			...$args
+		);
+		if ( false === $updated ) {
+			return false;
+		}
+
+		$this->set_fields( $promote );
+
+		return $this->after_save( $translation_before );
 	}
 
 	/**

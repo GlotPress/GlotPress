@@ -730,4 +730,145 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertCount( 1, $entries );
 		$this->assertSame( 'Guardaralteracoes', $entries[0]->translations[0] );
 	}
+
+	/**
+	 * Creates a translation of an original in a set, with a given status and date_modified.
+	 *
+	 * @param GP_Translation_Set $set         The translation set.
+	 * @param int                $original_id The original ID.
+	 * @param string             $status      The status.
+	 * @return GP_Translation The translation.
+	 */
+	private function create_translation_with_status( $set, $original_id, $status ) {
+		global $wpdb;
+
+		$translation = $this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $original_id,
+				'status'             => $status,
+			)
+		);
+		$wpdb->update( $wpdb->gp_translations, array( 'date_modified' => '2020-01-01 00:00:00' ), array( 'id' => $translation->id ) );
+
+		return GP::$translation->get( $translation->id );
+	}
+
+	public function test_set_as_current_supersedes_the_other_translations_of_the_original() {
+		$user = $this->factory->user->create();
+		wp_set_current_user( $user );
+
+		$set       = $this->factory->translation_set->create_with_project_and_locale();
+		$other_set = $this->factory->translation_set->create( array( 'project_id' => $set->project_id, 'locale' => 'de', 'slug' => 'default' ) );
+		$original  = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$other     = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+
+		$translations = array();
+		foreach ( array( 'current', 'waiting', 'fuzzy', 'changesrequested', 'rejected', 'old' ) as $status ) {
+			$translations[ $status ] = $this->create_translation_with_status( $set, $original->id, $status );
+		}
+		$other_original = $this->create_translation_with_status( $set, $other->id, 'current' );
+		$other_set_row  = $this->create_translation_with_status( $other_set, $original->id, 'current' );
+		$approved       = $this->create_translation_with_status( $set, $original->id, 'waiting' );
+
+		$this->assertTrue( $approved->set_as_current() );
+
+		$this->assertSame( 'current', $approved->status );
+		$this->assertEquals( $user, $approved->user_id_last_modified );
+
+		$stored = GP::$translation->get( $approved->id );
+		$this->assertSame( 'current', $stored->status );
+		$this->assertEquals( $user, $stored->user_id_last_modified );
+		$this->assertNotSame( '2020-01-01 00:00:00', $stored->date_modified );
+
+		$expected = array(
+			'current'          => 'old',
+			'waiting'          => 'old',
+			'fuzzy'            => 'old',
+			'changesrequested' => 'old',
+			'rejected'         => 'rejected',
+			'old'              => 'old',
+		);
+		foreach ( $expected as $status => $expected_status ) {
+			$stored = GP::$translation->get( $translations[ $status ]->id );
+			$this->assertSame( $expected_status, $stored->status, "The $status translation." );
+
+			// Only the superseded translations are modified.
+			$superseded = $status !== $expected_status;
+			$this->assertSame( ! $superseded, '2020-01-01 00:00:00' === $stored->date_modified, "The date_modified of the $status translation." );
+			$this->assertNotEquals( $user, $stored->user_id_last_modified, "The user_id_last_modified of the $status translation." );
+		}
+
+		// Other originals and other translation sets are left alone.
+		$this->assertSame( 'current', GP::$translation->get( $other_original->id )->status );
+		$this->assertSame( 'current', GP::$translation->get( $other_set_row->id )->status );
+	}
+
+	public function test_set_as_current_leaves_a_single_current_translation() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+
+		// Two current translations of the same original, as left by two approvals at the same time.
+		$first  = $this->create_translation_with_status( $set, $original->id, 'current' );
+		$second = $this->create_translation_with_status( $set, $original->id, 'current' );
+
+		$this->assertTrue( $first->set_as_current() );
+
+		$this->assertSame( 'current', GP::$translation->get( $first->id )->status );
+		$this->assertSame( 'old', GP::$translation->get( $second->id )->status );
+	}
+
+	public function test_set_as_current_fires_translation_saved_with_the_previous_status() {
+		$set         = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+		$translation->set_status( 'waiting' );
+
+		$saved = array();
+		add_action(
+			'gp_translation_saved',
+			function ( $translation, $translation_before ) use ( &$saved ) {
+				$saved[] = array( $translation->status, $translation_before->status );
+			},
+			10,
+			2
+		);
+
+		$translation->set_as_current();
+
+		$this->assertSame( array( array( 'current', 'waiting' ) ), $saved );
+	}
+
+	public function test_set_as_current_clears_the_status_breakdown_cache() {
+		$set         = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+		$translation->set_status( 'waiting' );
+
+		// Put the counts in the cache.
+		$this->assertSame( 0, $set->current_count() );
+
+		$translation->set_as_current();
+
+		$set = GP::$translation_set->get( $set->id );
+		$this->assertSame( 1, $set->current_count() );
+	}
+
+	public function test_set_as_current_applies_the_prepare_for_save_filter() {
+		$set         = $this->factory->translation_set->create_with_project_and_locale();
+		$original    = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$superseded  = $this->create_translation_with_status( $set, $original->id, 'current' );
+		$translation = $this->create_translation_with_status( $set, $original->id, 'waiting' );
+
+		add_filter(
+			'gp_translation_prepare_for_save',
+			function ( $args ) {
+				$args['warnings'] = 'current' === $args['status'] ? array( 0 => array( 'test' => 'Promoted.' ) ) : array( 0 => array( 'test' => 'Superseded.' ) );
+				return $args;
+			}
+		);
+
+		$translation->set_as_current();
+
+		$this->assertSame( array( 0 => array( 'test' => 'Promoted.' ) ), GP::$translation->get( $translation->id )->warnings );
+		$this->assertSame( array( 0 => array( 'test' => 'Superseded.' ) ), GP::$translation->get( $superseded->id )->warnings );
+	}
 }
