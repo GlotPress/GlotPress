@@ -315,6 +315,7 @@ class GP_Translation_Set extends GP_Thing {
 		$user   = wp_get_current_user();
 
 		$existing_translations = array();
+		$rows_by_original      = null;
 
 		$load_existing_translations = function ( $status ) use ( &$existing_translations ) {
 			if ( ! isset( $existing_translations[ $status ] ) ) {
@@ -479,6 +480,10 @@ class GP_Translation_Set extends GP_Thing {
 					$entry->status = 'fuzzy';
 				}
 
+				if ( $this->should_skip_rejected_or_changesrequested( $entry->original_id, $entry, $locale, $rows_by_original ) ) {
+					continue;
+				}
+
 				// Check for errors.
 				$translation = GP::$translation->create( $entry );
 				if ( is_object( $translation ) ) {
@@ -507,6 +512,55 @@ class GP_Translation_Set extends GP_Thing {
 		do_action( 'gp_translations_imported', $this->id, $created_translation_ids, $approved_translation_ids );
 
 		return $translations_added;
+	}
+
+	/**
+	 * Checks whether an identical translation already exists with 'rejected' or 'changesrequested' status.
+	 *
+	 * Only applies to suggestions ('waiting') and fuzzy translations ('fuzzy').
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param int               $original_id      The ID of the original.
+	 * @param Translation_Entry $entry            Translation entry object to import.
+	 * @param GP_Locale         $locale           The locale of the translation set.
+	 * @param array|null        $rows_by_original Optional. Cache of rejected/changesrequested translations grouped by original ID.
+	 * @return bool True if the entry should be skipped, false otherwise.
+	 */
+	private function should_skip_rejected_or_changesrequested( $original_id, $entry, $locale, &$rows_by_original = null ) {
+		if ( ! in_array( $entry->status, array( 'waiting', 'fuzzy' ), true ) ) {
+			return false;
+		}
+
+		/**
+		 * Filter whether to skip importing suggestions and fuzzy translations identical to rejected or changesrequested entries.
+		 *
+		 * @since 4.2.0
+		 *
+		 * @param bool              $skip_entry  Whether to skip the entry. Default true.
+		 * @param Translation_Entry $entry       Translation entry object to import.
+		 * @param int               $original_id The ID of the original.
+		 */
+		if ( ! apply_filters( 'gp_translation_set_import_skip_rejected_or_changesrequested', true, $entry, $original_id ) ) {
+			return false;
+		}
+
+		if ( null === $rows_by_original ) {
+			$rows_by_original = array();
+			$rows             = GP::$translation->find_many(
+				array(
+					'translation_set_id' => $this->id,
+					'status'             => array( 'rejected', 'changesrequested' ),
+				)
+			);
+			foreach ( $rows as $row ) {
+				$rows_by_original[ $row->original_id ][] = array_slice( $row->translations(), 0, $locale->nplurals );
+			}
+		}
+
+		$wanted = array_pad( $entry->translations, $locale->nplurals, null );
+
+		return in_array( $wanted, $rows_by_original[ $original_id ] ?? array(), true );
 	}
 
 	/**
@@ -599,6 +653,51 @@ class GP_Translation_Set extends GP_Thing {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Checks if an incoming suggestion matches an existing rejected or changes-requested translation.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param int   $original_id  The ID of the original string.
+	 * @param array $translations Array of translation strings (indexed 0..n).
+	 * @param int   $user_id      The ID of the user submitting the suggestion.
+	 * @return string|false 'changesrequested', 'rejected', or false if allowed.
+	 */
+	public function check_already_rejected_or_changesrequested( $original_id, array $translations, $user_id ) {
+		$locale = GP_Locales::by_slug( $this->locale );
+		if ( ! $locale ) {
+			return false;
+		}
+
+		$existing_translations = GP::$translation->find_many(
+			array(
+				'translation_set_id' => $this->id,
+				'original_id'        => $original_id,
+				'status'             => array( 'rejected', 'changesrequested' ),
+			)
+		);
+
+		if ( ! $existing_translations ) {
+			return false;
+		}
+
+		$wanted = array_pad( array_values( $translations ), $locale->nplurals, null );
+
+		foreach ( $existing_translations as $existing ) {
+			if ( array_slice( $existing->translations(), 0, $locale->nplurals ) == $wanted ) {
+				if ( 'changesrequested' === $existing->status ) {
+					return 'changesrequested';
+				}
+
+				if ( 'rejected' === $existing->status && (int) $user_id > 0 && (int) $existing->user_id === (int) $user_id ) {
+					return 'rejected';
+				}
+			}
+		}
+
+		return false;
 	}
 
 	/**

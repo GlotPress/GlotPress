@@ -484,4 +484,61 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 			);
 		}
 	}
+
+	/**
+	 * Tests checking incoming suggestions against rejected and changes-requested translations.
+	 *
+	 * @covers GP_Translation_Set::check_already_rejected_or_changesrequested
+	 */
+	function test_check_already_rejected_or_changesrequested() {
+		$set  = $this->factory->translation_set->create_with_project_and_locale();
+		$orig = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Submit' ) );
+
+		$user_1 = $this->factory->user->create();
+		$user_2 = $this->factory->user->create();
+
+		// 1. Without existing translations, it should return false.
+		$this->assertFalse( $set->check_already_rejected_or_changesrequested( $orig->id, array( 'Absenden' ), $user_1 ) );
+
+		// 2. Create a rejected translation for user 1.
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $orig->id,
+				'user_id'            => $user_1,
+				'status'             => 'rejected',
+				'translation_0'      => 'Absenden',
+			)
+		);
+
+		// Re-submitting the rejected text by the same user is blocked.
+		$this->assertSame( 'rejected', $set->check_already_rejected_or_changesrequested( $orig->id, array( 'Absenden' ), $user_1 ) );
+
+		// A different user submitting the same text is allowed.
+		$this->assertFalse( $set->check_already_rejected_or_changesrequested( $orig->id, array( 'Absenden' ), $user_2 ) );
+
+		// A guest (user_id = 0) is not blocked by a rejected translation.
+		$this->assertFalse( $set->check_already_rejected_or_changesrequested( $orig->id, array( 'Absenden' ), 0 ) );
+
+		// Submitting a different translation is allowed for user 1.
+		$this->assertFalse( $set->check_already_rejected_or_changesrequested( $orig->id, array( 'Einreichen' ), $user_1 ) );
+
+		// 3. Create a translation with changes requested.
+		$orig_cr = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Cancel' ) );
+
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $orig_cr->id,
+				'user_id'            => $user_1,
+				'status'             => 'changesrequested',
+				'translation_0'      => 'Abbruch',
+			)
+		);
+
+		// 'changesrequested' blocks the author, any other user, and guests.
+		$this->assertSame( 'changesrequested', $set->check_already_rejected_or_changesrequested( $orig_cr->id, array( 'Abbruch' ), $user_1 ) );
+		$this->assertSame( 'changesrequested', $set->check_already_rejected_or_changesrequested( $orig_cr->id, array( 'Abbruch' ), $user_2 ) );
+		$this->assertSame( 'changesrequested', $set->check_already_rejected_or_changesrequested( $orig_cr->id, array( 'Abbruch' ), 0 ) );
+	}
 }
