@@ -70,7 +70,7 @@ $gp.glossary = (
 				}
 
 				button.prop( 'disabled', true );
-				$gp.notices.notice( wp.i18n.__( 'Saving&hellip;', 'glotpress' ) );
+				$gp.notices.progress( wp.i18n.__( 'Saving&hellip;', 'glotpress' ) );
 
 				editor = $gp.glossary.current;
 

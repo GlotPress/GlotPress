@@ -381,14 +381,9 @@ class GP_Route_Translation extends GP_Route_Main {
 			}
 
 			if ( ! $translation->validate() ) {
-				$error_output = '<ul>';
-				foreach ( $translation->errors as $error ) {
-					$error_output .= '<li>' . $error . '</li>';
-				}
-				$error_output .= '</ul>';
 				$translation->delete();
 
-				return $this->die_with_error( $error_output, 200 );
+				return $this->die_with_error( $this->error_messages_html( $translation->errors ), 200 );
 			} else {
 				if ( 'current' === $set_status ) {
 					$translation->set_status( 'current' );
@@ -1006,20 +1001,22 @@ class GP_Route_Translation extends GP_Route_Main {
 	}
 
 	/**
-	 * Builds the HTML list of translation error messages for an error response.
+	 * Builds the HTML of translation error messages for an error response.
 	 *
 	 * @since 4.2.0
 	 *
 	 * @param string[] $messages The error messages.
-	 * @return string The HTML list.
+	 * @return string The HTML of the error messages.
 	 */
 	private function translation_errors_list( $messages ) {
-		$output = '<ul>';
-		foreach ( $messages as $message ) {
-			$output .= '<li>' . htmlentities( $message, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8' ) . '</li>';
-		}
-
-		return $output . '</ul>';
+		return $this->error_messages_html(
+			array_map(
+				function ( $message ) {
+					return htmlspecialchars( $message, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' );
+				},
+				$messages
+			)
+		);
 	}
 
 	/**
