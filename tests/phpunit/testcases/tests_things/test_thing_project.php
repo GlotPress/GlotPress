@@ -282,6 +282,76 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEmpty( $difference_subsub['removed'] );
 	}
 
+	/**
+	 * Returns the current translations of a translation set, by the singular and status of their original.
+	 *
+	 * @param GP_Translation_Set $set The translation set.
+	 * @return string[][] Arrays of the original singular, the original status and the translation.
+	 */
+	private function current_translations_of( $set ) {
+		global $wpdb;
+
+		return $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT o.singular, o.status, t.translation_0 FROM $wpdb->gp_translations t INNER JOIN $wpdb->gp_originals o ON o.id = t.original_id WHERE t.translation_set_id = %d AND t.status = 'current' ORDER BY t.translation_0",
+				$set->id
+			),
+			ARRAY_N
+		);
+	}
+
+	public function test_branching_keeps_the_translations_of_originals_with_the_same_text() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		foreach ( array( '-obsolete' => 'Before', '+active' => 'After' ) as $status => $translation ) {
+			$original = $this->factory->original->create( array( 'project_id' => $set->project_id, 'singular' => 'Same text', 'status' => $status ) );
+			$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( $translation ), 'status' => 'current' ) );
+		}
+
+		$branch = $this->factory->project->create();
+		$branch->duplicate_project_contents_from( GP::$project->get( $set->project_id ) );
+		$branch_set = GP::$translation_set->by_project_id_slug_and_locale( $branch->id, $set->slug, $set->locale );
+
+		$this->assertSame(
+			array(
+				array( 'Same text', '+active', 'After' ),
+				array( 'Same text', '-obsolete', 'Before' ),
+			),
+			$this->current_translations_of( $branch_set )
+		);
+	}
+
+	public function test_branching_keeps_a_single_current_translation() {
+		global $wpdb;
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		// The most recently modified translation is created first for one original, and last for the other.
+		$translations = array(
+			'First'  => array( 'First newer' => '2021-01-01 00:00:00', 'First older' => '2020-01-01 00:00:00' ),
+			'Second' => array( 'Second older' => '2020-01-01 00:00:00', 'Second newer' => '2021-01-01 00:00:00' ),
+		);
+		foreach ( $translations as $singular => $dates ) {
+			$original = $this->factory->original->create( array( 'project_id' => $set->project_id, 'singular' => $singular ) );
+			foreach ( $dates as $translation => $date_modified ) {
+				$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( $translation ), 'status' => 'current' ) );
+				$wpdb->update( $wpdb->gp_translations, array( 'date_modified' => $date_modified ), array( 'id' => $translation->id ) );
+			}
+		}
+
+		$branch = $this->factory->project->create();
+		$branch->duplicate_project_contents_from( GP::$project->get( $set->project_id ) );
+		$branch_set = GP::$translation_set->by_project_id_slug_and_locale( $branch->id, $set->slug, $set->locale );
+
+		$this->assertSame(
+			array(
+				array( 'First', '+active', 'First newer' ),
+				array( 'Second', '+active', 'Second newer' ),
+			),
+			$this->current_translations_of( $branch_set )
+		);
+	}
+
 	function test_branching_originals(){
 		$root_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'root' ) );
 		$root = $root_set->project;

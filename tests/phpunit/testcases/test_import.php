@@ -833,6 +833,7 @@ class GP_Import extends GP_UnitTestCase {
 	/**
 	 * Approving goes through `set_status( 'current' )`, so an import without a current user,
 	 * a WP-CLI import for example, keeps the previous behaviour of creating a new translation.
+	 * The new translation supersedes the waiting one, as any current translation does.
 	 *
 	 * @ticket gh-710
 	 */
@@ -864,14 +865,61 @@ class GP_Import extends GP_UnitTestCase {
 		wp_set_current_user( 0 );
 		$set->import( $translations, 'current' );
 
-		$still_waiting = GP::$translation->get( $waiting->id );
-		$this->assertEquals( 'waiting', $still_waiting->status, 'Without a current user nothing can be approved.' );
+		$superseded = GP::$translation->get( $waiting->id );
+		$this->assertEquals( 'old', $superseded->status, 'Without a current user the waiting translation is not approved, the imported one supersedes it.' );
 
 		$all = GP::$translation->find_many( array(
 			'translation_set_id' => $set->id,
 			'original_id'        => $original->id,
 		) );
 		$this->assertCount( 2, $all, 'A new translation should have been created.' );
+
+		$current = GP::$translation->find_many( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+		) );
+		$this->assertCount( 1, $current );
+		$this->assertEquals( 0, $current[0]->user_id, 'The new translation is credited to nobody, not to the translator of the waiting one.' );
+	}
+
+	/**
+	 * An import without a current user, a WP-CLI import for example, can't approve, but the
+	 * translations it creates are current, so they must supersede the current ones.
+	 */
+	function test_import_without_current_user_supersedes_the_current_translation() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$original = $this->factory->original->create( array(
+			'project_id' => $set->project_id,
+			'status'     => '+active',
+			'singular'   => 'Good morning',
+		) );
+
+		$previous = $this->factory->translation->create( array(
+			'original_id'        => $original->id,
+			'translation_set_id' => $set->id,
+			'translation_0'      => 'Guten Morgen',
+			'status'             => 'current',
+		) );
+
+		$translations = new Translations();
+		$translations->add_entry( new Translation_Entry( array(
+			'singular'     => 'Good morning',
+			'translations' => array( 'Schönen guten Morgen' ),
+		) ) );
+
+		wp_set_current_user( 0 );
+		$this->assertSame( 1, $set->import( $translations ) );
+
+		$current = GP::$translation->find_many( array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+		) );
+		$this->assertCount( 1, $current );
+		$this->assertSame( 'Schönen guten Morgen', $current[0]->translation_0 );
+		$this->assertSame( 'old', GP::$translation->get( $previous->id )->status );
 	}
 
 	/**

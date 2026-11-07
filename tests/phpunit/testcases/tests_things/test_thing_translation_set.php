@@ -484,4 +484,147 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 			);
 		}
 	}
+
+	/**
+	 * Creates a translation with a given status and date_modified.
+	 *
+	 * @param GP_Translation_Set $set           The translation set.
+	 * @param int                $original_id   The original ID.
+	 * @param string             $status        The status.
+	 * @param string             $date_modified The date_modified.
+	 * @return GP_Translation The translation.
+	 */
+	private function create_translation_modified_at( $set, $original_id, $status, $date_modified ) {
+		global $wpdb;
+
+		$translation = $this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $original_id,
+				'status'             => $status,
+			)
+		);
+		$wpdb->update( $wpdb->gp_translations, array( 'date_modified' => $date_modified ), array( 'id' => $translation->id ) );
+
+		return GP::$translation->get( $translation->id );
+	}
+
+	public function test_supersede_multiple_currents_keeps_the_most_recently_modified() {
+		$set       = $this->factory->translation_set->create_with_project_and_locale();
+		$other_set = $this->factory->translation_set->create( array( 'project_id' => $set->project_id, 'locale' => 'de', 'slug' => 'default' ) );
+		$original  = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$tied      = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$single    = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+
+		$older  = $this->create_translation_modified_at( $set, $original->id, 'current', '2020-01-01 00:00:00' );
+		$newest = $this->create_translation_modified_at( $set, $original->id, 'current', '2022-01-01 00:00:00' );
+		$newer  = $this->create_translation_modified_at( $set, $original->id, 'current', '2021-01-01 00:00:00' );
+		$tied_1 = $this->create_translation_modified_at( $set, $tied->id, 'current', '2020-01-01 00:00:00' );
+		$tied_2 = $this->create_translation_modified_at( $set, $tied->id, 'current', '2020-01-01 00:00:00' );
+		$alone  = $this->create_translation_modified_at( $set, $single->id, 'current', '2020-01-01 00:00:00' );
+		$other  = array(
+			$this->create_translation_modified_at( $other_set, $original->id, 'current', '2020-01-01 00:00:00' ),
+			$this->create_translation_modified_at( $other_set, $original->id, 'current', '2021-01-01 00:00:00' ),
+		);
+
+		$this->assertSame(
+			array(
+				(int) $original->id => array(
+					'kept'       => (int) $newest->id,
+					'superseded' => array( (int) $newer->id, (int) $older->id ),
+				),
+				(int) $tied->id     => array(
+					'kept'       => (int) $tied_2->id,
+					'superseded' => array( (int) $tied_1->id ),
+				),
+			),
+			$set->supersede_multiple_currents()
+		);
+
+		$this->assertSame( 'current', GP::$translation->get( $newest->id )->status );
+		$this->assertSame( 'old', GP::$translation->get( $newer->id )->status );
+		$this->assertSame( 'old', GP::$translation->get( $older->id )->status );
+		$this->assertSame( 'current', GP::$translation->get( $tied_2->id )->status );
+		$this->assertSame( 'old', GP::$translation->get( $tied_1->id )->status );
+		$this->assertSame( 'current', GP::$translation->get( $alone->id )->status );
+
+		// Other translation sets are left alone.
+		$this->assertSame( 'current', GP::$translation->get( $other[0]->id )->status );
+		$this->assertSame( 'current', GP::$translation->get( $other[1]->id )->status );
+
+		$this->assertSame( array(), $set->supersede_multiple_currents() );
+	}
+
+	public function test_supersede_multiple_currents_dry_run_changes_nothing() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$older    = $this->create_translation_modified_at( $set, $original->id, 'current', '2020-01-01 00:00:00' );
+		$newer    = $this->create_translation_modified_at( $set, $original->id, 'current', '2021-01-01 00:00:00' );
+
+		$expected = array(
+			(int) $original->id => array(
+				'kept'       => (int) $newer->id,
+				'superseded' => array( (int) $older->id ),
+			),
+		);
+		$this->assertSame( $expected, $set->supersede_multiple_currents( true ) );
+		$this->assertSame( 'current', GP::$translation->get( $older->id )->status );
+		$this->assertSame( $expected, $set->supersede_multiple_currents( true ) );
+	}
+
+	public function test_supersede_multiple_currents_fixes_the_counts() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$this->create_translation_modified_at( $set, $original->id, 'current', '2020-01-01 00:00:00' );
+		$this->create_translation_modified_at( $set, $original->id, 'current', '2021-01-01 00:00:00' );
+
+		$this->assertSame( 2, $set->current_count() );
+
+		$set->supersede_multiple_currents();
+
+		$set = GP::$translation_set->get( $set->id );
+		$this->assertSame( 1, $set->current_count() );
+	}
+
+
+	public function test_copy_translations_from_the_same_project_keeps_a_single_current_translation() {
+		$source   = $this->factory->translation_set->create_with_project_and_locale();
+		$target   = $this->factory->translation_set->create( array( 'project_id' => $source->project_id, 'locale' => 'de', 'slug' => 'default' ) );
+		$original = $this->factory->original->create( array( 'project_id' => $source->project_id ) );
+		$existing = $this->create_translation_modified_at( $target, $original->id, 'current', '2020-01-01 00:00:00' );
+		$this->create_translation_modified_at( $source, $original->id, 'current', '2021-01-01 00:00:00' );
+
+		$this->assertSame( 1, $target->copy_translations_from( $source->id ) );
+
+		$current = GP::$translation->find_many( array( 'translation_set_id' => $target->id, 'original_id' => $original->id, 'status' => 'current' ) );
+		$this->assertCount( 1, $current );
+		$this->assertNotEquals( $existing->id, $current[0]->id, 'The copied translation replaces the existing one.' );
+		$this->assertSame( 'old', GP::$translation->get( $existing->id )->status );
+	}
+
+
+	public function test_copy_translations_from_the_same_project_keeps_the_most_recently_modified_current_translation() {
+		$source = $this->factory->translation_set->create_with_project_and_locale();
+		$target = $this->factory->translation_set->create( array( 'project_id' => $source->project_id, 'locale' => 'de', 'slug' => 'default' ) );
+
+		// The most recently modified translation is created first for one original, and last for the other.
+		$newest = array();
+		foreach ( array( array( '2021-01-01 00:00:00', '2020-01-01 00:00:00' ), array( '2020-01-01 00:00:00', '2021-01-01 00:00:00' ) ) as $dates ) {
+			$original = $this->factory->original->create( array( 'project_id' => $source->project_id ) );
+			foreach ( $dates as $date_modified ) {
+				$translation = $this->create_translation_modified_at( $source, $original->id, 'current', $date_modified );
+				if ( '2021-01-01 00:00:00' === $date_modified ) {
+					$newest[ $original->id ] = $translation->translation_0;
+				}
+			}
+		}
+
+		$target->copy_translations_from( $source->id );
+
+		foreach ( $newest as $original_id => $translation_0 ) {
+			$current = GP::$translation->find_many( array( 'translation_set_id' => $target->id, 'original_id' => $original_id, 'status' => 'current' ) );
+			$this->assertCount( 1, $current );
+			$this->assertSame( $translation_0, $current[0]->translation_0 );
+		}
+	}
 }
