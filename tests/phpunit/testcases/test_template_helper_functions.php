@@ -813,6 +813,18 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
+	 * Expects highlighting non-breaking and narrow no-break spaces wherever they are, as they look like normal spaces.
+	 */
+	function test_prepare_original_with_non_breaking_spaces() {
+		$test_string     = "Bonjour\u{00A0}! 100\u{00A0}\u{00A0}% et 5 km\u{202F}; Ça va\u{202F}\u{00A0}?";
+		$expected_result = 'Bonjour' . $this->highlight_non_breaking_spaces( "\u{00A0}" ) . '! 100' . $this->highlight_non_breaking_spaces( "\u{00A0}\u{00A0}" ) . '% et 5 km' . $this->highlight_non_breaking_spaces( "\u{202F}", 'Narrow no-break space' ) . '; Ça va' . $this->highlight_non_breaking_spaces( "\u{202F}", 'Narrow no-break space' ) . $this->highlight_non_breaking_spaces( "\u{00A0}" ) . '?';
+
+		$orig = prepare_original( esc_translation( $test_string ) );
+
+		$this->assertEquals( $expected_result, $orig );
+	}
+
+	/**
 	 * Expects highlighting placeholders in strings.
 	 */
 	function test_prepare_original_with_placeholders_bounded_by_words() {
@@ -2389,6 +2401,10 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function highlight_invisible_spaces( $spaces ) {
 		return '<span class="invisible-spaces">' . $spaces . '</span>';
+	}
+
+	function highlight_non_breaking_spaces( $spaces, $title = 'Non-breaking space' ) {
+		return '<span class="invisible-spaces non-breaking-spaces" title="' . $title . '">' . $spaces . '</span>';
 	}
 
 	/**
