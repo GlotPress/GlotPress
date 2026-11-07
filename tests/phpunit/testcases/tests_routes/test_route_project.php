@@ -192,6 +192,70 @@ class GP_Test_Route_Project extends GP_UnitTestCase_Route {
 		$this->assertSame( 'parent/child', $project->path );
 	}
 
+	public function test_project_cannot_be_moved_under_itself() {
+		$this->set_admin_user_as_current();
+		$project = $this->factory->project->create( array( 'name' => 'Alpha', 'slug' => 'alpha' ) );
+
+		$this->edit_project(
+			$project,
+			array(
+				'name'              => 'Alpha',
+				'slug'              => 'alpha',
+				'parent_project_id' => $project->id,
+			)
+		);
+
+		$project->reload();
+		$this->assertContains( 'A project cannot be moved under itself or one of its sub-projects.', $this->route->errors );
+		$this->assertSame( 0, (int) $project->parent_project_id );
+		$this->assertSame( 'alpha', $project->path );
+	}
+
+	public function test_writer_cannot_move_a_project_under_its_descendant() {
+		$user_id    = $this->set_normal_user_as_current();
+		$project    = $this->factory->project->create( array( 'name' => 'Alpha', 'slug' => 'alpha' ) );
+		$child      = $this->factory->project->create(
+			array(
+				'name'              => 'Alpha Child',
+				'slug'              => 'alpha-child',
+				'parent_project_id' => $project->id,
+			)
+		);
+		$grandchild = $this->factory->project->create(
+			array(
+				'name'              => 'Alpha Grandchild',
+				'slug'              => 'alpha-grandchild',
+				'parent_project_id' => $child->id,
+			)
+		);
+
+		// Write permission on a project is inherited by its descendants, so the destination check alone passes.
+		GP::$permission->create(
+			array(
+				'user_id'     => $user_id,
+				'action'      => 'write',
+				'object_type' => 'project',
+				'object_id'   => $project->id,
+			)
+		);
+
+		$this->edit_project(
+			$project,
+			array(
+				'name'              => 'Alpha',
+				'slug'              => 'alpha',
+				'parent_project_id' => $grandchild->id,
+			)
+		);
+
+		$project->reload();
+		$grandchild->reload();
+		$this->assertContains( 'A project cannot be moved under itself or one of its sub-projects.', $this->route->errors );
+		$this->assertSame( 0, (int) $project->parent_project_id );
+		$this->assertSame( 'alpha', $project->path );
+		$this->assertSame( 'alpha/alpha-child/alpha-grandchild', $grandchild->path );
+	}
+
 	private function mass_create_sets( $target, $source ) {
 		$_POST['project_id']         = $source->id;
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'mass-create-transation-sets_' . $target->id );
