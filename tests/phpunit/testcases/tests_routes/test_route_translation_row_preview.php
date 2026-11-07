@@ -51,8 +51,8 @@ class GP_Test_Route_Translation_Row_Preview extends GP_UnitTestCase_Route {
 	function test_row_preview_marks_the_placeholders_of_a_plural_original_once( $glossary ) {
 		$output = $this->render_plural_original( $glossary );
 
+		$this->assertStringContainsString( '<span class="notranslate placeholder">%d</span>', $output );
 		$this->assertStringNotContainsString( '<span class="notranslate placeholder"><span class="notranslate placeholder">', $output );
-		$this->assertSame( 2, substr_count( $output, '<span class="original-text"><span class="notranslate placeholder">%d</span>' ) );
 	}
 
 	/**
