@@ -383,10 +383,7 @@ class GP_Original extends GP_Thing {
 				// But only if it's different, like a changed 'references', 'comment', or 'status' field.
 				if ( GP::$original->is_different_from( $data, $original ) ) {
 					$this->update( $data, array( 'id' => $original->id ) );
-					// A gp_import_original_array filter can change the singular too, although the key matched.
-					if ( $data['singular'] !== $original->singular || (string) ( $data['plural'] ?? null ) !== (string) $original->plural ) {
-						$this->recheck_translation_warnings( $original->id, $data['singular'], $data['plural'] ?? null );
-					}
+					$this->recheck_translation_warnings( $original, $data['singular'], $data['plural'] ?? null );
 					++$originals_existing;
 				}
 			} else {
@@ -451,7 +448,7 @@ class GP_Original extends GP_Thing {
 
 				// We'll update the old original...
 				$this->update( $data, array( 'id' => $original->id ) );
-				$this->recheck_translation_warnings( $original->id, $data['singular'], $data['plural'] ?? null );
+				$this->recheck_translation_warnings( $original, $data['singular'], $data['plural'] ?? null );
 
 				// and set existing translations to fuzzy.
 				if ( $do_fuzzy ) {
@@ -527,14 +524,19 @@ class GP_Original extends GP_Thing {
 	 *
 	 * @since 4.2.0
 	 *
-	 * @param int         $original_id The original ID.
-	 * @param string      $singular    The singular of the changed original.
-	 * @param string|null $plural      The plural of the changed original.
+	 * @param GP_Original $original The original before the change.
+	 * @param string      $singular The singular of the changed original.
+	 * @param string|null $plural   The plural of the changed original.
 	 */
-	public function recheck_translation_warnings( $original_id, $singular, $plural ) {
+	public function recheck_translation_warnings( $original, $singular, $plural ) {
+		// Only the text matters, so warnings dismissed for it stay dismissed when the context or references change.
+		if ( $singular === $original->singular && (string) $plural === (string) $original->plural ) {
+			return;
+		}
+
 		$translations = GP::$translation->find_many(
 			array(
-				'original_id' => $original_id,
+				'original_id' => $original->id,
 				'status'      => array( 'current', 'waiting', 'fuzzy', 'changesrequested' ),
 			)
 		);
