@@ -293,13 +293,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		if ( $this->errors ) {
-			$error_output = '<ul>';
-			foreach ( $this->errors as $error ) {
-				$error_output .= '<li>' . $error . '</li>';
-			}
-			$error_output .= '</ul>';
-
-			return $this->die_with_error( $error_output, 200 );
+			return $this->die_with_error( $this->error_messages_html( $this->errors ), 200 );
 		} else {
 			$entry                    = $glossary_entry->reload();
 			$user                     = get_userdata( $entry->last_edited_by );
@@ -350,13 +344,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		if ( ! empty( $this->errors ) ) {
-			$error_output = '<ul>';
-			foreach ( $this->errors as $error ) {
-				$error_output .= '<li>' . $error . '</li>';
-			}
-			$error_output .= '</ul>';
-
-			return $this->die_with_error( $error_output, 200 );
+			return $this->die_with_error( $this->error_messages_html( $this->errors ), 200 );
 		}
 
 		exit();
