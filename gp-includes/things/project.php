@@ -435,6 +435,33 @@ class GP_Project extends GP_Thing {
 	}
 
 	/**
+	 * Checks whether this project is the given project or one of its ancestors.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param int $project_id The project ID.
+	 * @return bool True if this project is the given project or one of its ancestors, false otherwise.
+	 */
+	public function is_self_or_ancestor_of( $project_id ) {
+		$project_id = (int) $project_id;
+		$visited    = array();
+
+		// The visited list stops at a cycle that is already stored, instead of looping forever.
+		while ( $project_id && ! isset( $visited[ $project_id ] ) ) {
+			if ( (int) $this->id === $project_id ) {
+				return true;
+			}
+
+			$visited[ $project_id ] = true;
+
+			$project    = $this->get( $project_id );
+			$project_id = $project ? (int) $project->parent_project_id : 0;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Computes the difference in translation sets between this project and another project.
 	 *
 	 * @param GP_Project $other_project The other project to compare against.

@@ -262,9 +262,8 @@ class GP_Route_Project extends GP_Route_Main {
 		$new_parent_id = (int) $updated_project->parent_project_id;
 		$new_parent    = $new_parent_id ? $new_parent_id : null;
 
-		// TODO: add id check as a validation rule.
-		if ( $project->id == $new_parent_id ) {
-			$this->errors[] = __( 'The project cannot be parent of itself!', 'glotpress' );
+		if ( $new_parent_id !== (int) $project->parent_project_id && $project->is_self_or_ancestor_of( $new_parent_id ) ) {
+			$this->errors[] = __( 'A project cannot be moved under itself or one of its sub-projects.', 'glotpress' );
 		} elseif ( $new_parent_id !== (int) $project->parent_project_id && ! $this->can( 'write', 'project', $new_parent ) ) {
 			$this->errors[] = __( 'You are not allowed to do that!', 'glotpress' );
 		} elseif ( $project->save( $updated_project ) ) {
