@@ -193,6 +193,10 @@ class GP_Validation_Rules {
 			$field_verdict = $this->run_on_single_field( $field_name, $value, $thing );
 			$verdict       = $verdict && $field_verdict;
 		}
+
+		// Several rules of a field can fail with the same message, like an empty value that is also not one of the allowed ones.
+		$this->errors = array_values( array_unique( $this->errors ) );
+
 		return $verdict;
 	}
 
@@ -271,7 +275,7 @@ class GP_Validation_Rules {
 			}
 		}
 
-		$name_field = '<strong>' . $rule['field'] . '</strong>';
+		$name_field = $rule['field'];
 		$name_rule  = str_replace( '_', ' ', $rule['rule'] );
 
 		if ( 'positive' === $rule['kind'] ) {

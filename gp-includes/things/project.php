@@ -126,10 +126,14 @@ class GP_Project extends GP_Thing {
 	 * @return string|null The error message, or null to use the generic one.
 	 */
 	public function validation_error_message( $rule ) {
-		switch ( $rule['field'] . ':' . $rule['rule'] ) {
-			case 'name:empty':
+		if ( 'empty' !== $rule['rule'] ) {
+			return null;
+		}
+
+		switch ( $rule['field'] ) {
+			case 'name':
 				return __( 'The project name must not be empty.', 'glotpress' );
-			case 'slug:empty':
+			case 'slug':
 				return __( 'The project slug must not be empty.', 'glotpress' );
 		}
 

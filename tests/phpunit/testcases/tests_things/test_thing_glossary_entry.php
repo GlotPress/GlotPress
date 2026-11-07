@@ -234,4 +234,11 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 		$this->assertFalse( $glossary_entry->validate() );
 		$this->assertSame( array( 'The original term must not be empty.' ), $glossary_entry->errors );
 	}
+
+	function test_empty_part_of_speech_is_reported_once() {
+		$glossary_entry = new GP_Glossary_Entry( array( 'glossary_id' => '1', 'term' => 'term', 'part_of_speech' => '', 'last_edited_by' => '1' ) );
+
+		$this->assertFalse( $glossary_entry->validate() );
+		$this->assertSame( array( 'Select a part of speech.' ), $glossary_entry->errors );
+	}
 }

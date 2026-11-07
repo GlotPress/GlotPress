@@ -205,12 +205,16 @@ class GP_Translation_Set extends GP_Thing {
 	 * @return string|null The error message, or null to use the generic one.
 	 */
 	public function validation_error_message( $rule ) {
-		switch ( $rule['field'] . ':' . $rule['rule'] ) {
-			case 'name:empty':
+		if ( 'empty' !== $rule['rule'] ) {
+			return null;
+		}
+
+		switch ( $rule['field'] ) {
+			case 'name':
 				return __( 'The translation set name must not be empty.', 'glotpress' );
-			case 'slug:empty':
+			case 'slug':
 				return __( 'The translation set slug must not be empty.', 'glotpress' );
-			case 'locale:empty':
+			case 'locale':
 				return __( 'Select a locale for the translation set.', 'glotpress' );
 		}
 

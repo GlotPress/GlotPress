@@ -228,14 +228,18 @@ class GP_Glossary_Entry extends GP_Thing {
 	 * @return string|null The error message, or null to use the generic one.
 	 */
 	public function validation_error_message( $rule ) {
-		switch ( $rule['field'] . ':' . $rule['rule'] ) {
-			case 'term:empty':
+		if ( 'part_of_speech' === $rule['field'] && in_array( $rule['rule'], array( 'empty', 'one_of' ), true ) ) {
+			return __( 'Select a part of speech.', 'glotpress' );
+		}
+
+		if ( 'term' === $rule['field'] ) {
+			if ( 'empty' === $rule['rule'] ) {
 				return __( 'The original term must not be empty.', 'glotpress' );
-			case 'term:consisting_only_of_ASCII_characters':
-				return __( 'The original term may only contain ASCII characters.', 'glotpress' );
-			case 'part_of_speech:empty':
-			case 'part_of_speech:one_of':
-				return __( 'Select a part of speech.', 'glotpress' );
+			}
+
+			if ( 'consisting_only_of_ASCII_characters' === $rule['rule'] ) {
+				return __( 'The original term may only contain letters, numbers, spaces and plain punctuation.', 'glotpress' );
+			}
 		}
 
 		return null;
