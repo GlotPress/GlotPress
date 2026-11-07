@@ -383,8 +383,9 @@ class GP_Original extends GP_Thing {
 				// But only if it's different, like a changed 'references', 'comment', or 'status' field.
 				if ( GP::$original->is_different_from( $data, $original ) ) {
 					$this->update( $data, array( 'id' => $original->id ) );
-					if ( (string) gp_array_get( $data, 'plural' ) !== (string) $original->plural ) {
-						$this->recheck_translation_warnings( $original->id, $data['singular'], gp_array_get( $data, 'plural' ) );
+					// A gp_import_original_array filter can change the singular too, although the key matched.
+					if ( $data['singular'] !== $original->singular || (string) ( $data['plural'] ?? null ) !== (string) $original->plural ) {
+						$this->recheck_translation_warnings( $original->id, $data['singular'], $data['plural'] ?? null );
 					}
 					++$originals_existing;
 				}
@@ -450,7 +451,7 @@ class GP_Original extends GP_Thing {
 
 				// We'll update the old original...
 				$this->update( $data, array( 'id' => $original->id ) );
-				$this->recheck_translation_warnings( $original->id, $data['singular'], gp_array_get( $data, 'plural' ) );
+				$this->recheck_translation_warnings( $original->id, $data['singular'], $data['plural'] ?? null );
 
 				// and set existing translations to fuzzy.
 				if ( $do_fuzzy ) {

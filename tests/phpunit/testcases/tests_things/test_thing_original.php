@@ -171,6 +171,20 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertArrayHasKey( 'placeholders', $translation->warnings[1] );
 	}
 
+	function test_import_checks_a_changed_singular_original_as_singular_in_a_locale_with_one_plural_form() {
+		$locale      = $this->factory->locale->create( array( 'nplurals' => 1, 'plural_expression' => '0' ) );
+		$project     = $this->factory->project->create();
+		$set         = $this->factory->translation_set->create( array( 'project_id' => $project->id, 'locale' => $locale->slug ) );
+		$original    = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'Invalid tag name (%s) is specified.' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'current', 'translation_0' => '無効なタグ名 (%s) が指定されています。' ) );
+
+		$original->import_for_project( $project, $this->create_translations_with( array( array( 'singular' => 'Invalid tag name (%s) is specified!' ) ) ) );
+
+		$translation->reload();
+		$this->assertSame( 'fuzzy', $translation->status );
+		$this->assertEmpty( $translation->warnings );
+	}
+
 	function test_import_should_not_mark_translation_of_changed_strings_as_fuzzy_with_filter() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'baba baba' ) );
