@@ -129,7 +129,8 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 		unset( $_POST['set']['name'] );
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-translation-set_' . $this->set->id );
 		$this->route->edit_post( $this->set->id );
-		$this->assertInvalidRedirect();
+		$this->assertRedirected();
+		$this->assertThereIsAnErrorContaining( 'The translation set name must not be empty.' );
 	}
 
 	function test_edit_post_should_add_notice_if_update_was_successful() {
