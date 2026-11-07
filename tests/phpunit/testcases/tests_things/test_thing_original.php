@@ -185,6 +185,24 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertEmpty( $translation->warnings );
 	}
 
+	function test_import_checks_the_translations_against_a_singular_changed_by_a_filter() {
+		$set         = $this->factory->translation_set->create_with_project_and_locale();
+		$original    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Invalid tag name (%s) is specified.' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'current', 'translation_0' => 'Ongeldige tagnaam (%s) opgegeven.' ) );
+
+		$change_singular = function ( $data ) {
+			$data['singular'] = 'Invalid tag name (%1$s) is specified.';
+			return $data;
+		};
+
+		add_filter( 'gp_import_original_array', $change_singular );
+		$original->import_for_project( $set->project, $this->create_translations_with( array( array( 'singular' => 'Invalid tag name (%s) is specified.' ) ) ) );
+		remove_filter( 'gp_import_original_array', $change_singular );
+
+		$translation->reload();
+		$this->assertArrayHasKey( 'placeholders', $translation->warnings[0] );
+	}
+
 	function test_import_should_not_mark_translation_of_changed_strings_as_fuzzy_with_filter() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'baba baba' ) );
