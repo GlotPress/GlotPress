@@ -238,7 +238,7 @@ class GP_Glossary_Entry extends GP_Thing {
 			}
 
 			if ( 'consisting_only_of_ASCII_characters' === $rule['rule'] ) {
-				return __( 'The original term may only contain letters, numbers, spaces and plain punctuation.', 'glotpress' );
+				return __( 'The original term may only contain letters without accents, numbers, spaces and common punctuation.', 'glotpress' );
 			}
 		}
 
