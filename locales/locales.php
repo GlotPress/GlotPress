@@ -877,7 +877,7 @@ class GP_Locales {
 
 		$en_au = new GP_Locale();
 		$en_au->english_name = 'English (Australia)';
-		$en_au->native_name = 'English (Australia)';
+		$en_au->native_name = 'Australian English';
 		$en_au->lang_code_iso_639_1 = 'en';
 		$en_au->lang_code_iso_639_2 = 'eng';
 		$en_au->lang_code_iso_639_3 = 'eng';
@@ -888,7 +888,7 @@ class GP_Locales {
 
 		$en_ca = new GP_Locale();
 		$en_ca->english_name = 'English (Canada)';
-		$en_ca->native_name = 'English (Canada)';
+		$en_ca->native_name = 'Canadian English';
 		$en_ca->lang_code_iso_639_1 = 'en';
 		$en_ca->lang_code_iso_639_2 = 'eng';
 		$en_ca->lang_code_iso_639_3 = 'eng';
@@ -899,7 +899,7 @@ class GP_Locales {
 
 		$en_gb = new GP_Locale();
 		$en_gb->english_name = 'English (UK)';
-		$en_gb->native_name = 'English (UK)';
+		$en_gb->native_name = 'British English';
 		$en_gb->lang_code_iso_639_1 = 'en';
 		$en_gb->lang_code_iso_639_2 = 'eng';
 		$en_gb->lang_code_iso_639_3 = 'eng';
@@ -921,7 +921,7 @@ class GP_Locales {
 
 		$en_nz = new GP_Locale();
 		$en_nz->english_name = 'English (New Zealand)';
-		$en_nz->native_name = 'English (New Zealand)';
+		$en_nz->native_name = 'New Zealand English';
 		$en_nz->lang_code_iso_639_1 = 'en';
 		$en_nz->lang_code_iso_639_2 = 'eng';
 		$en_nz->lang_code_iso_639_3 = 'eng';
@@ -932,7 +932,7 @@ class GP_Locales {
 
 		$en_za = new GP_Locale();
 		$en_za->english_name = 'English (South Africa)';
-		$en_za->native_name = 'English (South Africa)';
+		$en_za->native_name = 'South African English';
 		$en_za->lang_code_iso_639_1 = 'en';
 		$en_za->lang_code_iso_639_2 = 'eng';
 		$en_za->lang_code_iso_639_3 = 'eng';
