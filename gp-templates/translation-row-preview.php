@@ -35,7 +35,7 @@ $priority_char = array(
 			<span class="original-text"><?php echo prepare_original( $translation_singular ); ?></span>
 			<?php
 		} else {
-			$translation_plural = isset( $translation->plural_glossary_markup ) ? $translation->plural_glossary_markup : prepare_original( esc_translation( $translation->plural ) );
+			$translation_plural = isset( $translation->plural_glossary_markup ) ? $translation->plural_glossary_markup : esc_translation( $translation->plural );
 			?>
 			<ul>
 				<li><small><?php esc_html_e( 'Singular:', 'glotpress' ); ?></small><br><span class="original-text"><?php echo prepare_original( $translation_singular ); ?></span></li>
