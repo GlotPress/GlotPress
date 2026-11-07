@@ -238,6 +238,62 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 	}
 
 	/**
+	 * @covers GP_Translation::has_all_translations
+	 */
+	function test_translation_with_a_missing_plural_form_cannot_be_set_to_current() {
+		$set = $this->create_set_with_validator();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item', 'plural' => 'Many items' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Um item', 'status' => 'waiting' ) );
+
+		$this->assertFalse( $translation->set_status( 'current' ) );
+		$this->assertEquals( 'waiting', GP::$translation->get( $translation->id )->status );
+	}
+
+	/**
+	 * @covers GP_Translation::has_all_translations
+	 */
+	function test_translation_with_all_plural_forms_can_be_set_to_current() {
+		$set = $this->create_set_with_validator();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item', 'plural' => 'Many items' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Um item', 'translation_1' => 'Muitos itens', 'status' => 'waiting' ) );
+
+		$this->assertTrue( (bool) $translation->set_status( 'current' ) );
+		$this->assertEquals( 'current', GP::$translation->get( $translation->id )->status );
+	}
+
+	/**
+	 * A row created as current with a missing plural form still supersedes the previous current
+	 * translation, so the original doesn't end up with two current translations.
+	 *
+	 * @covers GP_Translation::set_status
+	 */
+	function test_translation_created_as_current_with_a_missing_plural_form_supersedes_the_previous_current() {
+		$set = $this->create_set_with_validator();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item', 'plural' => 'Many items' ) );
+		$previous = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Um item', 'translation_1' => 'Muitos itens', 'status' => 'current' ) );
+		$created = GP::$translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Um item', 'status' => 'current' ) );
+
+		$this->assertTrue( (bool) $created->set_status( 'current' ) );
+		$this->assertEquals( 'old', GP::$translation->get( $previous->id )->status );
+		$this->assertEquals( 'current', GP::$translation->get( $created->id )->status );
+	}
+
+	/**
+	 * A translation of an original without a plural form only needs a single translation, whatever the
+	 * number of plural forms of the locale is.
+	 *
+	 * @covers GP_Translation::has_all_translations
+	 */
+	function test_translation_of_a_singular_original_can_be_set_to_current() {
+		$set = $this->create_set_with_validator();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Um item', 'status' => 'waiting' ) );
+
+		$this->assertTrue( (bool) $translation->set_status( 'current' ) );
+		$this->assertEquals( 'current', GP::$translation->get( $translation->id )->status );
+	}
+
+	/**
 	 * @ticket gh-341
 	 */
 	function test_translation_should_not_report_empty_translation_set_id_as_translation_value_error() {
