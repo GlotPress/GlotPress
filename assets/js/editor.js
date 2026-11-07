@@ -124,8 +124,23 @@ $gp.editor = (
 						.attr( 'title', title );
 				} );
 			},
+			/*
+			 * When the original of the placeholder is right above its own textarea, like the singular
+			 * and the plural of a locale with two plural forms, the placeholder goes there. Otherwise,
+			 * like for locales with more plural forms, where the originals are shown above all the
+			 * forms, it goes into the textarea used last, where the translator is working.
+			 */
+			placeholder_textarea: function( button ) {
+				var next = button.closest( 'p' ).nextAll( '.textareas, p:not(.original_raw)' ).first();
+
+				if ( next.is( '.textareas' ) ) {
+					return $( 'textarea.foreign-text', next ).get( 0 );
+				}
+
+				return $gp.editor.current.last_textarea || $( 'textarea.foreign-text', $gp.editor.current ).get( 0 );
+			},
 			insert_placeholder: function( button ) {
-				var textarea = $gp.editor.current.last_textarea || $( 'textarea.foreign-text', $gp.editor.current ).get( 0 );
+				var textarea = $gp.editor.placeholder_textarea( button );
 
 				textarea.setRangeText( button.text(), textarea.selectionStart, textarea.selectionEnd, 'end' );
 				textarea.focus();

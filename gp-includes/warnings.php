@@ -66,7 +66,11 @@ class GP_Translation_Warnings {
 	/**
 	 * Checks translations for any issues/warnings.
 	 *
+	 * Each callback gets the original, the translation, the locale and, for an
+	 * original with a plural, the index of the plural form the translation is for.
+	 *
 	 * @since 1.0.0
+	 * @since 4.2.0 Passes the index of the plural form to the callbacks.
 	 * @access public
 	 *
 	 * @param string    $singular     The singular form of an original string.
@@ -83,11 +87,13 @@ class GP_Translation_Warnings {
 				continue;
 			}
 
-			$skip = array(
+			$skip        = array(
 				'singular' => false,
 				'plural'   => false,
 			);
+			$plural_form = null;
 			if ( null !== $plural ) {
+				$plural_form       = $translation_index;
 				$numbers_for_index = $locale->numbers_for_index( $translation_index );
 				if ( 1 === $locale->nplurals ) {
 					$skip['singular'] = true;
@@ -100,13 +106,13 @@ class GP_Translation_Warnings {
 
 			foreach ( $this->callbacks as $callback_id => $callback ) {
 				if ( ! $skip['singular'] ) {
-					$singular_test = $callback( $singular, $translation, $locale );
+					$singular_test = $callback( $singular, $translation, $locale, $plural_form );
 					if ( true !== $singular_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $singular_test;
 					}
 				}
 				if ( null !== $plural && ! $skip['plural'] ) {
-					$plural_test = $callback( $plural, $translation, $locale );
+					$plural_test = $callback( $plural, $translation, $locale, $plural_form );
 					if ( true !== $plural_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $plural_test;
 					}
@@ -348,15 +354,21 @@ class GP_Builtin_Translation_Warnings {
 	 * l is included for wp_sprintf_l()'s custom %l format.
 	 * @ is included for Swift (as used for iOS mobile app) %@ string format.
 	 *
+	 * A plural form that the locale uses for a single number may write that
+	 * number in words, for example "one" or "two", and leave out its placeholder.
+	 *
 	 * @since 1.0.0
+	 * @since 4.2.0 Added the `$plural_form` parameter.
 	 * @access public
 	 *
 	 * @param string    $original    The source string.
 	 * @param string    $translation The translation.
 	 * @param GP_Locale $locale      The locale of the translation.
+	 * @param int|null  $plural_form Optional. Index of the plural form the translation is for,
+	 *                               or null if the original has no plural. Default null.
 	 * @return string|true True if check is OK, otherwise warning message.
 	 */
-	public function warning_placeholders( $original, $translation, $locale ) {
+	public function warning_placeholders( $original, $translation, $locale, $plural_form = null ) {
 		/**
 		 * Filter the regular expression that is used to match placeholders in translations.
 		 *
@@ -368,7 +380,16 @@ class GP_Builtin_Translation_Warnings {
 
 		$original_counts    = $this->_placeholders_counts( $original, $placeholders_re );
 		$translation_counts = $this->_placeholders_counts( $translation, $placeholders_re );
-		$all_placeholders   = array_unique( array_merge( array_keys( $original_counts ), array_keys( $translation_counts ) ) );
+
+		if (
+			null !== $plural_form &&
+			$this->leaves_out_only_the_number( $original, $original_counts, $translation_counts, $placeholders_re ) &&
+			1 === count( $locale->numbers_for_index( $plural_form, 2 ) )
+		) {
+			return true;
+		}
+
+		$all_placeholders = array_unique( array_merge( array_keys( $original_counts ), array_keys( $translation_counts ) ) );
 		foreach ( $all_placeholders as $placeholder ) {
 			$original_count    = gp_array_get( $original_counts, $placeholder, 0 );
 			$translation_count = gp_array_get( $translation_counts, $placeholder, 0 );
@@ -409,6 +430,82 @@ class GP_Builtin_Translation_Warnings {
 		}
 
 		return $counts;
+	}
+
+	/**
+	 * Checks whether a translation leaves out one placeholder for a number and changes nothing else.
+	 *
+	 * Writing a number in words removes one placeholder occurrence. A translation
+	 * that also drops a second placeholder, or adds one, has lost more than the
+	 * number.
+	 *
+	 * If the original has a numeric placeholder (`%d`, `%u`, `%f` and the other
+	 * numeric conversions), the one left out has to be numeric too, so a
+	 * translation that keeps the number and drops a name still gets a warning.
+	 * Many counts go through number_format_i18n() and use `%s`, so without a
+	 * numeric placeholder the number can be any of them.
+	 *
+	 * A placeholder without an argument number takes the next argument, so only
+	 * the last of those may be left out, and only if no other one like it comes
+	 * before it. Leaving out the `%d` of `%d item in %s` would make `%s` print
+	 * the number, and the `%d` kept from `%d item and %d selected` would always
+	 * print the first number.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $original           The source string.
+	 * @param array  $original_counts    Counts per placeholder in the source string.
+	 * @param array  $translation_counts Counts per placeholder in the translation.
+	 * @param string $placeholders_re    Regular expression to match placeholders.
+	 * @return bool True if only the placeholder for a number is left out, false otherwise.
+	 */
+	private function leaves_out_only_the_number( string $original, array $original_counts, array $translation_counts, string $placeholders_re ): bool {
+		foreach ( $translation_counts as $placeholder => $count ) {
+			if ( $count > gp_array_get( $original_counts, $placeholder, 0 ) ) {
+				return false;
+			}
+		}
+
+		$left_out = null;
+		foreach ( $original_counts as $placeholder => $count ) {
+			$missing = $count - gp_array_get( $translation_counts, $placeholder, 0 );
+			if ( 0 === $missing ) {
+				continue;
+			}
+			if ( 1 !== $missing || null !== $left_out ) {
+				return false;
+			}
+			$left_out = $placeholder;
+		}
+
+		if ( null === $left_out ) {
+			return false;
+		}
+
+		$numeric_re = '/^%.*[bdeEfFgGouxX]$/';
+		if ( ! preg_match( $numeric_re, $left_out ) ) {
+			foreach ( array_keys( $original_counts ) as $placeholder ) {
+				if ( preg_match( $numeric_re, $placeholder ) ) {
+					return false;
+				}
+			}
+		}
+
+		$numbered_re = '/^%\d+\$/';
+		if ( preg_match( $numbered_re, $left_out ) ) {
+			return true;
+		}
+
+		// `%%` is a literal percent sign and takes no argument, so it is never the number.
+		preg_match_all( "/$placeholders_re/", $original, $matches );
+		$unnumbered = array();
+		foreach ( $matches[0] as $placeholder ) {
+			if ( '%%' !== $placeholder && ! preg_match( $numbered_re, $placeholder ) ) {
+				$unnumbered[] = $placeholder;
+			}
+		}
+
+		return end( $unnumbered ) === $left_out && 1 === count( array_keys( $unnumbered, $left_out, true ) );
 	}
 
 	/**
