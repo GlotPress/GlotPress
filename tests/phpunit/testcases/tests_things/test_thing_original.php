@@ -203,6 +203,17 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertArrayHasKey( 'placeholders', $translation->warnings[0] );
 	}
 
+	function test_import_only_checks_the_forms_of_an_original_that_lost_its_plural() {
+		$set         = $this->factory->translation_set->create_with_project_and_locale();
+		$original    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%s item', 'plural' => '%s items' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'current', 'translation_0' => '%s Element', 'translation_1' => 'Elemente' ) );
+
+		$original->import_for_project( $set->project, $this->create_translations_with( array( array( 'singular' => '%s item' ) ) ) );
+
+		$translation->reload();
+		$this->assertEmpty( $translation->warnings );
+	}
+
 	function test_import_should_not_mark_translation_of_changed_strings_as_fuzzy_with_filter() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'baba baba' ) );

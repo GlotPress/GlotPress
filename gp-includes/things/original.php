@@ -558,7 +558,9 @@ class GP_Original extends GP_Thing {
 				continue;
 			}
 
-			$warnings = GP::$translation_warnings->check( $singular, $plural, $translation->translations(), $locale );
+			// Forms the original doesn't use any more, like the plural forms of an original that lost its plural, are left out.
+			$forms    = array_slice( $translation->translations(), 0, null === $plural ? 1 : $locale->nplurals );
+			$warnings = GP::$translation_warnings->check( $singular, $plural, $forms, $locale );
 			if ( $warnings != $translation->warnings ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual -- No warnings are stored as null or an empty value.
 				$translation->update( array( 'warnings' => $warnings ) );
 			}
