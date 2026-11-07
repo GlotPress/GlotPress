@@ -117,6 +117,25 @@ class GP_Project extends GP_Thing {
 		$rules->slug_should_not_be( 'empty' );
 	}
 
+	/**
+	 * Gets the error message for a failed validation rule.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $rule The validation rule that failed.
+	 * @return string|null The error message, or null to use the generic one.
+	 */
+	public function validation_error_message( $rule ) {
+		switch ( $rule['field'] . ':' . $rule['rule'] ) {
+			case 'name:empty':
+				return __( 'The project name must not be empty.', 'glotpress' );
+			case 'slug:empty':
+				return __( 'The project slug must not be empty.', 'glotpress' );
+		}
+
+		return null;
+	}
+
 	// Additional queries.
 
 	/**

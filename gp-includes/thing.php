@@ -905,6 +905,21 @@ class GP_Thing {
 	}
 
 	/**
+	 * Gets the error message for a failed validation rule.
+	 *
+	 * Things return a complete sentence for the fields people fill in, as a message assembled
+	 * from the field and the rule can't be translated grammatically.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $rule The validation rule that failed, with the 'field', 'rule', 'kind' and 'args' keys.
+	 * @return string|null The error message, or null to use the generic one.
+	 */
+	public function validation_error_message( $rule ) {
+		return null;
+	}
+
+	/**
 	 * Validates the current object.
 	 *
 	 * @return bool True if the object is valid, false otherwise.

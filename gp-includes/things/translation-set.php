@@ -197,6 +197,27 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	/**
+	 * Gets the error message for a failed validation rule.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $rule The validation rule that failed.
+	 * @return string|null The error message, or null to use the generic one.
+	 */
+	public function validation_error_message( $rule ) {
+		switch ( $rule['field'] . ':' . $rule['rule'] ) {
+			case 'name:empty':
+				return __( 'The translation set name must not be empty.', 'glotpress' );
+			case 'slug:empty':
+				return __( 'The translation set slug must not be empty.', 'glotpress' );
+			case 'locale:empty':
+				return __( 'Select a locale for the translation set.', 'glotpress' );
+		}
+
+		return null;
+	}
+
+	/**
 	 * Normalizes an array with key-value pairs representing
 	 * a GP_Translation_Set object.
 	 *

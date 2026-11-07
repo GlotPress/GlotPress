@@ -227,4 +227,11 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 			}
 		}
 	}
+
+	function test_empty_term_names_the_original_term() {
+		$glossary_entry = new GP_Glossary_Entry( array( 'glossary_id' => '1', 'term' => '', 'part_of_speech' => 'verb', 'last_edited_by' => '1' ) );
+
+		$this->assertFalse( $glossary_entry->validate() );
+		$this->assertSame( array( 'The original term must not be empty.' ), $glossary_entry->errors );
+	}
 }
