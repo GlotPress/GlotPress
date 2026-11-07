@@ -5,6 +5,8 @@ $gp.editor = (
 		return {
 			current: null,
 			original_translations: null,
+			filter_counts_request: null,
+			filter_counts_stale: false,
 			init: function( table ) {
 				var $previewRows;
 
@@ -24,14 +26,42 @@ $gp.editor = (
 			translation_id_from_row_id: function( row_id ) {
 				return row_id.split( '-' )[ 1 ];
 			},
-			update_filter_counts: function( xhr ) {
-				var counts = xhr.getResponseHeader( 'X-GlotPress-Filter-Counts' );
-
-				if ( ! counts ) {
+			/*
+			 * Updates the status filter counts after a change. Counting them goes through the whole
+			 * translation set, so there is only one request at a time: the changes made while it
+			 * runs are picked up by a single request once it ends, instead of one request each.
+			 */
+			schedule_filter_counts: function() {
+				if ( $gp.editor.filter_counts_request ) {
+					$gp.editor.filter_counts_stale = true;
 					return;
 				}
 
-				$.each( JSON.parse( counts ), function( filter, count ) {
+				$gp.editor.update_filter_counts();
+			},
+			update_filter_counts: function() {
+				$gp.editor.filter_counts_stale = false;
+				$gp.editor.filter_counts_request = $.ajax( {
+					type: 'GET',
+					url: $gp_editor_options.filter_counts_url,
+					dataType: 'json',
+					// The counts change with every edit, a cached response would be outdated.
+					cache: false,
+					success: function( counts ) {
+						$gp.editor.set_filter_counts( counts );
+					},
+					complete: function() {
+						$gp.editor.filter_counts_request = null;
+
+						// The counts that just arrived may not include the changes made meanwhile.
+						if ( $gp.editor.filter_counts_stale ) {
+							$gp.editor.update_filter_counts();
+						}
+					},
+				} );
+			},
+			set_filter_counts: function( counts ) {
+				$.each( counts, function( filter, count ) {
 					var link = $( '#upper-filters-toolbar a[data-filter="' + filter + '"]' );
 					var text = link.text();
 					var oldCount = String( link.attr( 'data-count' ) );
@@ -331,7 +361,7 @@ $gp.editor = (
 					url: $gp_editor_options.url,
 					data: data,
 					dataType: 'json',
-					success: function( response, textStatus, xhr ) {
+					success: function( response ) {
 						var original_id;
 
 						button.prop( 'disabled', false );
@@ -341,7 +371,7 @@ $gp.editor = (
 							$gp.editor.replace_current( response[ original_id ] );
 						}
 
-						$gp.editor.update_filter_counts( xhr );
+						$gp.editor.schedule_filter_counts();
 
 						if ( $gp.editor.current.hasClass( 'no-warnings' ) ) {
 							$gp.editor.next();
@@ -443,11 +473,11 @@ $gp.editor = (
 					type: 'POST',
 					url: $gp_editor_options.set_status_url,
 					data: data,
-					success: function( response, textStatus, xhr ) {
+					success: function( response ) {
 						button.prop( 'disabled', false );
 						$gp.notices.success( wp.i18n.__( 'Status set!', 'glotpress' ) );
 						$gp.editor.replace_current( response );
-						$gp.editor.update_filter_counts( xhr );
+						$gp.editor.schedule_filter_counts();
 						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
@@ -478,10 +508,10 @@ $gp.editor = (
 					type: 'POST',
 					url: $gp_editor_options.discard_warning_url,
 					data: data,
-					success: function( response, textStatus, xhr ) {
+					success: function( response ) {
 						$gp.notices.success( wp.i18n.__( 'Saved!', 'glotpress' ) );
 						$gp.editor.replace_current( response );
-						$gp.editor.update_filter_counts( xhr );
+						$gp.editor.schedule_filter_counts();
 					},
 					error: function( xhr, msg ) {
 						/* translators: %s: Error message. */

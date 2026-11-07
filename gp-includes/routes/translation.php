@@ -260,6 +260,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$set_priority_url    = gp_url( '/originals/%original-id%/set_priority' );
 		$discard_warning_url = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-discard-warning' ) );
 		$set_status_url      = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-set-status' ) );
+		$filter_counts_url   = gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug, '-filter-counts' ) );
 		$bulk_action         = gp_url_join( $url, '-bulk' );
 		$word_count_type     = $locale->word_count_type;
 
@@ -412,7 +413,6 @@ class GP_Route_Translation extends GP_Route_Main {
 				}
 			}
 		}
-		$this->send_filter_counts_header( $translation_set );
 
 		echo wp_json_encode( $output );
 	}
@@ -896,8 +896,6 @@ class GP_Route_Translation extends GP_Route_Main {
 			$can_approve             = $this->can( 'approve', 'translation-set', $translation_set->id );
 			$can_approve_translation = $this->can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
 
-			$this->send_filter_counts_header( $translation_set );
-
 			$this->tmpl( 'translation-row', get_defined_vars() );
 		} else {
 			return $this->die_with_error( 'Error in retrieving translation!' );
@@ -975,18 +973,31 @@ class GP_Route_Translation extends GP_Route_Main {
 	}
 
 	/**
-	 * Sends the counts of the status filters, so the editor can update them after a change.
+	 * Outputs the counts of the status filters of a translation set as JSON.
 	 *
-	 * The editor cannot work them out itself, because they depend on the other
-	 * translations of an original, which the page does not show.
+	 * The editor requests them after a change, once the translator pauses, instead of every
+	 * editor action recounting the set. It cannot work them out itself, because they depend
+	 * on the other translations of an original, which the page does not show.
 	 *
 	 * @since 4.2.0
 	 *
-	 * @param GP_Translation_Set $translation_set The translation set.
+	 * @param string $project_path         The path of the project.
+	 * @param string $locale_slug          The locale slug.
+	 * @param string $translation_set_slug The slug of the translation set.
 	 */
-	private function send_filter_counts_header( $translation_set ) {
-		// A hook may have loaded the counts before the change.
-		$translation_set->update_status_breakdown();
+	public function filter_counts_get( $project_path, $locale_slug, $translation_set_slug ) {
+		$project = GP::$project->by_path( $project_path );
+		$locale  = GP_Locales::by_slug( $locale_slug );
+
+		if ( ! $project || ! $locale ) {
+			return $this->die_with_404();
+		}
+
+		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
+
+		if ( ! $translation_set ) {
+			return $this->die_with_404();
+		}
 
 		// Some locales use an HTML entity as the thousands separator, the editor sets the counts as text.
 		$format = static function ( $count ) {
@@ -1002,7 +1013,9 @@ class GP_Route_Translation extends GP_Route_Main {
 			'warnings'         => $format( $translation_set->warnings_count() ),
 		);
 
-		$this->header( 'X-GlotPress-Filter-Counts: ' . wp_json_encode( $counts ) );
+		$this->header( 'Content-Type: application/json' );
+
+		echo wp_json_encode( $counts );
 	}
 
 	/**

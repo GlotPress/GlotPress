@@ -185,6 +185,7 @@ class GP_Router {
 			"post:/$set/import-translations"                  => array( 'GP_Route_Translation', 'import_translations_post' ),
 			"post:/$set/-discard-warning"                     => array( 'GP_Route_Translation', 'discard_warning' ),
 			"post:/$set/-set-status"                          => array( 'GP_Route_Translation', 'set_status' ),
+			"get:/$set/-filter-counts"                        => array( 'GP_Route_Translation', 'filter_counts_get' ),
 
 			"/$set/export-translations"                       => array( 'GP_Route_Translation', 'export_translations_get' ),
 			// Keep this below all URLs ending with a literal string, because it may catch one of them.
