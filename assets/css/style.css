@@ -22,10 +22,10 @@
 	--gp-color-secondary-900: #252525;
 	--gp-color-black: #0b0c0c;
 	--gp-color-white: #ffffff;
-	--gp-color-yellow: #ffd566;
+	--gp-color-yellow: #ffe3a0;
 	--gp-color-dark-orange: #C05621;
-	--gp-color-red: #a62626;
-	--gp-color-green: #266430;
+	--gp-color-red: #b6303e;
+	--gp-color-green: #218041;
 
 	/* Components */
 	--gp-color-fg-default: var( --gp-color-black );
@@ -91,12 +91,12 @@
 	--gp-color-bubble-inactive-project-text: var( --gp-color-dark-orange );
 	--gp-color-bubble-inactive-project-border: var( --gp-color-dark-orange );
 
-	--gp-color-status-fuzzy-subtle: #fc6;
-	--gp-color-status-current-subtle: #e9ffd8;
-	--gp-color-status-old-subtle: #fee4f8;
-	--gp-color-status-waiting-subtle: #ffffc2;
-	--gp-color-status-rejected-subtle: #ff8e8e;
-	--gp-color-status-changesrequested-subtle: #87ceeb;
+	--gp-color-status-fuzzy-subtle: #ffd3ab;
+	--gp-color-status-current-subtle: #c8f6d0;
+	--gp-color-status-old-subtle: #e7d5ff;
+	--gp-color-status-waiting-subtle: #ffefb7;
+	--gp-color-status-rejected-subtle: #ffb8ba;
+	--gp-color-status-changesrequested-subtle: #b4e5ff;
 
 	--gp-color-tour: var( --gp-color-primary );
 }
