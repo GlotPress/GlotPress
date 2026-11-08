@@ -575,8 +575,9 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		// `are you sure...?` could never match. A hyphen counts as part of the
 		// word, so `add` is not marked inside `add-on`. Character references
 		// are split off first, so a term like `&` is not marked inside `&#38;`.
+		// URLs are split off too, as their hosts and paths aren't text to translate.
 		$placeholders_search = '%(?:(?:\d+\$)?(?:\d+)?)?[bcdefglosuxEFGX%@]';
-		$terms_search        = '(&(?:#[0-9]+|#x[0-9a-f]+|[a-z][a-z0-9]*);)|(?:((?<![\w-])|' . $placeholders_search . ')(';
+		$terms_search        = '(' . gp_get_url_regex_pattern() . ')|(&(?:#[0-9]+|#x[0-9a-f]+|[a-z][a-z0-9]*);)|(?:((?<![\w-])|' . $placeholders_search . ')(';
 		foreach ( $regex_group as $suffix => $terms ) {
 			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
 		}

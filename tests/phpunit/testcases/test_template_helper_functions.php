@@ -1455,6 +1455,41 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
+	 * Expects glossary terms inside plain-text URLs not to be marked, while the same terms outside them are.
+	 */
+	function test_map_glossary_entries_to_translation_originals_skips_terms_inside_urls() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		foreach ( array( 'wordpress', 'affiliate', 'debug' ) as $term ) {
+			GP::$glossary_entry->create_and_select(
+				array(
+					'glossary_id'    => $glossary->id,
+					'term'           => $term,
+					'part_of_speech' => 'noun',
+					'translation'    => 'x',
+				)
+			);
+		}
+
+		$entry = new Translation_Entry( array( 'singular' => 'See https://refer.wordpress.com/affiliate/ or //developer.wordpress.org/debug-wordpress/ to debug WordPress (https://wordpress.org).' ) );
+		$orig  = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertSame(
+			'See https://refer.wordpress.com/affiliate/ or //developer.wordpress.org/debug-wordpress/ to ' . $this->glossary_match( 'x', 'noun', 'debug' ) . ' ' . $this->glossary_match( 'x', 'noun', 'WordPress' ) . ' (https://wordpress.org).',
+			$orig->singular_glossary_markup
+		);
+
+		$entry = new Translation_Entry( array( 'singular' => 'Set it to "https://wordpress.org/debug/" or <a title="https://wordpress.org">debug WordPress</a>.' ) );
+		$orig  = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertSame(
+			'Set it to "https://wordpress.org/debug/" or &lt;a title="https://wordpress.org"&gt;' . $this->glossary_match( 'x', 'noun', 'debug' ) . ' ' . $this->glossary_match( 'x', 'noun', 'WordPress' ) . '&lt;/a&gt;.',
+			$orig->singular_glossary_markup
+		);
+	}
+
+	/**
 	 * Expects matching the past of Verbs not ending with '-e'. Suffix '-ed'.
 	 */
 	function test_map_glossary_entries_to_translation_originals_with_verbs_past_not_ending_with_e_in_glossary() {
