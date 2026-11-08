@@ -1075,10 +1075,10 @@ span.context {
 	animation: gp-js-message-in 0.15s ease-out, gp-js-message-out 0.4s ease-in 4s forwards;
 }
 
-/* Gives the translator time to read the message while pointing at it or using its controls. */
-.gp-js-success:hover,
-.gp-js-success:focus-within {
-	animation-play-state: paused;
+/* Gives the translator time to read the message while pointing at it or using its controls. Only the exit pauses, so a message replaced while pointed at still appears. */
+.gp-js-success.is-open:hover,
+.gp-js-success.is-open:focus-within {
+	animation-play-state: running, paused;
 }
 
 @keyframes gp-js-message-in {
@@ -1101,6 +1101,11 @@ span.context {
 
 	.gp-js-success.is-open {
 		animation: gp-js-message-out 0.01s 4s forwards;
+	}
+
+	.gp-js-success.is-open:hover,
+	.gp-js-success.is-open:focus-within {
+		animation-play-state: paused;
 	}
 }
 
