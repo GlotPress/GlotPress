@@ -1464,9 +1464,9 @@ class GP_Import extends GP_UnitTestCase {
 			)
 		);
 
-		add_filter( 'gp_translation_set_import_skip_rejected_or_changesrequested', '__return_false' );
+		add_filter( 'gp_translation_block_rejected_or_changesrequested', '__return_false' );
 		$added = $set->import( $translations, 'waiting' );
-		remove_filter( 'gp_translation_set_import_skip_rejected_or_changesrequested', '__return_false' );
+		remove_filter( 'gp_translation_block_rejected_or_changesrequested', '__return_false' );
 
 		$this->assertSame( 1, $added );
 		$this->assertSame( 1, $set->waiting_count() );

@@ -377,10 +377,10 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 	}
 
 	/**
-	 * Tests that translations_post() blocks re-submitting an already rejected translation by the same user,
-	 * but allows other users or validators to submit it.
+	 * Tests that translations_post() blocks suggesting an already rejected translation again, whoever suggests it,
+	 * but allows validators to submit it.
 	 */
-	function test_translations_post_blocks_resubmitting_rejected_translation_by_same_user() {
+	function test_translations_post_blocks_suggesting_a_rejected_translation_again() {
 		$set      = $this->factory->translation_set->create_with_project_and_locale();
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Discard' ) );
 
@@ -404,14 +404,14 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$waiting_for_user_1 = GP::$translation->find_many( array( 'original_id' => $original->id, 'user_id' => $user_1, 'status' => 'waiting' ) );
 		$this->assertEmpty( $waiting_for_user_1, 'No new waiting translation must be created for the same user.' );
 
-		// 2. User 2 submits the same text -> allowed.
+		// 2. User 2 submits the same text -> blocked too.
 		$user_2 = $this->factory->user->create();
 		wp_set_current_user( $user_2 );
 
 		$this->submit_translation( $set, $original->id, $original->id, 'Verwerfen' );
 
-		$waiting_for_user_2 = GP::$translation->find_one( array( 'original_id' => $original->id, 'user_id' => $user_2, 'status' => 'waiting' ) );
-		$this->assertNotFalse( $waiting_for_user_2, 'Another user is permitted to suggest the same string.' );
+		$this->assertStringContainsString( 'Identical rejected translation already exists.', $this->route->template_output );
+		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $original->id, 'user_id' => $user_2 ) ) );
 
 		// 3. Validator submits a rejected text on another original -> allowed and directly approved (current).
 		$original_2 = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Cancel' ) );
@@ -437,6 +437,8 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 	 * Tests that translations_post() blocks any user from submitting identical text when changes are requested.
 	 */
 	function test_translations_post_blocks_changesrequested_translation_for_all_users() {
+		add_filter( 'gp_enable_changesrequested_status', '__return_true' );
+
 		$set      = $this->factory->translation_set->create_with_project_and_locale();
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Pending' ) );
 
@@ -464,6 +466,31 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$this->submit_translation( $set, $original->id, $original->id, 'Ausstehend' );
 		$this->assertStringContainsString( 'Identical translation with changes requested already exists.', $this->route->template_output );
 		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $original->id, 'user_id' => $user_2 ) ) );
+
+		remove_filter( 'gp_enable_changesrequested_status', '__return_true' );
+	}
+
+	/**
+	 * Without the changes requested status, such translations are shown as rejected, so the message says so too.
+	 */
+	function test_translations_post_reports_changesrequested_translation_as_rejected_without_the_status() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Pending' ) );
+
+		$this->set_normal_user_as_current();
+
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $original->id,
+				'status'             => 'changesrequested',
+				'translation_0'      => 'Ausstehend',
+			)
+		);
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Ausstehend' );
+
+		$this->assertStringContainsString( 'Identical rejected translation already exists.', $this->route->template_output );
 	}
 
 	/**

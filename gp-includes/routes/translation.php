@@ -1025,33 +1025,17 @@ class GP_Route_Translation extends GP_Route_Main {
 			return;
 		}
 
-		$user_id        = get_current_user_id();
-		$blocked_reason = $translation_set->check_already_rejected_or_changesrequested(
-			$original_id,
-			$translations,
-			$user_id
-		);
+		$blocked_reason = $translation_set->get_blocked_suggestion_reason( $original_id, $translations );
+		if ( ! $blocked_reason ) {
+			return;
+		}
 
-		/**
-		 * Filters whether to block identical rejected or changes-requested translations.
-		 *
-		 * @since 4.2.0
-		 *
-		 * @param string|false       $blocked_reason 'changesrequested', 'rejected', or false.
-		 * @param GP_Translation_Set $translation_set The translation set object.
-		 * @param int                $original_id     The original ID.
-		 * @param array              $translations    The incoming translation strings.
-		 * @param int                $user_id         The ID of the user submitting the suggestion.
-		 */
-		$blocked_reason = apply_filters( 'gp_translation_block_rejected_or_changesrequested', $blocked_reason, $translation_set, $original_id, $translations, $user_id );
-
-		if ( 'changesrequested' === $blocked_reason ) {
+		// Without the status, translations with changes requested are shown as rejected ones.
+		if ( 'changesrequested' === $blocked_reason && apply_filters( 'gp_enable_changesrequested_status', false ) ) {
 			$this->die_with_error( __( 'Identical translation with changes requested already exists.', 'glotpress' ), 200 );
 		}
 
-		if ( 'rejected' === $blocked_reason ) {
-			$this->die_with_error( __( 'Identical rejected translation already exists.', 'glotpress' ), 200 );
-		}
+		$this->die_with_error( __( 'Identical rejected translation already exists.', 'glotpress' ), 200 );
 	}
 
 	/**

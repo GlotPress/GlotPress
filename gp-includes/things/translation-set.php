@@ -480,8 +480,23 @@ class GP_Translation_Set extends GP_Thing {
 					$entry->status = 'fuzzy';
 				}
 
-				if ( $this->should_skip_rejected_or_changesrequested( $entry->original_id, $entry, $locale, $rows_by_original ) ) {
-					continue;
+				if ( in_array( $entry->status, array( 'waiting', 'fuzzy' ), true ) ) {
+					if ( null === $rows_by_original ) {
+						$rows_by_original = array();
+						$rows             = GP::$translation->find_many(
+							array(
+								'translation_set_id' => $this->id,
+								'status'             => array( 'rejected', 'changesrequested' ),
+							)
+						);
+						foreach ( $rows as $row ) {
+							$rows_by_original[ $row->original_id ][] = $row;
+						}
+					}
+
+					if ( $this->get_blocked_suggestion_reason( $entry->original_id, $entry->translations, $rows_by_original[ $entry->original_id ] ?? array() ) ) {
+						continue;
+					}
 				}
 
 				// Check for errors.
@@ -512,55 +527,6 @@ class GP_Translation_Set extends GP_Thing {
 		do_action( 'gp_translations_imported', $this->id, $created_translation_ids, $approved_translation_ids );
 
 		return $translations_added;
-	}
-
-	/**
-	 * Checks whether an identical translation already exists with 'rejected' or 'changesrequested' status.
-	 *
-	 * Only applies to suggestions ('waiting') and fuzzy translations ('fuzzy').
-	 *
-	 * @since 4.2.0
-	 *
-	 * @param int               $original_id      The ID of the original.
-	 * @param Translation_Entry $entry            Translation entry object to import.
-	 * @param GP_Locale         $locale           The locale of the translation set.
-	 * @param array|null        $rows_by_original Optional. Cache of rejected/changesrequested translations grouped by original ID.
-	 * @return bool True if the entry should be skipped, false otherwise.
-	 */
-	private function should_skip_rejected_or_changesrequested( $original_id, $entry, $locale, &$rows_by_original = null ) {
-		if ( ! in_array( $entry->status, array( 'waiting', 'fuzzy' ), true ) ) {
-			return false;
-		}
-
-		/**
-		 * Filter whether to skip importing suggestions and fuzzy translations identical to rejected or changesrequested entries.
-		 *
-		 * @since 4.2.0
-		 *
-		 * @param bool              $skip_entry  Whether to skip the entry. Default true.
-		 * @param Translation_Entry $entry       Translation entry object to import.
-		 * @param int               $original_id The ID of the original.
-		 */
-		if ( ! apply_filters( 'gp_translation_set_import_skip_rejected_or_changesrequested', true, $entry, $original_id ) ) {
-			return false;
-		}
-
-		if ( null === $rows_by_original ) {
-			$rows_by_original = array();
-			$rows             = GP::$translation->find_many(
-				array(
-					'translation_set_id' => $this->id,
-					'status'             => array( 'rejected', 'changesrequested' ),
-				)
-			);
-			foreach ( $rows as $row ) {
-				$rows_by_original[ $row->original_id ][] = array_slice( $row->translations(), 0, $locale->nplurals );
-			}
-		}
-
-		$wanted = array_pad( $entry->translations, $locale->nplurals, null );
-
-		return in_array( $wanted, $rows_by_original[ $original_id ] ?? array(), true );
 	}
 
 	/**
@@ -656,48 +622,78 @@ class GP_Translation_Set extends GP_Thing {
 	}
 
 	/**
-	 * Checks if an incoming suggestion matches an existing rejected or changes-requested translation.
+	 * Gets why a suggestion is refused, if it's identical to a rejected or changes-requested translation.
+	 *
+	 * The rule is the same whoever suggests it, as an importer is rarely the author of the rejected translation.
+	 * Translations that become current right away, like the ones of validators, aren't checked.
 	 *
 	 * @since 4.2.0
 	 *
-	 * @param int   $original_id  The ID of the original string.
-	 * @param array $translations Array of translation strings (indexed 0..n).
-	 * @param int   $user_id      The ID of the user submitting the suggestion.
-	 * @return string|false 'changesrequested', 'rejected', or false if allowed.
+	 * @param int                   $original_id  The ID of the original.
+	 * @param array                 $translations The suggested translations, one per plural form.
+	 * @param GP_Translation[]|null $candidates   Optional. The rejected and changes-requested translations of the original,
+	 *                                            as the import loads them once for all entries. Default null.
+	 * @return string|false The status of the identical translation, 'changesrequested' or 'rejected',
+	 *                      or false if the suggestion is allowed.
 	 */
-	public function check_already_rejected_or_changesrequested( $original_id, array $translations, $user_id ) {
+	public function get_blocked_suggestion_reason( $original_id, array $translations, $candidates = null ) {
 		$locale = GP_Locales::by_slug( $this->locale );
 		if ( ! $locale ) {
 			return false;
 		}
 
-		$existing_translations = GP::$translation->find_many(
-			array(
-				'translation_set_id' => $this->id,
-				'original_id'        => $original_id,
-				'status'             => array( 'rejected', 'changesrequested' ),
-			)
-		);
-
-		if ( ! $existing_translations ) {
-			return false;
+		if ( null === $candidates ) {
+			$candidates = GP::$translation->find_many(
+				array(
+					'translation_set_id' => $this->id,
+					'original_id'        => $original_id,
+					'status'             => array( 'rejected', 'changesrequested' ),
+				)
+			);
 		}
 
-		$wanted = array_pad( array_values( $translations ), $locale->nplurals, null );
-
-		foreach ( $existing_translations as $existing ) {
-			if ( array_slice( $existing->translations(), 0, $locale->nplurals ) == $wanted ) {
-				if ( 'changesrequested' === $existing->status ) {
-					return 'changesrequested';
-				}
-
-				if ( 'rejected' === $existing->status && (int) $user_id > 0 && (int) $existing->user_id === (int) $user_id ) {
-					return 'rejected';
+		$reason = false;
+		if ( $candidates ) {
+			$suggested = self::normalize_plural_forms( $translations, $locale->nplurals );
+			foreach ( $candidates as $candidate ) {
+				if ( self::normalize_plural_forms( $candidate->translations(), $locale->nplurals ) === $suggested ) {
+					$reason = $candidate->status;
+					break;
 				}
 			}
 		}
 
-		return false;
+		/**
+		 * Filters why a suggestion identical to a rejected or changes-requested translation is refused.
+		 *
+		 * @since 4.2.0
+		 *
+		 * @param string|false       $reason          'changesrequested', 'rejected', or false to allow the suggestion.
+		 * @param GP_Translation_Set $translation_set The translation set.
+		 * @param int                $original_id     The ID of the original.
+		 * @param array              $translations    The suggested translations.
+		 */
+		return apply_filters( 'gp_translation_block_rejected_or_changesrequested', $reason, $this, $original_id, $translations );
+	}
+
+	/**
+	 * Brings translations into one shape for comparing them: one entry per plural form of the locale.
+	 *
+	 * A request sends an empty plural form as an empty string, a translation stores it as null.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $forms    The translations, one per plural form.
+	 * @param int   $nplurals The number of plural forms of the locale.
+	 * @return array The translations, with null for each empty or missing plural form.
+	 */
+	private static function normalize_plural_forms( array $forms, $nplurals ) {
+		return array_map(
+			static function ( $form ) {
+				return '' === $form ? null : $form;
+			},
+			array_slice( array_pad( array_values( $forms ), $nplurals, null ), 0, $nplurals )
+		);
 	}
 
 	/**
