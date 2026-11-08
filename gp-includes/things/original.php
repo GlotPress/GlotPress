@@ -383,6 +383,7 @@ class GP_Original extends GP_Thing {
 				// But only if it's different, like a changed 'references', 'comment', or 'status' field.
 				if ( GP::$original->is_different_from( $data, $original ) ) {
 					$this->update( $data, array( 'id' => $original->id ) );
+					$this->recheck_translation_warnings( $original, $data['singular'], $data['plural'] ?? null );
 					++$originals_existing;
 				}
 			} else {
@@ -447,6 +448,7 @@ class GP_Original extends GP_Thing {
 
 				// We'll update the old original...
 				$this->update( $data, array( 'id' => $original->id ) );
+				$this->recheck_translation_warnings( $original, $data['singular'], $data['plural'] ?? null );
 
 				// and set existing translations to fuzzy.
 				if ( $do_fuzzy ) {
@@ -512,6 +514,58 @@ class GP_Original extends GP_Thing {
 		$translations = GP::$translation->find_many( "original_id = '$original_id' AND status = 'current'" );
 		foreach ( $translations as $translation ) {
 			$translation->set_status( 'fuzzy' );
+		}
+	}
+
+	/**
+	 * Checks the warnings of the translations of an original again, after its text changed.
+	 *
+	 * The warnings were found for the text before the change, and approving a translation doesn't check them.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param GP_Original $original The original before the change.
+	 * @param string      $singular The singular of the changed original.
+	 * @param string|null $plural   The plural of the changed original.
+	 */
+	public function recheck_translation_warnings( $original, $singular, $plural ) {
+		// Only the text matters, so warnings dismissed for it stay dismissed when the context or references change.
+		if ( $singular === $original->singular && (string) $plural === (string) $original->plural ) {
+			return;
+		}
+
+		$translations = GP::$translation->find_many(
+			array(
+				'original_id' => $original->id,
+				'status'      => array( 'current', 'waiting', 'fuzzy', 'changesrequested' ),
+			)
+		);
+		if ( ! $translations ) {
+			return;
+		}
+
+		// An import rechecks many originals of the same project, so the locales of its sets are only looked up once.
+		static $locales = array();
+
+		$missing_set_ids = array_diff( array_unique( wp_list_pluck( $translations, 'translation_set_id' ) ), array_keys( $locales ) );
+		if ( $missing_set_ids ) {
+			foreach ( GP::$translation_set->find_many( array( 'id' => array_values( $missing_set_ids ) ) ) as $translation_set ) {
+				$locales[ $translation_set->id ] = GP_Locales::by_slug( $translation_set->locale );
+			}
+		}
+
+		foreach ( $translations as $translation ) {
+			$locale = $locales[ $translation->translation_set_id ] ?? null;
+			if ( ! $locale ) {
+				continue;
+			}
+
+			// Forms the original doesn't use any more, like the plural forms of an original that lost its plural, are left out.
+			$forms    = array_slice( $translation->translations(), 0, null === $plural ? 1 : $locale->nplurals );
+			$warnings = GP::$translation_warnings->check( $singular, $plural, $forms, $locale );
+			if ( $warnings != $translation->warnings ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual -- No warnings are stored as null or an empty value.
+				$translation->update( array( 'warnings' => $warnings ) );
+			}
 		}
 	}
 
