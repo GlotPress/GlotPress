@@ -250,6 +250,9 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$translations             = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
 		$total_translations_count = GP::$translation->found_rows;
+		if ( ! $this->api ) {
+			$translations = GP::$translation->add_related_translations( $translations, $translation_set );
+		}
 
 		$can_edit            = $this->can( 'edit', 'translation-set', $translation_set->id );
 		$can_write           = $this->can( 'write', 'project', $project->id );
@@ -392,6 +395,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				}
 
 				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array( 'translation_id' => $translation->id ), array() );
+				$translations = GP::$translation->add_related_translations( $translations, $translation_set );
 
 				if ( ! empty( $translations ) ) {
 					$translation = $translations[0];
@@ -883,6 +887,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			),
 			array()
 		);
+		$translations = GP::$translation->add_related_translations( $translations, $translation_set );
 		if ( ! empty( $translations ) ) {
 			$translation = $translations[0];
 

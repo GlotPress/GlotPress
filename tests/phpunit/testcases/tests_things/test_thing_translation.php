@@ -730,4 +730,149 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertCount( 1, $entries );
 		$this->assertSame( 'Guardaralteracoes', $entries[0]->translations[0] );
 	}
+
+	function test_add_related_translations_adds_the_current_translation_to_open_suggestions() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		foreach ( array( 'current', 'waiting', 'fuzzy', 'changesrequested', 'rejected', 'old' ) as $status ) {
+			$this->factory->translation->create(
+				array(
+					'original_id'        => $original->id,
+					'translation_set_id' => $set->id,
+					'translation_0'      => ucfirst( $status ),
+					'status'             => $status,
+				)
+			);
+		}
+
+		$entries = GP::$translation->add_related_translations( $this->entries_for( $set, 'current_or_waiting_or_fuzzy_or_changesrequested_or_rejected_or_old' ), $set );
+
+		$current_by_status = array();
+		foreach ( $entries as $entry ) {
+			$current_by_status[ $entry->translation_status ] = $entry->current_translations;
+		}
+
+		$this->assertSame(
+			array(
+				'current'          => null,
+				'waiting'          => array( 'Current', null ),
+				'fuzzy'            => array( 'Current', null ),
+				'changesrequested' => null,
+				'rejected'         => null,
+				'old'              => null,
+			),
+			$current_by_status
+		);
+	}
+
+	function test_add_related_translations_adds_the_current_translation_to_changes_requested_when_enabled() {
+		add_filter( 'gp_enable_changesrequested_status', '__return_true' );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		foreach ( array( 'current', 'changesrequested' ) as $status ) {
+			$this->factory->translation->create(
+				array(
+					'original_id'        => $original->id,
+					'translation_set_id' => $set->id,
+					'translation_0'      => ucfirst( $status ),
+					'status'             => $status,
+				)
+			);
+		}
+
+		$entries = GP::$translation->add_related_translations( $this->entries_for( $set, 'changesrequested' ), $set );
+
+		remove_filter( 'gp_enable_changesrequested_status', '__return_true' );
+
+		$this->assertSame( array( 'Current', null ), $entries[0]->current_translations );
+	}
+
+	function test_add_related_translations_leaves_suggestions_without_a_current_translation_alone() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->translation->create_with_original_for_translation_set( $set, array( 'status' => 'waiting' ) );
+		$this->factory->original->create( array( 'project_id' => $set->project_id ) );
+
+		$entries = GP::$translation->add_related_translations( $this->entries_for( $set, 'waiting_or_untranslated' ), $set );
+
+		$this->assertCount( 2, $entries );
+		$this->assertNull( $entries[0]->current_translations );
+		$this->assertNull( $entries[1]->current_translations );
+	}
+
+	function test_add_related_translations_ignores_current_translations_of_other_translation_sets() {
+		$set       = $this->factory->translation_set->create_with_project_and_locale();
+		$other_set = $this->factory->translation_set->create( array( 'project_id' => $set->project_id, 'locale' => $set->locale, 'slug' => 'formal' ) );
+		$waiting   = $this->factory->translation->create_with_original_for_translation_set( $set, array( 'status' => 'waiting' ) );
+		$this->factory->translation->create(
+			array(
+				'original_id'        => $waiting->original_id,
+				'translation_set_id' => $other_set->id,
+				'status'             => 'current',
+			)
+		);
+
+		$entries = GP::$translation->add_related_translations( $this->entries_for( $set, 'waiting' ), $set );
+
+		$this->assertNull( $entries[0]->current_translations );
+	}
+
+	function test_add_related_translations_adds_every_plural_form_of_the_current_translation() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create(
+			array(
+				'project_id' => $set->project_id,
+				'singular'   => '%s item',
+				'plural'     => '%s items',
+			)
+		);
+		foreach ( array( 'current' => array( '%s Element', '%s Elemente' ), 'waiting' => array( '%s Eintrag', '%s Eintraege' ) ) as $status => $forms ) {
+			$this->factory->translation->create(
+				array(
+					'original_id'        => $original->id,
+					'translation_set_id' => $set->id,
+					'translation_0'      => $forms[0],
+					'translation_1'      => $forms[1],
+					'status'             => $status,
+				)
+			);
+		}
+
+		$entries = GP::$translation->add_related_translations( $this->entries_for( $set, 'waiting' ), $set );
+
+		$this->assertSame( array( '%s Element', '%s Elemente' ), $entries[0]->current_translations );
+	}
+
+	function test_add_related_translations_counts_every_translation_of_the_original_in_the_set() {
+		$set       = $this->factory->translation_set->create_with_project_and_locale();
+		$other_set = $this->factory->translation_set->create( array( 'project_id' => $set->project_id, 'locale' => $set->locale, 'slug' => 'formal' ) );
+		$original  = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		foreach ( array( 'current', 'waiting', 'rejected', 'old' ) as $status ) {
+			$this->factory->translation->create(
+				array(
+					'original_id'        => $original->id,
+					'translation_set_id' => $set->id,
+					'status'             => $status,
+				)
+			);
+		}
+		$this->factory->translation->create(
+			array(
+				'original_id'        => $original->id,
+				'translation_set_id' => $other_set->id,
+				'status'             => 'current',
+			)
+		);
+		$untranslated = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+
+		$entries = GP::$translation->add_related_translations( $this->entries_for( $set, 'current_or_untranslated' ), $set );
+
+		$counts = wp_list_pluck( $entries, 'translations_count', 'original_id' );
+		$this->assertSame( 4, $counts[ $original->id ] );
+		$this->assertSame( 0, $counts[ $untranslated->id ] );
+	}
+
+	private function entries_for( $set, $status ) {
+		return GP::$translation->for_translation( GP::$project->get( $set->project_id ), $set, 'no-limit', array( 'status' => $status ), array() );
+	}
 }
