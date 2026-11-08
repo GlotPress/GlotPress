@@ -1311,6 +1311,11 @@ form.filters-toolbar a.revealing.open {
 	border-style: dashed;
 }
 
+/* An inline-block would allow a line break around the space, which a non-breaking space must not. */
+.invisible-spaces.non-breaking-spaces {
+	display: inline;
+}
+
 .editor .original .placeholder-insert {
 	margin: 0;
 	font-size: inherit;

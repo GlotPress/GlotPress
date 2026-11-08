@@ -42,6 +42,19 @@ function prepare_original( $text ) {
 	$text = preg_replace( "/\n( +)/", "\n<span class=\"invisible-spaces\">$1</span>", $text );
 	// Highlight trailing spaces in multi lines.
 	$text = preg_replace( "/( +)\n/", "<span class=\"invisible-spaces\">$1</span>\n", $text );
+	// Highlight non-breaking spaces anywhere, as they look like normal ones. Matched by their bytes, as the text may not be valid UTF-8.
+	// Keyed by their first byte, which tells the two apart.
+	$non_breaking_space_titles = array(
+		"\xC2" => esc_attr__( 'Non-breaking space', 'glotpress' ),
+		"\xE2" => esc_attr__( 'Narrow no-break space', 'glotpress' ),
+	);
+	$text                      = preg_replace_callback(
+		'/(?:\xC2\xA0)+|(?:\xE2\x80\xAF)+/',
+		function ( $m ) use ( $non_breaking_space_titles ) {
+			return '<span class="invisible-spaces non-breaking-spaces" title="' . $non_breaking_space_titles[ $m[0][0] ] . '">' . $m[0] . '</span>';
+		},
+		$text
+	);
 
 	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
 	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
