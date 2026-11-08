@@ -597,9 +597,7 @@ class GP_Builtin_Translation_Warnings {
 	 * @return string|true True if check is OK, otherwise warning message.
 	 */
 	public function warning_mismatching_urls( $original, $translation ) {
-		// Any http/https/schemeless URLs which are not encased in quotation marks
-		// nor contain whitespace and end with a valid URL ending char.
-		$urls_regex = '@(?<![\'"])((https?://|(?<![:\w])//)[^\s<]+[a-z0-9\-_&=#/])(?![\'"])@i';
+		$urls_regex = '@(?<![\'"])' . gp_get_url_regex_pattern() . '(?![\'"])@i';
 
 		preg_match_all( $urls_regex, $original, $original_urls );
 		$original_urls = array_unique( $original_urls[0] );
@@ -899,7 +897,7 @@ class GP_Builtin_Translation_Warnings {
 	 * @return  array|true True if check is OK, otherwise warning message.
 	 */
 	private function links_without_url_and_placeholders_are_equal( string $original_links, string $translation_links ) {
-		$urls_regex        = '@(?<![\'"])((https?://|(?<![:\w])//)[^\s<]+[a-z0-9\-_&=#/])(?![\'"])@i';
+		$urls_regex        = '@(?<![\'"])' . gp_get_url_regex_pattern() . '(?![\'"])@i';
 		$placeholder_regex = '!%((\d+\$(?:\d+)?)?[bcdefgosux])!i';
 
 		// Remove the URLs.

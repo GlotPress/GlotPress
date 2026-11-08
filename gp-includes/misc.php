@@ -852,3 +852,17 @@ function gp_can_create_locale_glossary( $locale_slug, $set_slug ) {
 		GP::$validator_permission->object_id( 0, $locale_slug, $set_slug )
 	);
 }
+
+/**
+ * Gets the pattern of a regular expression that matches plain-text URLs, without delimiters.
+ *
+ * A URL ends before a quote or the end of a tag, so one in an HTML attribute doesn't take the
+ * rest of the tag with it.
+ *
+ * @since 4.2.0
+ *
+ * @return string The pattern, for a case-insensitive regular expression.
+ */
+function gp_get_url_regex_pattern() {
+	return '(?:https?:\/\/|(?<![:\w])\/\/)[^\s<>"]+[a-z0-9\-_&=#\/]';
+}
