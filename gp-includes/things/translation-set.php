@@ -656,6 +656,11 @@ class GP_Translation_Set extends GP_Thing {
 		if ( $candidates ) {
 			$suggested = self::normalize_plural_forms( $translations, $locale->nplurals );
 			foreach ( $candidates as $candidate ) {
+				// The author may reject their own waiting suggestion, which withdraws it rather than judging the text.
+				if ( 'rejected' === $candidate->status && $candidate->user_id_last_modified && (int) $candidate->user_id_last_modified === (int) $candidate->user_id ) {
+					continue;
+				}
+
 				if ( self::normalize_plural_forms( $candidate->translations(), $locale->nplurals ) === $suggested ) {
 					$reason = $candidate->status;
 					break;
@@ -683,17 +688,18 @@ class GP_Translation_Set extends GP_Thing {
 	 *
 	 * @since 4.2.0
 	 *
-	 * @param array $forms    The translations, one per plural form.
+	 * @param array $forms    The translations, keyed by the index of their plural form.
 	 * @param int   $nplurals The number of plural forms of the locale.
 	 * @return array The translations, with null for each empty or missing plural form.
 	 */
 	private static function normalize_plural_forms( array $forms, $nplurals ) {
-		return array_map(
-			static function ( $form ) {
-				return '' === $form ? null : $form;
-			},
-			array_slice( array_pad( array_values( $forms ), $nplurals, null ), 0, $nplurals )
-		);
+		$normalized = array();
+		for ( $index = 0; $index < $nplurals; $index++ ) {
+			$form         = $forms[ $index ] ?? null;
+			$normalized[] = '' === $form ? null : $form;
+		}
+
+		return $normalized;
 	}
 
 	/**
