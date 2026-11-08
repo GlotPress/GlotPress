@@ -1042,16 +1042,111 @@ span.context {
  */
 .gp-js-message {
 	position: fixed;
-	top: 0;
-	padding: 1em;
+	inset: 1rem 1rem auto auto;
 	display: none;
+	align-items: flex-start;
+	gap: 0.75rem;
+	box-sizing: border-box;
+	width: max-content;
+	max-width: min(28rem, calc(100vw - 2rem));
+	margin: 0;
+	padding: 0.75rem 1rem;
+	border: 0;
+	border-radius: 6px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	overflow: visible;
 	z-index: 1001;
 }
 
-.gp-js-error .gp-js-message-dismiss,
-.gp-js-error .gp-js-message-dismiss:hover,
-.gp-js-error .gp-js-message-dismiss:focus {
-	color: inherit !important;
+@media screen and (max-width: 500px) {
+	.gp-js-message {
+		inset: 0.5rem 0.5rem auto;
+		width: auto;
+		max-width: none;
+	}
+}
+
+.gp-js-message.is-open {
+	display: flex;
+	animation: gp-js-message-in 0.15s ease-out;
+}
+
+.gp-js-success.is-open {
+	animation: gp-js-message-in 0.15s ease-out, gp-js-message-out 0.4s ease-in 4s forwards;
+}
+
+/* Gives the translator time to read the message while pointing at it or using its controls. Only the exit pauses, so a message replaced while pointed at still appears. */
+.gp-js-success.is-open:hover,
+.gp-js-success.is-open:focus-within {
+	animation-play-state: running, paused;
+}
+
+@keyframes gp-js-message-in {
+	from {
+		opacity: 0;
+		translate: 0 -0.5rem;
+	}
+}
+
+@keyframes gp-js-message-out {
+	to {
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.gp-js-message.is-open {
+		animation: none;
+	}
+
+	.gp-js-success.is-open {
+		animation: gp-js-message-out 0.01s 4s forwards;
+	}
+
+	.gp-js-success.is-open:hover,
+	.gp-js-success.is-open:focus-within {
+		animation-play-state: paused;
+	}
+}
+
+.gp-js-message-content {
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+.gp-js-message-content ul {
+	margin: 0.25rem 0 0;
+	padding-left: 1.25rem;
+}
+
+.gp-js-message-content li + li {
+	margin-top: 0.25rem;
+}
+
+/* Pulled into the padding so it sits in the top right corner, aligned with the first line. */
+.gp-js-message-dismiss {
+	display: flex;
+	flex: none;
+	align-items: center;
+	justify-content: center;
+	margin: -0.125rem -0.5rem 0 0;
+	width: 1.5rem;
+	height: 1.5rem;
+	padding: 0;
+	border: 0;
+	border-radius: 4px;
+	background: transparent;
+	color: inherit;
+	cursor: pointer;
+}
+
+.gp-js-message-dismiss:hover {
+	background: rgba(0, 0, 0, 0.15);
+}
+
+.gp-js-message-dismiss:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 1px;
 }
 
 .gp-js-error, .error {

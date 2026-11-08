@@ -312,7 +312,7 @@ $gp.editor = (
 
 				editor = $gp.editor.current;
 				button.prop( 'disabled', true );
-				$gp.notices.notice( wp.i18n.__( 'Saving&hellip;', 'glotpress' ) );
+				$gp.notices.progress( wp.i18n.__( 'Saving&hellip;', 'glotpress' ) );
 
 				data = {
 					original_id: editor.original_id,
@@ -364,7 +364,7 @@ $gp.editor = (
 
 				editor = $gp.editor.current;
 				select.prop( 'disabled', true );
-				$gp.notices.notice( wp.i18n.__( 'Setting priority&hellip;', 'glotpress' ) );
+				$gp.notices.progress( wp.i18n.__( 'Setting priority&hellip;', 'glotpress' ) );
 
 				data = {
 					priority: $( 'option:selected', select ).val(),
@@ -431,7 +431,7 @@ $gp.editor = (
 				}
 
 				/* translators: %s: Status name. */
-				$gp.notices.notice( wp.i18n.sprintf( wp.i18n.__( 'Setting status to &#8220;%s&#8221;&hellip;', 'glotpress' ), status_name ) );
+				$gp.notices.progress( wp.i18n.sprintf( wp.i18n.__( 'Setting status to &#8220;%s&#8221;&hellip;', 'glotpress' ), status_name ) );
 
 				data = {
 					translation_id: editor.translation_id,
@@ -464,7 +464,7 @@ $gp.editor = (
 					return;
 				}
 
-				$gp.notices.notice( wp.i18n.__( 'Discarding&hellip;', 'glotpress' ) );
+				$gp.notices.progress( wp.i18n.__( 'Discarding&hellip;', 'glotpress' ) );
 
 				data = {
 					translation_id: $gp.editor.current.translation_id,
@@ -479,7 +479,7 @@ $gp.editor = (
 					url: $gp_editor_options.discard_warning_url,
 					data: data,
 					success: function( response, textStatus, xhr ) {
-						$gp.notices.success( wp.i18n.__( 'Saved!', 'glotpress' ) );
+						$gp.notices.success( wp.i18n.__( 'Warning discarded!', 'glotpress' ) );
 						$gp.editor.replace_current( response );
 						$gp.editor.update_filter_counts( xhr );
 					},

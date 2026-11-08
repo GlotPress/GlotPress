@@ -139,6 +139,22 @@ class GP_Route {
 	}
 
 	/**
+	 * Formats error messages for an error response, as a list only if there is more than one.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string[] $messages The error messages, as HTML.
+	 * @return string The error messages, as HTML.
+	 */
+	protected function error_messages_html( array $messages ): string {
+		if ( 1 === count( $messages ) ) {
+			return reset( $messages );
+		}
+
+		return '<ul><li>' . implode( '</li><li>', $messages ) . '</li></ul>';
+	}
+
+	/**
 	 * Shows a template and exit.
 	 *
 	 * @param string      $message  The message to display.
