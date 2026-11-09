@@ -354,6 +354,93 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$this->assertEquals( 'fuzzy', GP::$translation->get( $translation->id )->status, 'A legitimate in-project translated row must still be acted on.' );
 	}
 
+	function test_bulk_copy_original_adds_the_original_as_current_translation() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$singular = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Lisbon' ) );
+		$plural   = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%s colour', 'plural' => '%s colours' ) );
+
+		$this->bulk_copy_original( $set, array( $singular->id, $plural->id ) );
+
+		$singular_translation = GP::$translation->find_one( array( 'original_id' => $singular->id, 'translation_set_id' => $set->id ) );
+		$this->assertSame( 'current', $singular_translation->status );
+		$this->assertSame( 'Lisbon', $singular_translation->translation_0 );
+		$this->assertSame( get_current_user_id(), $singular_translation->user_id );
+
+		$plural_translation = GP::$translation->find_one( array( 'original_id' => $plural->id, 'translation_set_id' => $set->id ) );
+		$this->assertSame( 'current', $plural_translation->status );
+		$this->assertSame( array( '%s colour', '%s colours' ), array( $plural_translation->translation_0, $plural_translation->translation_1 ) );
+
+		$this->assertThereIsANoticeContaining( '2 translations were copied from the original.' );
+	}
+
+	function test_bulk_copy_original_skips_originals_that_already_have_a_translation() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$translated = array();
+		foreach ( array( 'current', 'waiting', 'fuzzy', 'changesrequested' ) as $status ) {
+			$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active' ) );
+			$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => $status ) );
+			$translated[ $original->id ] = $status;
+		}
+		$rejected = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Porto' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $rejected->id, 'status' => 'rejected' ) );
+
+		// Rows of untranslated originals carry no translation ID, even when a stale page offers one for an original translated since.
+		$this->bulk_copy_original( $set, array_merge( array_keys( $translated ), array( $rejected->id ) ) );
+
+		foreach ( $translated as $original_id => $status ) {
+			$translations = GP::$translation->find_many( array( 'original_id' => $original_id, 'translation_set_id' => $set->id ) );
+			$this->assertCount( 1, $translations );
+			$this->assertSame( $status, $translations[0]->status );
+		}
+		$this->assertSame( 'Porto', GP::$translation->find_one( array( 'original_id' => $rejected->id, 'status' => 'current' ) )->translation_0 );
+
+		// Notices reach the next page through a single cookie, so both messages share one.
+		$this->assertCount( 1, $this->route->notices );
+		$this->assertThereIsANoticeContaining( '1 translation was copied from the original. 4 strings were skipped because they already have a translation.' );
+	}
+
+	function test_bulk_copy_original_ignores_obsolete_originals() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$obsolete = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '-obsolete' ) );
+
+		$this->bulk_copy_original( $set, array( $obsolete->id ) );
+
+		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $obsolete->id ) ) );
+	}
+
+	function test_bulk_copy_original_keeps_the_copy_as_suggestion_when_it_cannot_be_approved() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Lisbon' ) );
+
+		add_filter( 'gp_pre_can_set_translation_status', '__return_false' );
+		$this->bulk_copy_original( $set, array( $original->id ) );
+		remove_filter( 'gp_pre_can_set_translation_status', '__return_false' );
+
+		$translation = GP::$translation->find_one( array( 'original_id' => $original->id, 'translation_set_id' => $set->id ) );
+		$this->assertSame( 'waiting', $translation->status );
+		$this->assertSame( 'Lisbon', $translation->translation_0 );
+		$this->assertThereIsANoticeContaining( '1 translation was copied from the original as suggestion, as it could not be approved.' );
+	}
+
+	private function bulk_copy_original( $set, $original_ids ) {
+		$_POST['bulk'] = array(
+			'action'      => 'copy-original',
+			'row-ids'     => implode( ',', $original_ids ),
+			'redirect_to' => '/',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'bulk-actions' );
+
+		$this->route->bulk_post( $set->project->path, $set->locale, $set->slug );
+	}
+
 	function test_export_strips_control_characters() {
 		$set      = $this->factory->translation_set->create_with_project_and_locale();
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
