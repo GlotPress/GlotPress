@@ -457,6 +457,9 @@ class GP_Route_Translation extends GP_Route_Main {
 				case 'fuzzy':
 					$this->_bulk_fuzzy( $bulk );
 					break;
+				case 'copy-original':
+					$this->_bulk_copy_original( $project, $translation_set, $bulk );
+					break;
 				case 'set-priority':
 					$this->_bulk_set_priority( $project, $bulk );
 			}
@@ -735,6 +738,138 @@ class GP_Route_Translation extends GP_Route_Main {
 				/* translators: %d: Translations count. */
 				_n( 'Error with marking %d translation as fuzzy.', 'Error with marking all %d translation as fuzzy.', $error, 'glotpress' ),
 				$error
+			);
+		}
+	}
+
+	/**
+	 * Processes the bulk action to add the original as current translation of untranslated originals.
+	 *
+	 * Originals with a current or an open translation are skipped, as approving the copy would set
+	 * those to old.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param GP_Project         $project         The current project.
+	 * @param GP_Translation_Set $translation_set The current translation set.
+	 * @param array              $bulk            The bulk data to process.
+	 */
+	private function _bulk_copy_original( $project, $translation_set, $bulk ) {
+		$locale       = GP_Locales::by_slug( $translation_set->locale );
+		$can_write    = $this->can( 'write', 'project', $project->id );
+		$original_ids = array_map(
+			function ( $row_id ) {
+				return (int) gp_array_get( explode( '-', $row_id ), 0 );
+			},
+			$bulk['row-ids']
+		);
+		$translated   = wp_list_pluck(
+			GP::$translation->find_many(
+				array(
+					'original_id'        => $original_ids,
+					'translation_set_id' => $translation_set->id,
+					'status'             => array( 'current', 'waiting', 'fuzzy', 'changesrequested' ),
+				)
+			),
+			'original_id',
+			'original_id'
+		);
+		$originals    = GP::$original->find_many(
+			array(
+				'id'     => $original_ids,
+				'status' => '+active',
+			)
+		);
+		$copied       = 0;
+		$suggested    = 0;
+		$skipped      = 0;
+		$failed       = 0;
+
+		foreach ( $originals as $original ) {
+			if ( isset( $translated[ $original->id ] ) ) {
+				++$skipped;
+				continue;
+			}
+
+			// Hidden originals are left out of the listings of users without write permission.
+			if ( (int) $original->priority <= -2 && ! $can_write ) {
+				continue;
+			}
+
+			// Like the copy button of the editor, the first form gets the singular and all others the plural.
+			$translations = array( $original->singular );
+			if ( null !== $original->plural ) {
+				$translations = array_pad( $translations, $locale->nplurals, $original->plural );
+			}
+
+			if ( GP::$translation_errors->check( $original, $translations, $locale ) ) {
+				++$failed;
+				continue;
+			}
+
+			$data = array(
+				'original_id'        => $original->id,
+				'translation_set_id' => $translation_set->id,
+				'user_id'            => get_current_user_id(),
+				'status'             => 'waiting',
+				'warnings'           => GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale ),
+			);
+			foreach ( $translations as $index => $form ) {
+				$data[ "translation_$index" ] = $form;
+			}
+
+			$translation = GP::$translation->create( $data );
+			if ( ! $translation || ! $translation->validate() ) {
+				if ( $translation ) {
+					$translation->delete();
+				}
+				++$failed;
+				continue;
+			}
+
+			// Like a translation saved in the editor, a copy that can't be approved stays a suggestion.
+			if ( $translation->set_status( 'current' ) ) {
+				++$copied;
+			} else {
+				++$suggested;
+			}
+		}
+
+		$notices = array();
+		if ( $copied ) {
+			$notices[] = sprintf(
+				/* translators: %d: Translations count. */
+				_n( '%d translation was copied from the original.', '%d translations were copied from the original.', $copied, 'glotpress' ),
+				$copied
+			);
+		}
+
+		if ( $suggested ) {
+			$notices[] = sprintf(
+				/* translators: %d: Translations count. */
+				_n( '%d translation was copied from the original as suggestion, as it could not be approved.', '%d translations were copied from the original as suggestions, as they could not be approved.', $suggested, 'glotpress' ),
+				$suggested
+			);
+		}
+
+		if ( $skipped ) {
+			$notices[] = sprintf(
+				/* translators: %d: Strings count. */
+				_n( '%d string was skipped because it already has a translation.', '%d strings were skipped because they already have a translation.', $skipped, 'glotpress' ),
+				$skipped
+			);
+		}
+
+		// Notices reach the next page through a single cookie, which keeps only the last one.
+		if ( $notices ) {
+			$this->notices[] = implode( ' ', $notices );
+		}
+
+		if ( $failed ) {
+			$this->errors[] = sprintf(
+				/* translators: %d: Strings count. */
+				_n( 'Error with copying the original of %d string.', 'Error with copying the originals of %d strings.', $failed, 'glotpress' ),
+				$failed
 			);
 		}
 	}
