@@ -374,6 +374,8 @@ class GP_Route_Translation extends GP_Route_Main {
 				}
 			}
 
+			$this->validate_not_rejected_or_changesrequested( $translation_set, $original_id, $translations, $set_status );
+
 			$translation = GP::$translation->create( $data );
 
 			if ( ! $translation ) {
@@ -1038,6 +1040,34 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$this->can_or_forbidden( 'approve', 'translation', $translation->id, null, array( 'translation' => $translation ) );
+	}
+
+	/**
+	 * Validates that an incoming suggestion is not already rejected or changes-requested.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 * @param int                $original_id     The original ID.
+	 * @param array              $translations    The incoming translation strings.
+	 * @param string             $set_status      Target status for the new translation.
+	 */
+	private function validate_not_rejected_or_changesrequested( $translation_set, $original_id, $translations, $set_status ) {
+		if ( 'waiting' !== $set_status ) {
+			return;
+		}
+
+		$blocked_reason = $translation_set->get_blocked_suggestion_reason( $original_id, $translations );
+		if ( ! $blocked_reason ) {
+			return;
+		}
+
+		// Without the status, translations with changes requested are shown as rejected ones.
+		if ( 'changesrequested' === $blocked_reason && apply_filters( 'gp_enable_changesrequested_status', false ) ) {
+			$this->die_with_error( __( 'Identical translation with changes requested already exists.', 'glotpress' ), 200 );
+		}
+
+		$this->die_with_error( __( 'Identical rejected translation already exists.', 'glotpress' ), 200 );
 	}
 
 	/**

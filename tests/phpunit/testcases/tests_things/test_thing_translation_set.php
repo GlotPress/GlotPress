@@ -484,4 +484,106 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 			);
 		}
 	}
+
+	/**
+	 * Suggestions identical to a rejected or changes-requested translation are refused, whoever suggests them.
+	 *
+	 * @covers GP_Translation_Set::get_blocked_suggestion_reason
+	 */
+	function test_get_blocked_suggestion_reason() {
+		$set  = $this->factory->translation_set->create_with_project_and_locale();
+		$orig = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Submit' ) );
+
+		$this->assertFalse( $set->get_blocked_suggestion_reason( $orig->id, array( 'Absenden' ) ) );
+
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $orig->id,
+				'user_id'            => $this->factory->user->create(),
+				'status'             => 'rejected',
+				'translation_0'      => 'Absenden',
+			)
+		);
+
+		$this->assertSame( 'rejected', $set->get_blocked_suggestion_reason( $orig->id, array( 'Absenden' ) ) );
+		$this->assertFalse( $set->get_blocked_suggestion_reason( $orig->id, array( 'Einreichen' ) ) );
+
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $orig->id,
+				'status'             => 'changesrequested',
+				'translation_0'      => 'Senden',
+			)
+		);
+
+		$this->assertSame( 'changesrequested', $set->get_blocked_suggestion_reason( $orig->id, array( 'Senden' ) ) );
+	}
+
+	/**
+	 * @covers GP_Translation_Set::get_blocked_suggestion_reason
+	 */
+	function test_get_blocked_suggestion_reason_compares_strictly_and_ignores_empty_plural_forms() {
+		$set  = $this->factory->translation_set->create_with_project_and_locale();
+		$orig = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%s item', 'plural' => '%s items' ) );
+
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $orig->id,
+				'status'             => 'rejected',
+				'translation_0'      => '1',
+			)
+		);
+
+		// The request sends an empty string for an empty plural form, the row stores null.
+		$this->assertSame( 'rejected', $set->get_blocked_suggestion_reason( $orig->id, array( '1', '' ) ) );
+		$this->assertFalse( $set->get_blocked_suggestion_reason( $orig->id, array( '1.0', '' ) ) );
+	}
+
+	/**
+	 * A suggestion its author rejected again is withdrawn, which says nothing about the text.
+	 *
+	 * @covers GP_Translation_Set::get_blocked_suggestion_reason
+	 */
+	function test_get_blocked_suggestion_reason_ignores_a_suggestion_its_author_withdrew() {
+		$set    = $this->factory->translation_set->create_with_project_and_locale();
+		$orig   = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Submit' ) );
+		$author = $this->factory->user->create();
+
+		$this->factory->translation->create(
+			array(
+				'translation_set_id'    => $set->id,
+				'original_id'           => $orig->id,
+				'user_id'               => $author,
+				'user_id_last_modified' => $author,
+				'status'                => 'rejected',
+				'translation_0'         => 'Absenden',
+			)
+		);
+
+		$this->assertFalse( $set->get_blocked_suggestion_reason( $orig->id, array( 'Absenden' ) ) );
+	}
+
+	/**
+	 * @covers GP_Translation_Set::get_blocked_suggestion_reason
+	 */
+	function test_get_blocked_suggestion_reason_compares_plural_forms_by_their_index() {
+		$set  = $this->factory->translation_set->create_with_project_and_locale();
+		$orig = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'File', 'plural' => 'Files' ) );
+
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $orig->id,
+				'status'             => 'rejected',
+				'translation_0'      => 'Datei',
+				'translation_1'      => 'Dateien',
+			)
+		);
+
+		$this->assertSame( 'rejected', $set->get_blocked_suggestion_reason( $orig->id, array( 1 => 'Dateien', 0 => 'Datei' ) ) );
+		$this->assertFalse( $set->get_blocked_suggestion_reason( $orig->id, array( 'Dateien', 'Datei' ) ) );
+	}
 }
