@@ -96,6 +96,7 @@ class GP_Test_Route_Glossary_Entry_Csv extends GP_UnitTestCase_Route {
 
 		$rows = array(
 			array( 'existing', 'vorhanden', 'noun', '' ),
+			array( ' existing ', 'vorhanden', 'noun', '' ),
 			array( 'house', 'Haus', 'noun', '' ),
 			array( 'Häuser', 'Häuser', 'noun', '' ),
 			array( '', 'leer', 'noun', '' ),
@@ -111,8 +112,8 @@ class GP_Test_Route_Glossary_Entry_Csv extends GP_UnitTestCase_Route {
 		$this->assertSame( 1, $count );
 		$this->assertSame(
 			array(
-				'13 entries were skipped because they are invalid: "Häuser" (row 4), row 5, "' . str_repeat( 'ä', 50 ) . '…" (row 7), "bogus 1" (row 8), "bogus 2" (row 9), "bogus 3" (row 10), "bogus 4" (row 11), "bogus 5" (row 12), "bogus 6" (row 13), "bogus 7" (row 14), and 3 more.',
-				'1 entry was skipped because it already exists.',
+				'13 entries were skipped because they are invalid: "Häuser" (row 5), row 6, "' . str_repeat( 'ä', 50 ) . '…" (row 8), "bogus 1" (row 9), "bogus 2" (row 10), "bogus 3" (row 11), "bogus 4" (row 12), "bogus 5" (row 13), "bogus 6" (row 14), "bogus 7" (row 15), and 3 more.',
+				'2 entries were skipped because they already exist.',
 			),
 			$skipped
 		);

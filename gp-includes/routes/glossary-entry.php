@@ -624,8 +624,10 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 				}
 				continue;
 			} else {
-				// The entry exists no matter who last edited it.
-				$entry_exists = GP::$glossary_entry->find_one( array_diff_key( $entry_data, array( 'last_edited_by' => true ) ) );
+				// Looked up with the trimmed term it's stored with, no matter who last edited it.
+				$lookup         = array_diff_key( $entry_data, array( 'last_edited_by' => true ) );
+				$lookup['term'] = $new_glossary_entry->term;
+				$entry_exists   = GP::$glossary_entry->find_one( $lookup );
 				if ( $entry_exists ) {
 					++$existing;
 					continue;
