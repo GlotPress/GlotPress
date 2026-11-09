@@ -460,20 +460,23 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			GP::$glossary_entry->delete_many( array( 'glossary_id' => $glossary->id ) );
 		}
 
-		$glossary_entries_added = $this->read_glossary_entries_from_file( $_FILES['import-file']['tmp_name'], $glossary->id, $locale->slug ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$result = $this->read_glossary_entries_from_file( $_FILES['import-file']['tmp_name'], $glossary->id, $locale->slug ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
-		if ( empty( $this->errors ) && is_int( $glossary_entries_added ) ) {
+		if ( empty( $this->errors ) && is_array( $result ) ) {
+			list( $glossary_entries_added, $skipped ) = $result;
+
 			$message = sprintf(
-				/* translators: %s: Count number. */
-				__( '%s glossary entries were added', 'glotpress' ),
+				/* translators: %d: Number of added glossary entries. */
+				_n( '%d glossary entry was added.', '%d glossary entries were added.', $glossary_entries_added, 'glotpress' ),
 				$glossary_entries_added
 			);
 
-			if ( $glossary_entries_added ) {
+			if ( $glossary_entries_added && ! $skipped ) {
 				$this->successes[] = $message;
 			} else {
 				$this->notices[] = $message;
 			}
+			$this->notices = array_merge( $this->notices, $skipped );
 		}
 
 		$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
@@ -548,14 +551,26 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 	/**
 	 * Reads glossary entries from a CSV file and adds them to the glossary.
 	 *
+	 * Lists only the first invalid entries, as the messages reach the next page through
+	 * a cookie, which browsers drop when it grows beyond a few kilobytes.
+	 *
 	 * @param string $file        The path to the CSV file.
 	 * @param int    $glossary_id The ID of the glossary to add entries to.
 	 * @param string $locale_slug The slug of the locale.
-	 * @return int|null The number of glossary entries added, or null on failure.
+	 * @return array|null {
+	 *     The result of the import, or null if the file can't be read.
+	 *
+	 *     @type int      $0 The number of glossary entries added.
+	 *     @type string[] $1 The messages about skipped entries.
+	 * }
 	 */
 	private function read_glossary_entries_from_file( $file, $glossary_id, $locale_slug ) {
 		$f                = fopen( $file, 'r' );
 		$glossary_entries = 0;
+		$invalid          = array();
+		$invalid_count    = 0;
+		$existing         = 0;
+		$row              = 1;
 
 		$data = fgetcsv( $f, 0, ',', '"', '' );
 
@@ -567,6 +582,13 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		while ( ( $data = fgetcsv( $f, 0, ',', '"', '' ) ) !== false ) {
+			++$row;
+
+			// A blank line is read as a single null field.
+			if ( array( null ) === $data ) {
+				continue;
+			}
+
 			// We're only parsing one locale per file right now.
 			if ( count( $data ) > 4 ) {
 				$data = array_splice( $data, 2, -2 );
@@ -574,20 +596,45 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 
 			$entry_data = array(
 				'glossary_id'    => $glossary_id,
-				'term'           => $this->unescape_csv_value( $data[0] ),
-				'translation'    => $this->unescape_csv_value( $data[1] ),
-				'part_of_speech' => $this->unescape_csv_value( $data[2] ),
-				'comment'        => $this->unescape_csv_value( $data[3] ),
+				'term'           => $this->unescape_csv_value( $data[0] ?? '' ),
+				'translation'    => $this->unescape_csv_value( $data[1] ?? '' ),
+				'part_of_speech' => $this->unescape_csv_value( $data[2] ?? '' ),
+				'comment'        => $this->unescape_csv_value( $data[3] ?? '' ),
 				'last_edited_by' => get_current_user_id(),
 			);
 
 			$new_glossary_entry = new GP_Glossary_Entry( $entry_data );
 
 			if ( ! $new_glossary_entry->validate() ) {
+				++$invalid_count;
+				if ( $invalid_count > 10 ) {
+					continue;
+				}
+
+				$term = trim( (string) $entry_data['term'] );
+				if ( '' === $term ) {
+					/* translators: %d: Row number in the CSV file. */
+					$invalid[] = sprintf( __( 'row %d', 'glotpress' ), $row );
+				} else {
+					// Shortened, so a few long terms can't push the message past the size of a cookie.
+					$term = mb_strlen( $term ) > 50 ? mb_substr( $term, 0, 50 ) . '…' : $term;
+
+					/* translators: 1: Glossary term. 2: Row number in the CSV file. */
+					$invalid[] = sprintf( __( '"%1$s" (row %2$d)', 'glotpress' ), esc_html( $term ), $row );
+				}
 				continue;
 			} else {
-				$entry_exists = GP::$glossary_entry->find_one( $entry_data );
+				// Same identity as an entry added in the editor. Entries without a translation store NULL.
+				$entry_exists = GP::$glossary_entry->find_one(
+					array(
+						'glossary_id'    => $glossary_id,
+						'term'           => $new_glossary_entry->term,
+						'translation'    => '' === (string) $new_glossary_entry->translation ? array( '', null ) : $new_glossary_entry->translation,
+						'part_of_speech' => $new_glossary_entry->part_of_speech,
+					)
+				);
 				if ( $entry_exists ) {
+					++$existing;
 					continue;
 				}
 				$created_glossary_entry = GP::$glossary_entry->create_and_select( $new_glossary_entry );
@@ -598,6 +645,31 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		}
 
 		fclose( $f );
-		return $glossary_entries;
+
+		$skipped = array();
+		if ( $invalid_count ) {
+			if ( $invalid_count > count( $invalid ) ) {
+				/* translators: %d: Number of further skipped entries. */
+				$invalid[] = sprintf( __( '%d more', 'glotpress' ), $invalid_count - count( $invalid ) );
+			}
+			$listed = wp_sprintf( '%l', $invalid );
+
+			$skipped[] = sprintf(
+				/* translators: 1: Number of skipped entries. 2: List of skipped entries. */
+				_n( '%1$d entry was skipped because it is invalid: %2$s.', '%1$d entries were skipped because they are invalid: %2$s.', $invalid_count, 'glotpress' ),
+				$invalid_count,
+				$listed
+			);
+		}
+
+		if ( $existing ) {
+			$skipped[] = sprintf(
+				/* translators: %d: Number of skipped entries. */
+				_n( '%d entry was skipped because it already exists.', '%d entries were skipped because they already exist.', $existing, 'glotpress' ),
+				$existing
+			);
+		}
+
+		return array( $glossary_entries, $skipped );
 	}
 }
