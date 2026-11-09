@@ -84,8 +84,8 @@ class GP_Route_Glossary extends GP_Route_Main {
 		$created_glossary = GP::$glossary->create_and_select( $new_glossary );
 
 		if ( $created_glossary ) {
-			$this->notices[] = __( 'The glossary was created!', 'glotpress' );
-			$set_project     = GP::$project->get( $translation_set->project_id );
+			$this->successes[] = __( 'The glossary was created!', 'glotpress' );
+			$set_project       = GP::$project->get( $translation_set->project_id );
 
 			$this->redirect( $created_glossary->path() );
 		} else {
@@ -155,9 +155,9 @@ class GP_Route_Glossary extends GP_Route_Main {
 			return;
 		}
 
-		$this->notices[] = __( 'The glossary was updated!', 'glotpress' );
-		$translation_set = $new_glossary->translation_set_id ? GP::$translation_set->get( $new_glossary->translation_set_id ) : null;
-		$set_project     = GP::$project->get( $translation_set->project_id );
+		$this->successes[] = __( 'The glossary was updated!', 'glotpress' );
+		$translation_set   = $new_glossary->translation_set_id ? GP::$translation_set->get( $new_glossary->translation_set_id ) : null;
+		$set_project       = GP::$project->get( $translation_set->project_id );
 
 		$this->redirect( $glossary->path() );
 	}
@@ -220,7 +220,7 @@ class GP_Route_Glossary extends GP_Route_Main {
 			return;
 		}
 
-		$this->notices[] = __( 'The glossary was deleted!', 'glotpress' );
+		$this->successes[] = __( 'The glossary was deleted!', 'glotpress' );
 
 		$this->redirect( gp_url_join( gp_url_project( $project ), array( $translation_set->locale, $translation_set->slug ) ) );
 	}

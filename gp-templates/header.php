@@ -61,6 +61,12 @@
 			</div>
 		<?php endif; ?>
 
+		<?php if ( gp_notice( 'success' ) ) : ?>
+			<div class="success">
+				<?php echo gp_notice( 'success' ); ?>
+			</div>
+		<?php endif; ?>
+
 		<?php if ( gp_notice() ) : ?>
 			<div class="notice">
 				<?php echo gp_notice(); ?>

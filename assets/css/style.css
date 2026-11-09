@@ -1152,15 +1152,17 @@ span.context {
 	background-color: var( --gp-color-attention-emphasis );
 }
 
-.gp-js-success {
+.gp-js-success, .success {
 	color: var( --gp-color-fg-on-emphasis );
 	background-color: var( --gp-color-success-emphasis );
 }
 
-.notice, .error {
+.notice, .error, .success {
 	clear: both;
-	padding: 0.5rem;
 	margin: 1rem 0;
+	padding: 0.75rem 1rem;
+	border-radius: 6px;
+	overflow-wrap: anywhere;
 }
 
 a.button.action.edit {

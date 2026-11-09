@@ -178,7 +178,7 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 					$this->errors[] = __( 'Error in creating glossary entry!', 'glotpress' );
 					$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 				} else {
-					$this->notices[] = __( 'The glossary entry was created!', 'glotpress' );
+					$this->successes[] = __( 'The glossary entry was created!', 'glotpress' );
 					$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
 				}
 			}
@@ -463,11 +463,17 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 		$glossary_entries_added = $this->read_glossary_entries_from_file( $_FILES['import-file']['tmp_name'], $glossary->id, $locale->slug ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		if ( empty( $this->errors ) && is_int( $glossary_entries_added ) ) {
-			$this->notices[] = sprintf(
+			$message = sprintf(
 				/* translators: %s: Count number. */
 				__( '%s glossary entries were added', 'glotpress' ),
 				$glossary_entries_added
 			);
+
+			if ( $glossary_entries_added ) {
+				$this->successes[] = $message;
+			} else {
+				$this->notices[] = $message;
+			}
 		}
 
 		$this->redirect( gp_url_join( gp_url_project_locale( $project->path, $locale_slug, $translation_set_slug ), array( 'glossary' ) ) );
