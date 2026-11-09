@@ -116,7 +116,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$translations_added = $translation_set->import( $translations, $import_status );
 		$message            = sprintf(
 			/* translators: %s: Translations count. */
-			_n( '%s translation was added', '%s translations were added', $translations_added, 'glotpress' ),
+			_n( '%s translation was added.', '%s translations were added.', $translations_added, 'glotpress' ),
 			$translations_added
 		);
 
