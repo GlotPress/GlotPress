@@ -354,11 +354,11 @@ class GP_Original extends GP_Thing {
 			/**
 			 * Filter the data of an original being imported or updated.
 			 *
-			 * This filter is called twice per each entry. First time during determining if the original
-			 * already exists. The second time it is called before a new original is added or a close
-			 * old match is set fuzzy with this new data.
+			 * The filtered data is used to update an existing original, to add a new one, or to update
+			 * a close old match whose translations are set to fuzzy.
 			 *
 			 * @since 1.0.0
+			 * @since 4.2.0 Called once per entry instead of twice for entries without an existing original.
 			 *
 			 * @param array $data {
 			 *     An array that describes a single entry being imported or updated.
@@ -388,7 +388,7 @@ class GP_Original extends GP_Thing {
 				}
 			} else {
 				// We can't find this in our originals. Let's keep it for later.
-				$possibly_added[] = $entry;
+				$possibly_added[] = array( $entry, $data );
 			}
 		}
 
@@ -402,30 +402,7 @@ class GP_Original extends GP_Thing {
 
 		$prev_suspend_cache = wp_suspend_cache_invalidation( true );
 
-		foreach ( $possibly_added as $entry ) {
-			$data = array(
-				'project_id' => $project->id,
-				'context'    => $entry->context,
-				'singular'   => $entry->singular,
-				'plural'     => $entry->plural,
-				'comment'    => $entry->extracted_comments,
-				'references' => implode( ' ', $entry->references ),
-				'status'     => '+active',
-			);
-
-			// Set the Priority if specified as a flag.
-			if ( $entry->flags ) {
-				foreach ( self::$priorities as $priority => $text ) {
-					if ( in_array( "gp-priority: {$text}", $entry->flags ) ) {
-						$data['priority'] = $priority;
-						break;
-					}
-				}
-			}
-
-			/** This filter is documented in gp-includes/things/original.php */
-			$data = apply_filters( 'gp_import_original_array', $data, $entry );
-
+		foreach ( $possibly_added as list( $entry, $data ) ) {
 			// Search for match in the dropped strings and existing obsolete strings.
 			$close_original = $this->closest_original( $entry->key(), $comparison_array );
 

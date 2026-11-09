@@ -114,11 +114,17 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$translations_added = $translation_set->import( $translations, $import_status );
-		$this->notices[]    = sprintf(
+		$message            = sprintf(
 			/* translators: %s: Translations count. */
 			_n( '%s translation was added', '%s translations were added', $translations_added, 'glotpress' ),
 			$translations_added
 		);
+
+		if ( $translations_added ) {
+			$this->successes[] = $message;
+		} else {
+			$this->notices[] = $message;
+		}
 
 		$this->redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ) );
 	}
@@ -250,6 +256,9 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$translations             = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
 		$total_translations_count = GP::$translation->found_rows;
+		if ( ! $this->api ) {
+			$translations = GP::$translation->add_related_translations( $translations, $translation_set );
+		}
 
 		$can_edit            = $this->can( 'edit', 'translation-set', $translation_set->id );
 		$can_write           = $this->can( 'write', 'project', $project->id );
@@ -374,6 +383,8 @@ class GP_Route_Translation extends GP_Route_Main {
 				}
 			}
 
+			$this->validate_not_rejected_or_changesrequested( $translation_set, $original_id, $translations, $set_status );
+
 			$translation = GP::$translation->create( $data );
 
 			if ( ! $translation ) {
@@ -392,6 +403,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				}
 
 				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array( 'translation_id' => $translation->id ), array() );
+				$translations = GP::$translation->add_related_translations( $translations, $translation_set );
 
 				if ( ! empty( $translations ) ) {
 					$translation = $translations[0];
@@ -580,26 +592,32 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( 0 === $error && ( $ok > 0 || 0 === $refused ) ) {
 			switch ( $action ) {
 				case 'approve':
-					$this->notices[] = sprintf(
+					$message = sprintf(
 					/* translators: %d: Translations count. */
 						_n( '%d translation was approved.', '%d translations were approved.', $ok, 'glotpress' ),
 						$ok
 					);
 					break;
 				case 'reject':
-					$this->notices[] = sprintf(
+					$message = sprintf(
 					/* translators: %d: Translations count. */
 						_n( '%d translation was rejected.', '%d translations were rejected.', $ok, 'glotpress' ),
 						$ok
 					);
 					break;
 				case 'changesrequested':
-					$this->notices[] = sprintf(
+					$message = sprintf(
 					/* translators: %d: Translations count. */
 						_n( '%d translation has changes requested.', '%d translations have changes requested.', $ok, 'glotpress' ),
 						$ok
 					);
 					break;
+			}
+
+			if ( $ok ) {
+				$this->successes[] = $message;
+			} else {
+				$this->notices[] = $message;
 			}
 		} elseif ( $ok > 0 ) {
 			switch ( $action ) {
@@ -682,9 +700,6 @@ class GP_Route_Translation extends GP_Route_Main {
 				_n( '%d translation was not approved because it has translation errors.', '%d translations were not approved because they have translation errors.', $refused, 'glotpress' ),
 				$refused
 			);
-
-			// Errors reach the next page through a single cookie, which keeps only the last one.
-			$this->errors = array( implode( ' ', $this->errors ) );
 		}
 	}
 
@@ -714,11 +729,17 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		if ( 0 === $error ) {
-			$this->notices[] = sprintf(
+			$message = sprintf(
 				/* translators: %d: Translations count. */
 				_n( '%d translation was marked as fuzzy.', '%d translations were marked as fuzzy.', $ok, 'glotpress' ),
 				$ok
 			);
+
+			if ( $ok ) {
+				$this->successes[] = $message;
+			} else {
+				$this->notices[] = $message;
+			}
 		} elseif ( $ok > 0 ) {
 				$message = sprintf(
 					/* translators: %d: Translations count. */
@@ -909,11 +930,17 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		if ( 0 === $error ) {
-			$this->notices[] = sprintf(
+			$message = sprintf(
 				/* translators: %d: Originals count. */
 				_n( 'Priority of %d original was modified.', 'Priority of %d originals were modified.', $ok, 'glotpress' ),
 				$ok
 			);
+
+			if ( $ok ) {
+				$this->successes[] = $message;
+			} else {
+				$this->notices[] = $message;
+			}
 		} elseif ( $ok > 0 ) {
 				$message = sprintf(
 					/* translators: %d: Originals count. */
@@ -1018,6 +1045,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			),
 			array()
 		);
+		$translations = GP::$translation->add_related_translations( $translations, $translation_set );
 		if ( ! empty( $translations ) ) {
 			$translation = $translations[0];
 
@@ -1173,6 +1201,34 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$this->can_or_forbidden( 'approve', 'translation', $translation->id, null, array( 'translation' => $translation ) );
+	}
+
+	/**
+	 * Validates that an incoming suggestion is not already rejected or changes-requested.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 * @param int                $original_id     The original ID.
+	 * @param array              $translations    The incoming translation strings.
+	 * @param string             $set_status      Target status for the new translation.
+	 */
+	private function validate_not_rejected_or_changesrequested( $translation_set, $original_id, $translations, $set_status ) {
+		if ( 'waiting' !== $set_status ) {
+			return;
+		}
+
+		$blocked_reason = $translation_set->get_blocked_suggestion_reason( $original_id, $translations );
+		if ( ! $blocked_reason ) {
+			return;
+		}
+
+		// Without the status, translations with changes requested are shown as rejected ones.
+		if ( 'changesrequested' === $blocked_reason && apply_filters( 'gp_enable_changesrequested_status', false ) ) {
+			$this->die_with_error( __( 'Identical translation with changes requested already exists.', 'glotpress' ), 200 );
+		}
+
+		$this->die_with_error( __( 'Identical rejected translation already exists.', 'glotpress' ), 200 );
 	}
 
 	/**

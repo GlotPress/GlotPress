@@ -61,11 +61,20 @@ $priority_char = array(
 		}
 
 		$missing_text = "<span class='missing'>$edit_text</span>";
+
+		$current_bubble = '';
+		if ( ! empty( $translation->current_translations ) ) {
+			$current_bubble = sprintf(
+				' <span class="bubble has-current" title="%s">%s</span>',
+				esc_attr__( 'Approving this translation replaces the current translation.', 'glotpress' ),
+				__( 'Replaces current', 'glotpress' )
+			);
+		}
 		if ( ! count( array_filter( $translation->translations, 'gp_is_not_null' ) ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $missing_text;
 		} elseif ( ! $translation->plural || 1 === $locale->nplurals ) {
-			echo '<span class="translation-text">' . prepare_original( esc_translation( $translation->translations[0] ) ) . '</span>';
+			echo '<span class="translation-text">' . prepare_original( esc_translation( $translation->translations[0] ) ) . '</span>' . $current_bubble; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		} elseif ( $translation->plural && 2 === $locale->nplurals && 'n != 1' === $locale->plural_expression ) {
 			?>
 			<ul>
@@ -76,7 +85,7 @@ $priority_char = array(
 						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						echo $missing_text;
 					} else {
-						echo '<span class="translation-text">' . prepare_original( esc_translation( $translation->translations[0] ) ) . '</span>';
+						echo '<span class="translation-text">' . prepare_original( esc_translation( $translation->translations[0] ) ) . '</span>' . $current_bubble; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					}
 					?>
 				</li>
@@ -115,7 +124,7 @@ $priority_char = array(
 							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 							echo $missing_text;
 						} else {
-							echo '<span class="translation-text">' . prepare_original( esc_translation( $translation->translations[ $plural_index ] ) ) . '</span>';
+							echo '<span class="translation-text">' . prepare_original( esc_translation( $translation->translations[ $plural_index ] ) ) . '</span>' . ( 0 === $plural_index ? $current_bubble : '' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						}
 						?>
 					</li>

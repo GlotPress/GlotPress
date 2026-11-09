@@ -203,6 +203,37 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertArrayHasKey( 'placeholders', $translation->warnings[0] );
 	}
 
+	function test_import_filters_each_original_once_and_stores_the_filtered_data() {
+		$project = $this->factory->project->create();
+		$this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'Existing string' ) );
+		$dropped = $this->factory->original->create( array( 'project_id' => $project->id, 'status' => '+active', 'singular' => 'Please enter your user name.' ) );
+
+		$calls             = array();
+		$set_high_priority = function ( $data ) use ( &$calls ) {
+			$calls[]          = $data['singular'];
+			$data['priority'] = 1;
+			return $data;
+		};
+
+		add_filter( 'gp_import_original_array', $set_high_priority );
+		GP::$original->import_for_project(
+			$project,
+			$this->create_translations_with(
+				array(
+					array( 'singular' => 'Existing string' ),
+					array( 'singular' => 'Please enter your username.' ),
+					array( 'singular' => 'A completely new string' ),
+				)
+			)
+		);
+		remove_filter( 'gp_import_original_array', $set_high_priority );
+
+		sort( $calls );
+		$this->assertSame( array( 'A completely new string', 'Existing string', 'Please enter your username.' ), $calls );
+		$this->assertSame( 1, GP::$original->get( $dropped->id )->priority );
+		$this->assertSame( 1, GP::$original->by_project_id_and_entry( $project->id, new Translation_Entry( array( 'singular' => 'A completely new string' ) ) )->priority );
+	}
+
 	function test_import_only_checks_the_forms_of_an_original_that_lost_its_plural() {
 		$set         = $this->factory->translation_set->create_with_project_and_locale();
 		$original    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%s item', 'plural' => '%s items' ) );

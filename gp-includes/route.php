@@ -32,6 +32,15 @@ class GP_Route {
 	public $notices = array();
 
 	/**
+	 * Success messages collected during the request.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var array
+	 */
+	public $successes = array();
+
+	/**
 	 * Whether the request is currently running.
 	 *
 	 * @var bool
@@ -452,15 +461,21 @@ class GP_Route {
 			return;
 		}
 
-		foreach ( $this->notices as $notice ) {
-			gp_notice_set( $notice );
+		// Each type reaches the next page through a single cookie, which keeps only the last message.
+		$messages = array(
+			'notice'  => $this->notices,
+			'success' => $this->successes,
+			'error'   => $this->errors,
+		);
+		foreach ( $messages as $key => $texts ) {
+			if ( $texts ) {
+				gp_notice_set( implode( '<br>', $texts ), $key );
+			}
 		}
-		$this->notices = array();
 
-		foreach ( $this->errors as $error ) {
-			gp_notice_set( $error, 'error' );
-		}
-		$this->errors = array();
+		$this->notices   = array();
+		$this->successes = array();
+		$this->errors    = array();
 	}
 
 	/**
