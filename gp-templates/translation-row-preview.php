@@ -66,7 +66,7 @@ $priority_char = array(
 		if ( ! empty( $translation->current_translations ) ) {
 			$current_bubble = sprintf(
 				' <span class="bubble has-current" title="%s">%s</span>',
-				__( 'Approving this translation replaces the current translation.', 'glotpress' ),
+				esc_attr__( 'Approving this translation replaces the current translation.', 'glotpress' ),
 				__( 'Replaces current', 'glotpress' )
 			);
 		}
