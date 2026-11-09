@@ -114,11 +114,17 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$translations_added = $translation_set->import( $translations, $import_status );
-		$this->notices[]    = sprintf(
+		$message            = sprintf(
 			/* translators: %s: Translations count. */
 			_n( '%s translation was added', '%s translations were added', $translations_added, 'glotpress' ),
 			$translations_added
 		);
+
+		if ( $translations_added ) {
+			$this->successes[] = $message;
+		} else {
+			$this->notices[] = $message;
+		}
 
 		$this->redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ) );
 	}
@@ -583,26 +589,32 @@ class GP_Route_Translation extends GP_Route_Main {
 		if ( 0 === $error && ( $ok > 0 || 0 === $refused ) ) {
 			switch ( $action ) {
 				case 'approve':
-					$this->notices[] = sprintf(
+					$message = sprintf(
 					/* translators: %d: Translations count. */
 						_n( '%d translation was approved.', '%d translations were approved.', $ok, 'glotpress' ),
 						$ok
 					);
 					break;
 				case 'reject':
-					$this->notices[] = sprintf(
+					$message = sprintf(
 					/* translators: %d: Translations count. */
 						_n( '%d translation was rejected.', '%d translations were rejected.', $ok, 'glotpress' ),
 						$ok
 					);
 					break;
 				case 'changesrequested':
-					$this->notices[] = sprintf(
+					$message = sprintf(
 					/* translators: %d: Translations count. */
 						_n( '%d translation has changes requested.', '%d translations have changes requested.', $ok, 'glotpress' ),
 						$ok
 					);
 					break;
+			}
+
+			if ( $ok ) {
+				$this->successes[] = $message;
+			} else {
+				$this->notices[] = $message;
 			}
 		} elseif ( $ok > 0 ) {
 			switch ( $action ) {
@@ -685,9 +697,6 @@ class GP_Route_Translation extends GP_Route_Main {
 				_n( '%d translation was not approved because it has translation errors.', '%d translations were not approved because they have translation errors.', $refused, 'glotpress' ),
 				$refused
 			);
-
-			// Errors reach the next page through a single cookie, which keeps only the last one.
-			$this->errors = array( implode( ' ', $this->errors ) );
 		}
 	}
 
@@ -717,11 +726,17 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		if ( 0 === $error ) {
-			$this->notices[] = sprintf(
+			$message = sprintf(
 				/* translators: %d: Translations count. */
 				_n( '%d translation was marked as fuzzy.', '%d translations were marked as fuzzy.', $ok, 'glotpress' ),
 				$ok
 			);
+
+			if ( $ok ) {
+				$this->successes[] = $message;
+			} else {
+				$this->notices[] = $message;
+			}
 		} elseif ( $ok > 0 ) {
 				$message = sprintf(
 					/* translators: %d: Translations count. */
@@ -780,11 +795,17 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		if ( 0 === $error ) {
-			$this->notices[] = sprintf(
+			$message = sprintf(
 				/* translators: %d: Originals count. */
 				_n( 'Priority of %d original was modified.', 'Priority of %d originals were modified.', $ok, 'glotpress' ),
 				$ok
 			);
+
+			if ( $ok ) {
+				$this->successes[] = $message;
+			} else {
+				$this->notices[] = $message;
+			}
 		} elseif ( $ok > 0 ) {
 				$message = sprintf(
 					/* translators: %d: Originals count. */

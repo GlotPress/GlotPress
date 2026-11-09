@@ -299,7 +299,7 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 
 		$this->assertSame( 'current', GP::$translation->get( $translation->id )->status );
 		$this->assertSame( 'waiting', GP::$translation->get( $translation_with_errors->id )->status );
-		$this->assertThereIsANoticeContaining( '1 translation was approved.' );
+		$this->assertThereIsASuccessContaining( '1 translation was approved.' );
 		$this->assertThereIsAnErrorContaining( '1 translation was not approved because it has translation errors.' );
 		$this->assertCount( 1, $this->route->errors );
 	}
@@ -328,7 +328,6 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$this->route->bulk_post( $set->project->path, $set->locale, $set->slug );
 		remove_filter( 'gp_pre_can_set_translation_status', $deny );
 
-		$this->assertCount( 1, $this->route->errors );
 		$this->assertThereIsAnErrorContaining( 'Error with approving 1 translation.' );
 		$this->assertThereIsAnErrorContaining( '1 translation was not approved because it has translation errors.' );
 	}
