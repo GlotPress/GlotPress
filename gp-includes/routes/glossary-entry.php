@@ -624,10 +624,15 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 				}
 				continue;
 			} else {
-				// Looked up with the trimmed term it's stored with, no matter who last edited it.
-				$lookup         = array_diff_key( $entry_data, array( 'last_edited_by' => true ) );
-				$lookup['term'] = $new_glossary_entry->term;
-				$entry_exists   = GP::$glossary_entry->find_one( $lookup );
+				// Same identity as an entry added in the editor. Entries without a translation store NULL.
+				$entry_exists = GP::$glossary_entry->find_one(
+					array(
+						'glossary_id'    => $glossary_id,
+						'term'           => $new_glossary_entry->term,
+						'translation'    => '' === (string) $new_glossary_entry->translation ? array( '', null ) : $new_glossary_entry->translation,
+						'part_of_speech' => $new_glossary_entry->part_of_speech,
+					)
+				);
 				if ( $entry_exists ) {
 					++$existing;
 					continue;

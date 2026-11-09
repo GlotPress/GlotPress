@@ -94,9 +94,20 @@ class GP_Test_Route_Glossary_Entry_Csv extends GP_UnitTestCase_Route {
 			)
 		);
 
+		// Created without a translation and comment, which are stored as NULL.
+		GP::$glossary_entry->create(
+			array(
+				'glossary_id'    => $glossary->id,
+				'term'           => 'style rule',
+				'part_of_speech' => 'noun',
+				'last_edited_by' => $this->factory->user->create(),
+			)
+		);
+
 		$rows = array(
 			array( 'existing', 'vorhanden', 'noun', '' ),
 			array( ' existing ', 'vorhanden', 'noun', '' ),
+			array( 'style rule', '', 'noun', 'A different comment' ),
 			array( 'house', 'Haus', 'noun', '' ),
 			array( 'Häuser', 'Häuser', 'noun', '' ),
 			array( '', 'leer', 'noun', '' ),
@@ -112,8 +123,8 @@ class GP_Test_Route_Glossary_Entry_Csv extends GP_UnitTestCase_Route {
 		$this->assertSame( 1, $count );
 		$this->assertSame(
 			array(
-				'13 entries were skipped because they are invalid: "Häuser" (row 5), row 6, "' . str_repeat( 'ä', 50 ) . '…" (row 8), "bogus 1" (row 9), "bogus 2" (row 10), "bogus 3" (row 11), "bogus 4" (row 12), "bogus 5" (row 13), "bogus 6" (row 14), "bogus 7" (row 15), and 3 more.',
-				'2 entries were skipped because they already exist.',
+				'13 entries were skipped because they are invalid: "Häuser" (row 6), row 7, "' . str_repeat( 'ä', 50 ) . '…" (row 9), "bogus 1" (row 10), "bogus 2" (row 11), "bogus 3" (row 12), "bogus 4" (row 13), "bogus 5" (row 14), "bogus 6" (row 15), "bogus 7" (row 16), and 3 more.',
+				'3 entries were skipped because they already exist.',
 			),
 			$skipped
 		);
