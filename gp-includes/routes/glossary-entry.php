@@ -466,8 +466,8 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 			list( $glossary_entries_added, $skipped ) = $result;
 
 			$message = sprintf(
-				/* translators: %s: Count number. */
-				__( '%s glossary entries were added', 'glotpress' ),
+				/* translators: %d: Number of added glossary entries. */
+				_n( '%d glossary entry was added.', '%d glossary entries were added.', $glossary_entries_added, 'glotpress' ),
 				$glossary_entries_added
 			);
 
