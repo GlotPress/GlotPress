@@ -109,10 +109,10 @@ class GP_Test_Route_Glossary_Entry_Csv extends GP_UnitTestCase_Route {
 			array( ' existing ', 'vorhanden', 'noun', '' ),
 			array( 'style rule', '', 'noun', 'A different comment' ),
 			array( 'house', 'Haus', 'noun', '' ),
-			array( 'Häuser', 'Häuser', 'noun', '' ),
+			array( 'Häuser', 'Häuser', 'not-a-part-of-speech', '' ),
 			array( '', 'leer', 'noun', '' ),
 			null,
-			array( str_repeat( 'ä', 300 ), 'x', 'noun', '' ),
+			array( str_repeat( 'ä', 300 ), 'x', 'not-a-part-of-speech', '' ),
 		);
 		for ( $i = 1; $i <= 10; $i++ ) {
 			$rows[] = array( "bogus $i", 'x', 'not-a-part-of-speech', '' );

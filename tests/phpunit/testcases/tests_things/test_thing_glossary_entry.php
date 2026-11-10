@@ -227,4 +227,21 @@ class GP_Test_Glossary_Entry extends GP_UnitTestCase {
 			}
 		}
 	}
+
+	function test_term_with_letters_outside_ascii() {
+		foreach ( array( 'café', 'Übersetzung', 'Pokémon', '翻訳' ) as $term ) {
+			$glossary_entry = new GP_Glossary_Entry( array( 'glossary_id' => '1', 'term' => $term, 'part_of_speech' => 'noun', 'last_edited_by' => '1' ) );
+			$this->assertTrue( $glossary_entry->validate(), $term );
+		}
+	}
+
+	function test_term_without_control_characters() {
+		$glossary_entry = new GP_Glossary_Entry( array( 'glossary_id' => '1', 'term' => "\x04caf\x7Fé\x00", 'part_of_speech' => 'noun', 'last_edited_by' => '1' ) );
+		$this->assertSame( 'café', $glossary_entry->term );
+	}
+
+	function test_term_with_invalid_utf8() {
+		$glossary_entry = new GP_Glossary_Entry( array( 'glossary_id' => '1', 'term' => "caf\xE9", 'part_of_speech' => 'noun', 'last_edited_by' => '1' ) );
+		$this->assertFalse( $glossary_entry->validate() );
+	}
 }
