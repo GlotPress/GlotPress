@@ -379,6 +379,17 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertNoWarnings( 'should_not_end_on_newline', "\nbaba", "\nbaba" );
 	}
 
+	function test_placeholders_with_flags_width_and_precision() {
+		$this->assertNoWarnings( 'placeholders', '%-10s items', '%-10s Elemente' );
+		$this->assertNoWarnings( 'placeholders', '%10s items', '%10s Elemente' );
+		$this->assertNoWarnings( 'placeholders', '%+d points', '%+d Punkte' );
+		$this->assertNoWarnings( 'placeholders', 'Up to 50%+bonus', 'Bis zu 50 % + Bonus' );
+		$this->assertHasWarningsAndContainsOutput( 'placeholders', '%-10s items', 'Elemente', 'Missing %-10s placeholder in translation.' );
+		$this->assertHasWarningsAndContainsOutput( 'placeholders', '%10s items', 'Elemente', 'Missing %10s placeholder in translation.' );
+		$this->assertHasWarningsAndContainsOutput( 'placeholders', '%+d points', 'Punkte', 'Missing %+d placeholder in translation.' );
+		$this->assertHasWarningsAndContainsOutput( 'placeholders', "%'*10s items", 'Elemente', "Missing %'*10s placeholder in translation." );
+	}
+
 	function test_placeholders_using_check() {
 		$w       = new GP_Translation_Warnings();
 		$builtin = new GP_Builtin_Translation_Warnings();
