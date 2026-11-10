@@ -347,19 +347,11 @@ class GP_Route_Translation extends GP_Route_Main {
 				}
 			}
 
-			if ( isset( $data['status'] ) ) {
-				$set_status = $data['status'];
-			} else {
-				$set_status = 'waiting';
-			}
-
 			$data['status'] = 'waiting';
 
-			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $can_write ) {
-				$set_status = 'current';
-			} else {
-				$set_status = 'waiting';
-			}
+			// Only waiting is taken from the request, so it can't approve a translation.
+			$can_approve_set = $this->can( 'approve', 'translation-set', $translation_set->id ) || $can_write;
+			$set_status      = $can_approve_set && 'waiting' !== gp_post( 'status' ) ? 'current' : 'waiting';
 
 			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
 			$errors           = GP::$translation_errors->check( $original, $translations, $locale );
@@ -396,11 +388,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 				return $this->die_with_error( $this->error_messages_html( $translation->errors ), 200 );
 			} else {
-				if ( 'current' === $set_status ) {
-					$translation->set_status( 'current' );
-				} else {
-					$translation->set_status( 'waiting' );
-				}
+				$translation->set_status( $set_status );
 
 				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array( 'translation_id' => $translation->id ), array() );
 				$translations = GP::$translation->add_related_translations( $translations, $translation_set );
