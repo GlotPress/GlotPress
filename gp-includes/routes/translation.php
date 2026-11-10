@@ -235,7 +235,11 @@ class GP_Route_Translation extends GP_Route_Main {
 		$sort    = (array) gp_get( 'sort', array() );
 		$sort    = array_filter( $sort, 'is_scalar' );
 
-		if ( 'random' === gp_array_get( $sort, 'by' ) ) {
+		// Kept apart from the requested sort, which the template uses to tell the current filter.
+		$default_sort = get_user_option( 'gp_default_sort' );
+		$query_sort   = is_array( $default_sort ) ? $sort + $default_sort : $sort;
+
+		if ( 'random' === gp_array_get( $query_sort, 'by' ) ) {
 			add_filter( 'gp_pagination', '__return_null' );
 		}
 
@@ -254,7 +258,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			$sort = array();
 		}
 
-		$translations             = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
+		$translations             = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $query_sort );
 		$total_translations_count = GP::$translation->found_rows;
 		if ( ! $this->api ) {
 			$translations = GP::$translation->add_related_translations( $translations, $translation_set );
