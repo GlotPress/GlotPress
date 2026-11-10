@@ -245,6 +245,7 @@ h3 {
 
 .gp-heading {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	gap: 0.2em;
 	margin: 0 0 1rem 0;
@@ -263,11 +264,47 @@ h3 {
 }
 
 .gp-heading div.glossary-links {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 0.4em;
 	margin-left: auto;
+	font-size: 0.9375rem;
 }
 
-.gp-heading a.glossary-link {
+.gp-heading .glossary-links .separator {
+	color: var( --gp-color-fg-muted );
+}
+
+.gp-heading a.glossary-link,
+.gp-heading form.glossary-link .button.is-link {
+	font-size: inherit;
 	font-weight: 600;
+	white-space: nowrap;
+}
+
+/* Creating the locale glossary needs a POST, so it's a form, which has to sit in the line like the links next to it. */
+.gp-heading form.glossary-link {
+	display: inline;
+}
+
+.gp-heading form.glossary-link .button.is-link {
+	font-family: inherit;
+	line-height: inherit;
+	vertical-align: baseline;
+	text-decoration: none;
+}
+
+.gp-heading form.glossary-link .button.is-link:hover,
+.gp-heading form.glossary-link .button.is-link:focus {
+	text-decoration: underline;
+}
+
+@media (max-width: 799px) {
+	.gp-heading div.glossary-links {
+		flex-basis: 100%;
+		margin-left: 0;
+	}
 }
 
 /*
