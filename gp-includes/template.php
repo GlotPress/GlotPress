@@ -187,7 +187,7 @@ function gp_nav_menu_items( $location = 'main' ) {
 function gp_tmpl_filter_args( $args ) {
 	$clean_args = array();
 	foreach ( $args as $k => $v ) {
-		if ( '_' != $k[0] && 'GLOBALS' != $k && ! gp_startswith( $k, 'HTTP' ) && ! gp_startswith( $k, 'PHP' ) ) {
+		if ( '_' !== $k[0] && 'GLOBALS' !== $k && ! gp_startswith( $k, 'HTTP' ) && ! gp_startswith( $k, 'PHP' ) ) {
 			$clean_args[ $k ] = $v;
 		}
 	}
@@ -730,7 +730,7 @@ function gp_preferred_sans_serif_style_tag( $locale ) {
  */
 function gp_html_excerpt( $str, $count, $ellipsis = '&hellip;' ) {
 	$excerpt = trim( wp_html_excerpt( $str, $count ) );
-	if ( $str != $excerpt ) {
+	if ( $str !== $excerpt ) {
 		$excerpt .= $ellipsis;
 	}
 	return $excerpt;
@@ -859,7 +859,7 @@ function gp_entry_actions( $seperator = ' &bull; ' ) {
  */
 function gp_get_translation_row_classes( $translation ) {
 	$classes = array();
-	if ( ( 'changesrequested' == $translation->translation_status ) && ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress. Maintain only the else code
+	if ( ( 'changesrequested' === $translation->translation_status ) && ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress. Maintain only the else code.
 		$classes[] = 'untranslated';
 	} else {
 		$classes[] = $translation->translation_status ? 'status-' . $translation->translation_status : 'untranslated';

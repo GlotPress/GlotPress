@@ -122,11 +122,11 @@ function gp_string_similarity( $str1, $str2 ) {
  */
 function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 
-	if ( 0 == $length1 ) {
+	if ( 0 === $length1 ) {
 		return $length2;
 	}
 
-	if ( 0 == $length2 ) {
+	if ( 0 === $length2 ) {
 		return $length1;
 	}
 

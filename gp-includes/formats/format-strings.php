@@ -70,7 +70,7 @@ class GP_Format_Strings extends GP_Format {
 			$translation = str_replace( "\n", "\\n", $translation );
 			$comment     = preg_replace( '/(^\s+)|(\s+$)/us', '', $entry->extracted_comments );
 
-			if ( '' == $comment ) {
+			if ( '' === $comment ) {
 				$comment = 'No comment provided by engineer.';
 			}
 

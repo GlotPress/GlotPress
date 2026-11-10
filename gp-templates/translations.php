@@ -515,7 +515,7 @@ do_action( 'gp_after_translation_table', get_defined_vars() );
 		<div><strong><?php _e( 'Legend:', 'glotpress' ); ?></strong></div>
 		<?php
 		foreach ( GP::$translation->get_static( 'statuses' ) as $legend_status ) :
-			if ( ( 'changesrequested' == $legend_status ) && ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress.
+			if ( ( 'changesrequested' === $legend_status ) && ( ! apply_filters( 'gp_enable_changesrequested_status', false ) ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress.
 				continue;
 			}
 			?>

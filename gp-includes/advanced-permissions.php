@@ -14,7 +14,7 @@
  * @return string|bool New decision whether the user can do this.
  */
 function gp_recurse_project_permissions( $verdict, $args ) {
-	if ( ! ( ! $verdict && 'project' == $args['object_type'] && $args['object_id'] && $args['user'] ) ) {
+	if ( ! ( ! $verdict && 'project' === $args['object_type'] && $args['object_id'] && $args['user'] ) ) {
 		return $verdict;
 	}
 	$project = GP::$project->get( $args['object_id'] );
@@ -57,7 +57,7 @@ function gp_route_translation_set_permissions_to_validator_permissions( $verdict
 		return $verdict;
 	}
 
-	if ( ! ( 'no-verdict' == $verdict && 'approve' == $args['action'] && 'translation-set' == $args['object_type']
+	if ( ! ( 'no-verdict' === $verdict && 'approve' === $args['action'] && 'translation-set' === $args['object_type']
 			&& $args['object_id'] && $args['user'] ) ) {
 		return $verdict;
 	}
@@ -86,7 +86,7 @@ function gp_allow_everyone_to_translate( $verdict, $args ) {
 		return $verdict;
 	}
 
-	if ( 'edit' == $args['action'] && 'translation-set' == $args['object_type'] ) {
+	if ( 'edit' === $args['action'] && 'translation-set' === $args['object_type'] ) {
 		return is_user_logged_in();
 	}
 

@@ -316,7 +316,7 @@ class GP_Original extends GP_Thing {
 		$obsolete_originals = array_filter(
 			$originals_by_key,
 			function ( $entry ) {
-				return ( '-obsolete' == $entry->status );
+				return ( '-obsolete' === $entry->status );
 			}
 		);
 
