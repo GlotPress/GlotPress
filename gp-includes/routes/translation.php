@@ -365,13 +365,21 @@ class GP_Route_Translation extends GP_Route_Main {
 				'no-limit',
 				array(
 					'original_id' => $original_id,
-					'status'      => 'current_or_waiting',
+					'status'      => 'current_or_waiting_or_fuzzy',
 				),
 				array()
 			);
 			foreach ( $existing_translations as $e ) {
 				if ( array_pad( $translations, $locale->nplurals, null ) == $e->translations ) {
-					return $this->die_with_error( __( 'Identical current or waiting translation already exists.', 'glotpress' ), 200 );
+					if ( 'fuzzy' === $e->translation_status ) {
+						$message = __( 'Identical fuzzy translation already exists.', 'glotpress' );
+					} elseif ( 'waiting' === $e->translation_status ) {
+						$message = __( 'Identical waiting translation already exists.', 'glotpress' );
+					} else {
+						$message = __( 'Identical current translation already exists.', 'glotpress' );
+					}
+
+					return $this->die_with_error( $message, 200 );
 				}
 			}
 

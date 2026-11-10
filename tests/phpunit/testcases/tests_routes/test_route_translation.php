@@ -222,6 +222,23 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$this->assertSame( 'waiting', GP::$translation->find_one( array( 'original_id' => $original->id ) )->status );
 	}
 
+	/**
+	 * Saving a fuzzy translation unchanged doesn't copy it under another user's name and set the fuzzy one to old.
+	 */
+	function test_translations_post_refuses_a_translation_identical_to_a_fuzzy_one() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
+		$fuzzy    = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'fuzzy' ) );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern' );
+
+		$this->assertCount( 1, GP::$translation->find_many( array( 'original_id' => $original->id ) ) );
+		$this->assertSame( 'fuzzy', GP::$translation->get( $fuzzy->id )->status );
+		$this->assertStringContainsString( 'Identical fuzzy translation already exists.', $this->route->template_output );
+	}
+
 	private function submit_translation( $set, $nonce_original_id, $submitted_original_id, $text ) {
 		$_POST['original_id']        = $nonce_original_id;
 		$_POST['translation']        = array( $submitted_original_id => array( $text ) );
