@@ -866,3 +866,28 @@ function gp_can_create_locale_glossary( $locale_slug, $set_slug ) {
 function gp_get_url_regex_pattern() {
 	return '(?:https?:\/\/|(?<![:\w])\/\/)[^\s<>"]+[a-z0-9\-_&=#\/]';
 }
+
+/**
+ * Gets the pattern of a regular expression that matches placeholders like `%s`, `%1$-10.2f` or `%%`.
+ *
+ * Text like "50% of" or "10%-off" isn't a placeholder, though sprintf() would read it as one,
+ * so the space flag isn't matched, and a flag without a width or precision only counts when
+ * no letter follows the specifier. Argument number 0 makes sprintf() fail and isn't matched
+ * either. The pattern has no delimiters, contains `!`, and is wrapped in a non-capturing group,
+ * so it can be combined with others.
+ *
+ * @since 4.2.0
+ *
+ * @param string $specifiers Optional. Pattern of the conversion specifiers. Default the specifiers
+ *                           of sprintf(), `l` of wp_sprintf(), and `@` of iOS strings.
+ * @return string The pattern.
+ */
+function gp_get_placeholder_regex_pattern( $specifiers = '[bcdefglosuxEFGX@]' ) {
+	$flags = '(?:[-+0]|\'.)';
+
+	return '(?:%%|%(?:[1-9]\d*\$)?(?:' .
+		$flags . '*+(?:\d+(?:\.\d+)?|\.\d+)(?:' . $specifiers . ')' .
+		'|' . $flags . '++(?:' . $specifiers . ')(?![a-zA-Z])' .
+		'|(?:' . $specifiers . ')' .
+	'))';
+}

@@ -348,12 +348,6 @@ class GP_Builtin_Translation_Warnings {
 	/**
 	 * Checks whether PHP placeholders are missing or have been added.
 	 *
-	 * The default regular expression:
-	 * bcdefgosuxEFGX are standard printf placeholders.
-	 * % is included to allow/expect %%.
-	 * l is included for wp_sprintf_l()'s custom %l format.
-	 * @ is included for Swift (as used for iOS mobile app) %@ string format.
-	 *
 	 * A plural form that the locale uses for a single number may write that
 	 * number in words, for example "one" or "two", and leave out its placeholder.
 	 *
@@ -376,7 +370,7 @@ class GP_Builtin_Translation_Warnings {
 		 *
 		 * @param string $placeholders_re Regular expression pattern without leading or trailing slashes.
 		 */
-		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '(?<!%)%(\d+\$(?:\d+)?)?(\.\d+)?[bcdefgosuxEFGX%l@]' );
+		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '(?<!%)' . gp_get_placeholder_regex_pattern() );
 
 		$original_counts    = $this->_placeholders_counts( $original, $placeholders_re );
 		$translation_counts = $this->_placeholders_counts( $translation, $placeholders_re );
@@ -898,7 +892,7 @@ class GP_Builtin_Translation_Warnings {
 	 */
 	private function links_without_url_and_placeholders_are_equal( string $original_links, string $translation_links ) {
 		$urls_regex        = '@(?<![\'"])' . gp_get_url_regex_pattern() . '(?![\'"])@i';
-		$placeholder_regex = '!%((\d+\$(?:\d+)?)?[bcdefgosux])!i';
+		$placeholder_regex = '/' . gp_get_placeholder_regex_pattern( '[bcdefgosux]' ) . '/i';
 
 		// Remove the URLs.
 		preg_match_all( $urls_regex, $original_links, $original_urls );

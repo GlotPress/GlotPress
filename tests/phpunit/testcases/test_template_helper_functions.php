@@ -836,6 +836,19 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
+	 * Expects highlighting placeholders with flags, width and precision, but not percent signs in text.
+	 */
+	function test_prepare_original_with_placeholders_with_flags_and_precision() {
+		foreach ( array( '%.2f', '%5.2f', '%1$.2f', '%-10s', '%+d', '%05d', "%'*10s", '%10s' ) as $placeholder ) {
+			$this->assertSame( 'a ' . $this->highlight_placeholder( $placeholder ) . ' b', prepare_original( "a $placeholder b" ), $placeholder );
+		}
+
+		foreach ( array( '50% of all', '100% sure', 'up to 10%-20%', 'Get 10%-off', '5%-discount', '50%+bonus', '100%-Garantie' ) as $text ) {
+			$this->assertSame( $text, prepare_original( $text ), $text );
+		}
+	}
+
+	/**
 	 * Expects highlighting line breaks and tabs.
 	 */
 	function test_prepare_original_with_line_breaks_and_tabs() {
