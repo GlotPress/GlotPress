@@ -255,7 +255,7 @@ $gp.editor = (
 					if ( target.nextAll( 'textarea' ).length ) {
 						target.nextAll( 'textarea' ).eq( 0 ).focus();
 					} else {
-						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok' ) );
+						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok:not([data-status])' ) );
 					}
 				} else if ( ( 13 === e.keyCode && e.ctrlKey ) || ( 66 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-Enter or Ctrl-Shift-B = Copy original.
 					copy = $( '.editor:visible' ).find( '.copy' );
@@ -318,6 +318,10 @@ $gp.editor = (
 					original_id: editor.original_id,
 					_gp_route_nonce: button.data( 'nonce' ),
 				};
+
+				if ( button.data( 'status' ) ) {
+					data.status = button.data( 'status' );
+				}
 
 				textareaName = 'translation[' + editor.original_id + '][]';
 				translations = $( 'textarea[name="' + textareaName + '"]', editor ).map( function() {

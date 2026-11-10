@@ -176,6 +176,52 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $foreign_original->id ) ), 'A translation must not be created for another project\'s original.' );
 	}
 
+	/**
+	 * A validator can save a translation as waiting, so someone else reviews it, and the current translation stays.
+	 */
+	function test_translations_post_saves_as_waiting_for_a_validator_who_asks_for_it() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Hello' ) );
+		$current  = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Hallo', 'status' => 'current' ) );
+
+		$_POST['status'] = 'waiting';
+		$this->submit_translation( $set, $original->id, $original->id, 'Servus' );
+
+		$this->assertSame( 'waiting', GP::$translation->find_one( array( 'original_id' => $original->id, 'translation_0' => 'Servus' ) )->status );
+		$this->assertSame( 'current', GP::$translation->get( $current->id )->status );
+	}
+
+	/**
+	 * Without asking for it, a validator's translation becomes current as before.
+	 */
+	function test_translations_post_approves_a_validators_translation_by_default() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Hello' ) );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Hallo' );
+
+		$this->assertSame( 'current', GP::$translation->find_one( array( 'original_id' => $original->id ) )->status );
+	}
+
+	/**
+	 * The status in the request can't approve the translation of a user who isn't a validator.
+	 */
+	function test_translations_post_ignores_a_status_from_a_user_who_cannot_approve() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->set_normal_user_as_current();
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Hello' ) );
+
+		$_POST['status'] = 'current';
+		$this->submit_translation( $set, $original->id, $original->id, 'Hallo' );
+
+		$this->assertSame( 'waiting', GP::$translation->find_one( array( 'original_id' => $original->id ) )->status );
+	}
+
 	private function submit_translation( $set, $nonce_original_id, $submitted_original_id, $text ) {
 		$_POST['original_id']        = $nonce_original_id;
 		$_POST['translation']        = array( $submitted_original_id => array( $text ) );
