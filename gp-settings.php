@@ -7,6 +7,9 @@
  * @since 1.0.0
  */
 
+/**
+ * Load the GlotPress procedural and class library.
+ */
 require_once GP_PATH . GP_INC . '/system.php';
 
 if ( ! defined( 'GP_LOCALES_PATH' ) ) {

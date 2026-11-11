@@ -1,4 +1,11 @@
 <?php
+/**
+ * API: Public Profile
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 $meta = array(
 	'meta' => array(
 		'user_display_name' => $user->display_name,
