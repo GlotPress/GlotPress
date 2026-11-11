@@ -136,7 +136,8 @@ class GP_Permission extends GP_Thing {
 			$user_id = $user->ID;
 		}
 
-		$args                 = $filter_args = compact( 'user_id', 'action', 'object_type', 'object_id' );
+		$args                 = compact( 'user_id', 'action', 'object_type', 'object_id' );
+		$filter_args          = $args;
 		$filter_args['user']  = $user;
 		$filter_args['extra'] = $extra;
 

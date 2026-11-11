@@ -596,7 +596,8 @@ class GP_Translation extends GP_Thing {
 		$translations     = array();
 
 		foreach ( (array) $rows as $row ) {
-			$row->user = $row->user_last_modified = null;
+			$row->user               = null;
+			$row->user_last_modified = null;
 
 			if ( $row->user_id && 'no-limit' !== $this->per_page ) {
 				$user = get_userdata( $row->user_id );

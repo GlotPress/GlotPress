@@ -187,7 +187,8 @@ function gp_populate_notices() {
 	$prefix               = '_gp_notice_';
 	$cookie_path          = '/' . ltrim( gp_url_path(), '/' ); // Make sure that the cookie path is never empty.
 	foreach ( $_COOKIE as $key => $value ) {
-		if ( gp_startswith( $key, $prefix ) && $suffix = substr( $key, strlen( $prefix ) ) ) {
+		$suffix = substr( $key, strlen( $prefix ) );
+		if ( gp_startswith( $key, $prefix ) && $suffix ) {
 			GP::$redirect_notices[ $suffix ] = wp_unslash( $value );
 			gp_set_cookie( $key, '', 0, $cookie_path );
 		}
@@ -599,7 +600,8 @@ function gp_gmt_strtotime( $string ) {
 		return strtotime( $string );
 	}
 
-	if ( -1 == $time = strtotime( $string . ' +0000' ) ) {
+	$time = strtotime( $string . ' +0000' );
+	if ( -1 == $time ) {
 		return strtotime( $string );
 	}
 

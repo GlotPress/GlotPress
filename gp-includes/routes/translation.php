@@ -562,7 +562,9 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$action = $bulk['action'];
 
-		$ok = $error = $refused = 0;
+		$ok      = 0;
+		$error   = 0;
+		$refused = 0;
 		switch ( $action ) {
 			case 'approve':
 				$new_status = 'current';
@@ -711,7 +713,8 @@ class GP_Route_Translation extends GP_Route_Main {
 	 * @param array $bulk The bulk data to process.
 	 */
 	private function _bulk_fuzzy( $bulk ) {
-		$ok = $error = 0;
+		$ok    = 0;
+		$error = 0;
 
 		foreach ( $bulk['row-ids'] as $row_id ) {
 			$translation_id = gp_array_get( explode( '-', $row_id ), 1 );
@@ -907,7 +910,8 @@ class GP_Route_Translation extends GP_Route_Main {
 			return;
 		}
 
-		$ok = $error = 0;
+		$ok    = 0;
+		$error = 0;
 		foreach ( $bulk['row-ids'] as $row_id ) {
 			$original_id = gp_array_get( explode( '-', $row_id ), 0 );
 			$original    = GP::$original->get( $original_id );

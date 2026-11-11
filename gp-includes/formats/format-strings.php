@@ -130,7 +130,8 @@ class GP_Format_Strings extends GP_Format {
 			$file
 		);
 
-		$context = $comment = null;
+		$context = null;
+		$comment = null;
 		$lines   = explode( "\n", $file );
 
 		foreach ( $lines as $line ) {
