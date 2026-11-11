@@ -377,8 +377,9 @@ class GP_Project extends GP_Thing {
 	 * @return string|false The generated source URL or false if no URL is available.
 	 */
 	public function source_url( $file, $line ) {
-		$source_url = false;
-		if ( $source_url_template = $this->source_url_template() ) {
+		$source_url          = false;
+		$source_url_template = $this->source_url_template();
+		if ( $source_url_template ) {
 			$source_url = str_replace( array( '%file%', '%line%' ), array( $file, $line ), $source_url_template );
 		}
 
@@ -403,14 +404,15 @@ class GP_Project extends GP_Thing {
 	public function source_url_template() {
 		if ( isset( $this->user_source_url_template ) ) {
 			return $this->user_source_url_template;
-		} elseif ( $this->id && is_user_logged_in() && ( $templates = get_user_meta( get_current_user_id(), 'gp_source_url_templates', true ) )
-					&& isset( $templates[ $this->id ] ) ) {
-
+		} elseif ( $this->id && is_user_logged_in() ) {
+			$templates = get_user_meta( get_current_user_id(), 'gp_source_url_templates', true );
+			if ( isset( $templates[ $this->id ] ) ) {
 				$this->user_source_url_template = $templates[ $this->id ];
 				return $this->user_source_url_template;
-		} else {
-			return $this->source_url_template;
+			}
 		}
+
+		return $this->source_url_template;
 	}
 
 	/**

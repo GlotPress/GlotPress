@@ -407,11 +407,12 @@ class GP_Format_Properties extends GP_Format {
 			return false;
 		}
 
-		$entry  = $comment = null;
-		$inline = false;
-		$lines  = explode( "\n", $file );
-		$key    = '';
-		$value  = '';
+		$entry   = null;
+		$comment = null;
+		$inline  = false;
+		$lines   = explode( "\n", $file );
+		$key     = '';
+		$value   = '';
 
 		foreach ( $lines as $line ) {
 			if ( preg_match( '/^(#|!)\s*(.*)\s*$/', $line, $matches ) ) {
