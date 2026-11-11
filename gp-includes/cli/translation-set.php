@@ -203,6 +203,8 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 					'comment'    => $entry->extracted_comments,
 					'references' => implode( ' ', $entry->references ),
 					'priority'   => $entry->priority,
+					'status'     => $entry->original_status,
+					'date_added' => $entry->original_added,
 				)
 			);
 			$warnings = GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale, $original );
