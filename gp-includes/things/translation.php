@@ -321,7 +321,17 @@ class GP_Translation extends GP_Thing {
 	 * @return Translation_Entry[] The translation entries.
 	 */
 	public function for_export( $project, $translation_set, $filters = null ) {
-		$entries = GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters ? $filters : array( 'status' => 'current_or_untranslated' ) );
+		// Exported files are often kept in version control, so their order must not depend on who exports them.
+		$entries = GP::$translation->for_translation(
+			$project,
+			$translation_set,
+			'no-limit',
+			$filters ? $filters : array( 'status' => 'current_or_untranslated' ),
+			array(
+				'by'  => 'original_date_added',
+				'how' => 'asc',
+			)
+		);
 
 		// Imported translations skip the blocking errors. Stripping here also covers the WP-CLI export.
 		foreach ( $entries as $entry ) {
@@ -354,13 +364,10 @@ class GP_Translation extends GP_Thing {
 
 		$sort_bys = wp_list_pluck( gp_get_sort_by_fields(), 'sql_sort_by' );
 
-		$default_sort = get_user_option( 'gp_default_sort' );
-		if ( ! is_array( $default_sort ) ) {
-			$default_sort = array(
-				'by'  => 'priority',
-				'how' => 'desc',
-			);
-		}
+		$default_sort = array(
+			'by'  => 'priority',
+			'how' => 'desc',
+		);
 
 		$sort_by   = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ), gp_array_get( $sort_bys, $default_sort['by'] ) );
 		$sort_hows = array(
@@ -533,7 +540,9 @@ class GP_Translation extends GP_Thing {
 
 		$join = "$join_type JOIN {$wpdb->gp_translations} AS t ON o.id = t.original_id AND t.translation_set_id = " . (int) $translation_set->id;
 
-		$orderby = sprintf( $sort_by, $sort_how );
+		// Many strings share a priority or a date, so their ID keeps the order the same between requests.
+		// It's the last column of the index on originals, which still serves the sort.
+		$orderby = sprintf( $sort_by, $sort_how ) . ", o.id $sort_how";
 
 		$limit = $this->sql_limit_for_paging( $page, $this->per_page );
 

@@ -362,6 +362,29 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertEquals( 1, count( $for_translation ) );
 	}
 
+	/**
+	 * An export lists the strings in the order they were added, no matter how the user sorts the list.
+	 */
+	function test_for_export_has_the_same_order_for_every_user() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		wp_set_current_user( $this->factory->user->create() );
+
+		$singulars = array( 'Zebra', 'Apple', 'Mango', 'Banana' );
+		foreach ( $singulars as $i => $singular ) {
+			$original = $this->factory->original->create( array( 'project_id' => $set->project_id, 'singular' => $singular, 'priority' => $i % 2 ) );
+			// Strings imported together share their date, so only their order of creation tells them apart.
+			GP::$original->update( array( 'date_added' => '2026-01-01 00:00:00' ), array( 'id' => $original->id ) );
+		}
+
+		foreach ( array( 'priority', 'original', 'random' ) as $sort_by ) {
+			update_user_option( get_current_user_id(), 'gp_default_sort', array( 'by' => $sort_by, 'how' => 'desc' ) );
+
+			$entries = GP::$translation->for_export( $set->project, $set );
+
+			$this->assertSame( $singulars, wp_list_pluck( $entries, 'singular' ), $sort_by );
+		}
+	}
+
 	function test_for_export_should_include_untranslated() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 
@@ -751,15 +774,16 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		foreach ( $entries as $entry ) {
 			$current_by_status[ $entry->translation_status ] = $entry->current_translations;
 		}
+		ksort( $current_by_status );
 
 		$this->assertSame(
 			array(
-				'current'          => null,
-				'waiting'          => array( 'Current', null ),
-				'fuzzy'            => array( 'Current', null ),
 				'changesrequested' => null,
-				'rejected'         => null,
+				'current'          => null,
+				'fuzzy'            => array( 'Current', null ),
 				'old'              => null,
+				'rejected'         => null,
+				'waiting'          => array( 'Current', null ),
 			),
 			$current_by_status
 		);
