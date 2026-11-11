@@ -145,6 +145,9 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	 *
 	 * [--status=<status>]
 	 * : Translation string status; default is "current"
+	 *
+	 * @param string[] $args       Positional arguments.
+	 * @param array    $assoc_args Associative arguments.
 	 */
 	public function import( $args, $assoc_args ) {
 		$set_slug        = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
@@ -182,6 +185,9 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	 * : Translation set slug; default is "default"
 	 *
 	 * @subcommand recheck-warnings
+	 *
+	 * @param string[] $args       Positional arguments.
+	 * @param array    $assoc_args Associative arguments.
 	 */
 	public function recheck_warnings( $args, $assoc_args ) {
 		$set_slug        = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
