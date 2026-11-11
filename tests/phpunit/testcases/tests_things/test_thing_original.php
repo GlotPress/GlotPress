@@ -126,6 +126,24 @@ class GP_Test_Thing_Original extends GP_UnitTestCase {
 		$this->assertArrayHasKey( 'placeholders', $translation->warnings[0] );
 	}
 
+	function test_import_checks_the_warnings_with_the_changed_original() {
+		$set         = $this->factory->translation_set->create_with_project_and_locale();
+		$original    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save the draft', 'context' => 'button', 'comment' => 'Old comment' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'current', 'translation_0' => 'Speichern' ) );
+
+		GP::$translation_warnings->add(
+			'comment',
+			function ( $original_text, $translation, $locale, $plural_form = null, $original = null ) {
+				return $original ? $original->comment : true;
+			}
+		);
+		$original->import_for_project( $set->project, $this->create_translations_with( array( array( 'singular' => 'Save the drafts', 'context' => 'button', 'extracted_comments' => 'New comment' ) ) ) );
+		GP::$translation_warnings->remove( 'comment' );
+
+		$translation->reload();
+		$this->assertSame( array( 'comment' => 'New comment' ), $translation->warnings[0] );
+	}
+
 	function test_import_clears_the_warnings_that_no_longer_apply_to_the_changed_original() {
 		$set         = $this->factory->translation_set->create_with_project_and_locale();
 		$original    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Invalid tag name (%s) is specified.' ) );

@@ -66,21 +66,26 @@ class GP_Translation_Warnings {
 	/**
 	 * Checks translations for any issues/warnings.
 	 *
-	 * Each callback gets the original, the translation, the locale and, for an
-	 * original with a plural, the index of the plural form the translation is for.
+	 * Each callback gets the original text, the translation, the locale, for an
+	 * original with a plural the index of the plural form the translation is for,
+	 * and the original, if it was passed.
 	 *
 	 * @since 1.0.0
 	 * @since 4.2.0 Passes the index of the plural form to the callbacks.
+	 * @since 4.2.0 Added the `$original` parameter.
 	 * @access public
 	 *
-	 * @param string    $singular     The singular form of an original string.
-	 * @param string    $plural       The plural form of an original string.
-	 * @param string[]  $translations An array of translations for an original.
-	 * @param GP_Locale $locale       The locale of the translations.
+	 * @param string           $singular     The singular form of an original string.
+	 * @param string           $plural       The plural form of an original string.
+	 * @param string[]         $translations An array of translations for an original.
+	 * @param GP_Locale        $locale       The locale of the translations.
+	 * @param GP_Original|null $original     Optional. The original, to give the callbacks
+	 *                                       access to fields like its context or comment.
+	 *                                       Callbacks have to handle null. Default null.
 	 * @return array|null Null if no issues have been found, otherwise an array
 	 *                    with warnings.
 	 */
-	public function check( $singular, $plural, $translations, $locale ) {
+	public function check( $singular, $plural, $translations, $locale, $original = null ) {
 		$problems = array();
 		foreach ( $translations as $translation_index => $translation ) {
 			if ( ! $translation ) {
@@ -106,13 +111,13 @@ class GP_Translation_Warnings {
 
 			foreach ( $this->callbacks as $callback_id => $callback ) {
 				if ( ! $skip['singular'] ) {
-					$singular_test = $callback( $singular, $translation, $locale, $plural_form );
+					$singular_test = $callback( $singular, $translation, $locale, $plural_form, $original );
 					if ( true !== $singular_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $singular_test;
 					}
 				}
 				if ( null !== $plural && ! $skip['plural'] ) {
-					$plural_test = $callback( $plural, $translation, $locale, $plural_form );
+					$plural_test = $callback( $plural, $translation, $locale, $plural_form, $original );
 					if ( true !== $plural_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $plural_test;
 					}

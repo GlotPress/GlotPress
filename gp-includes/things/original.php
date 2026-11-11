@@ -383,7 +383,7 @@ class GP_Original extends GP_Thing {
 				// But only if it's different, like a changed 'references', 'comment', or 'status' field.
 				if ( GP::$original->is_different_from( $data, $original ) ) {
 					$this->update( $data, array( 'id' => $original->id ) );
-					$this->recheck_translation_warnings( $original, $data['singular'], $data['plural'] ?? null );
+					$this->recheck_translation_warnings( $original, $data );
 					++$originals_existing;
 				}
 			} else {
@@ -425,7 +425,7 @@ class GP_Original extends GP_Thing {
 
 				// We'll update the old original...
 				$this->update( $data, array( 'id' => $original->id ) );
-				$this->recheck_translation_warnings( $original, $data['singular'], $data['plural'] ?? null );
+				$this->recheck_translation_warnings( $original, $data );
 
 				// and set existing translations to fuzzy.
 				if ( $do_fuzzy ) {
@@ -502,10 +502,14 @@ class GP_Original extends GP_Thing {
 	 * @since 4.2.0
 	 *
 	 * @param GP_Original $original The original before the change.
-	 * @param string      $singular The singular of the changed original.
-	 * @param string|null $plural   The plural of the changed original.
+	 * @param array       $data     The fields of the changed original.
 	 */
-	public function recheck_translation_warnings( $original, $singular, $plural ) {
+	public function recheck_translation_warnings( $original, $data ) {
+		// Filters may add keys to the imported data that aren't fields of an original.
+		$changed_original = new GP_Original( array_intersect_key( array_merge( (array) $original, $data ), array_flip( $this->field_names ) ) );
+		$singular         = $changed_original->singular;
+		$plural           = $changed_original->plural;
+
 		// Only the text matters, so warnings dismissed for it stay dismissed when the context or references change.
 		if ( $singular === $original->singular && (string) $plural === (string) $original->plural ) {
 			return;
@@ -539,7 +543,7 @@ class GP_Original extends GP_Thing {
 
 			// Forms the original doesn't use any more, like the plural forms of an original that lost its plural, are left out.
 			$forms    = array_slice( $translation->translations(), 0, null === $plural ? 1 : $locale->nplurals );
-			$warnings = GP::$translation_warnings->check( $singular, $plural, $forms, $locale );
+			$warnings = GP::$translation_warnings->check( $singular, $plural, $forms, $locale, $changed_original );
 			if ( $warnings != $translation->warnings ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual -- No warnings are stored as null or an empty value.
 				$translation->update( array( 'warnings' => $warnings ) );
 			}
