@@ -153,7 +153,7 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 		foreach ( $chars2 as $j => $c2 ) {
 			$insertions    = $prevRow[ $j + 1 ] + 1;
 			$deletions     = $currentRow[ $j ] + 1;
-			$substitutions = $prevRow[ $j ] + ( ( $c1 != $c2 ) ? 1 : 0 );
+			$substitutions = $prevRow[ $j ] + ( ( $c1 !== $c2 ) ? 1 : 0 );
 			$currentRow[]  = min( $insertions, $deletions, $substitutions );
 		}
 		$prevRow = $currentRow;
