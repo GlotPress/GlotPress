@@ -181,30 +181,30 @@ class GP_Format_Android extends GP_Format {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param obj    $string  The string entry object to use.
-	 * @param string $context The context string to use.
+	 * @param obj    $string_entry The string entry object to use.
+	 * @param string $context      The context string to use.
 	 *
 	 * @return obj A translation entry object.
 	 */
-	private function generate_entry( $string, $context ) {
+	private function generate_entry( $string_entry, $context ) {
 		// Check to see if there is an xliff tag in the string.
-		$xliff_info = $this->extract_xliff_info( (string) $string[0] );
+		$xliff_info = $this->extract_xliff_info( (string) $string_entry[0] );
 
 		// If an xliff tag was found, replace the translation and add a comment for later.
 		if ( false !== $xliff_info ) {
-			$string[0]          = $xliff_info['string'];
-			$string['comment'] .= $xliff_info['description'];
+			$string_entry[0]          = $xliff_info['string'];
+			$string_entry['comment'] .= $xliff_info['description'];
 		}
 
 		// Create the new translation entry with the parsed data.
 		$entry               = new Translation_Entry();
 		$entry->context      = $context;
-		$entry->singular     = $this->unescape( $string[0] );
+		$entry->singular     = $this->unescape( $string_entry[0] );
 		$entry->translations = array();
 
 		// If we have a comment, add it to the entry.
-		if ( isset( $string['comment'] ) && $string['comment'] ) {
-			$entry->extracted_comments = (string) $string['comment'];
+		if ( isset( $string_entry['comment'] ) && $string_entry['comment'] ) {
+			$entry->extracted_comments = (string) $string_entry['comment'];
 		}
 
 		return $entry;
@@ -215,11 +215,11 @@ class GP_Format_Android extends GP_Format {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string The string to process.
+	 * @param string $value The string to process.
 	 *
 	 * @return array|bool An array containing the extracted information from the xliff tags (there may be multiple) on success, false on failure.
 	 */
-	private function extract_xliff_info( $string ) {
+	private function extract_xliff_info( $value ) {
 		// Define the initial xliff tag to look for.
 		$search = '--xlifftag--';
 
@@ -227,12 +227,12 @@ class GP_Format_Android extends GP_Format {
 		 * If it's not in the string, don't do any more processing.  Note we don't need to worry about
 		 * case sensitivity here as the search string was added before the XML processing was done.
 		 */
-		if ( false === strstr( $string, $search ) ) {
+		if ( false === strstr( $value, $search ) ) {
 			return false;
 		}
 
 		// Replace our temporary placeholder with the original text.
-		$string = str_ireplace( $search, '<', $string );
+		$string = str_ireplace( $search, '<', $value );
 
 		// Break apart the string in case there are multiple xliff's in it.
 		$parts = explode( '<xliff:g', $string );
@@ -333,11 +333,11 @@ class GP_Format_Android extends GP_Format {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string       The string to process.
+	 * @param string $value        The string to process.
 	 * @param int    $prepend_tabs The number of tab characters to prepend to the output.
 	 */
-	private function line( $string, $prepend_tabs = 0 ) {
-		$this->exported .= str_repeat( "\t", $prepend_tabs ) . "$string\n";
+	private function line( $value, $prepend_tabs = 0 ) {
+		$this->exported .= str_repeat( "\t", $prepend_tabs ) . "$value\n";
 	}
 
 	/**
@@ -427,12 +427,12 @@ class GP_Format_Android extends GP_Format {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $string The string to process.
+	 * @param string $value The string to process.
 	 *
 	 * @return string Returns the string with double-escaped Unicode sequences.
 	 */
-	private function preserve_escaped_unicode( $string ) {
-		return preg_replace( '#\\\\u([0-9a-fA-F]{4})#', '\\\\$0', $string );
+	private function preserve_escaped_unicode( $value ) {
+		return preg_replace( '#\\\\u([0-9a-fA-F]{4})#', '\\\\$0', $value );
 	}
 
 	/**
@@ -440,12 +440,12 @@ class GP_Format_Android extends GP_Format {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string The string to unescape.
+	 * @param string $value The string to unescape.
 	 *
 	 * @return string Returns the unescaped string.
 	 */
-	private function unescape( $string ) {
-		$string = $this->preserve_escaped_unicode( $string );
+	private function unescape( $value ) {
+		$string = $this->preserve_escaped_unicode( $value );
 		return stripcslashes( $string );
 	}
 
@@ -454,12 +454,12 @@ class GP_Format_Android extends GP_Format {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string The string to escape.
+	 * @param string $value The string to escape.
 	 *
 	 * @return string Returns the escaped string.
 	 */
-	protected function escape( $string ) {
-		$string = addcslashes( $string, "'\n\"" );
+	protected function escape( $value ) {
+		$string = addcslashes( $value, "'\n\"" );
 		$string = str_replace( array( '&', '<' ), array( '&amp;', '&lt;' ), $string );
 
 		// Android strings that start with an '@' are references to other strings and need to be escaped.  See GH469.

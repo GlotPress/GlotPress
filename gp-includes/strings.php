@@ -146,20 +146,20 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 	$chars1 = mb_str_split( $str1 );
 	$chars2 = mb_str_split( $str2 );
 
-	$prevRow = range( 0, $length2 );
+	$prev_row = range( 0, $length2 );
 	foreach ( $chars1 as $i => $c1 ) {
-		$currentRow    = array();
-		$currentRow[0] = $i + 1;
+		$current_row    = array();
+		$current_row[0] = $i + 1;
 		foreach ( $chars2 as $j => $c2 ) {
-			$insertions    = $prevRow[ $j + 1 ] + 1;
-			$deletions     = $currentRow[ $j ] + 1;
-			$substitutions = $prevRow[ $j ] + ( ( $c1 != $c2 ) ? 1 : 0 );
-			$currentRow[]  = min( $insertions, $deletions, $substitutions );
+			$insertions    = $prev_row[ $j + 1 ] + 1;
+			$deletions     = $current_row[ $j ] + 1;
+			$substitutions = $prev_row[ $j ] + ( ( $c1 != $c2 ) ? 1 : 0 );
+			$current_row[] = min( $insertions, $deletions, $substitutions );
 		}
-		$prevRow = $currentRow;
+		$prev_row = $current_row;
 	}
 
-	return $prevRow[ $length2 ];
+	return $prev_row[ $length2 ];
 }
 
 /**

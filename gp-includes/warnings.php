@@ -412,13 +412,13 @@ class GP_Builtin_Translation_Warnings {
 	 * @since 1.0.0
 	 * @access private
 	 *
-	 * @param string $string The string to search.
+	 * @param string $text   The text to search.
 	 * @param string $re     Regular expressions to match placeholders.
 	 * @return array An array with counts per placeholder.
 	 */
-	private function _placeholders_counts( $string, $re ) {
+	private function _placeholders_counts( $text, $re ) {
 		$counts = array();
-		preg_match_all( "/$re/", $string, $matches );
+		preg_match_all( "/$re/", $text, $matches );
 		foreach ( $matches[0] as $match ) {
 			$counts[ $match ] = gp_array_get( $counts, $match, 0 ) + 1;
 		}
