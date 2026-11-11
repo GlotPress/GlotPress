@@ -8,25 +8,25 @@
 /**
  * Retrieves a value from $_POST.
  *
- * @param string       $key     Name of post value.
- * @param string|array $default Optional. Value to return if `$_POST[ $key ]` doesn't exist. Default empty.
- * @return string|array Value of `$_POST[ $key ]` if exists or `$default`.
+ * @param string       $key           Name of post value.
+ * @param string|array $default_value Optional. Value to return if `$_POST[ $key ]` doesn't exist. Default empty.
+ * @return string|array Value of `$_POST[ $key ]` if exists or `$default_value`.
  */
-function gp_post( $key, $default = '' ) {
+function gp_post( $key, $default_value = '' ) {
 	// phpcs:ignore WordPress.Security.NonceVerification -- Helper to retrieve item from the request.
-	return wp_unslash( gp_array_get( $_POST, $key, $default ) );
+	return wp_unslash( gp_array_get( $_POST, $key, $default_value ) );
 }
 
 /**
  * Retrieves a value from $_GET.
  *
- * @param string       $key     Name of get value.
- * @param string|array $default Optional. Value to return if `$_GET[ $key ]` doesn't exist. Default empty.
- * @return string|array Value of `$_GET[ $key ]` if exists or `$default`.
+ * @param string       $key           Name of get value.
+ * @param string|array $default_value Optional. Value to return if `$_GET[ $key ]` doesn't exist. Default empty.
+ * @return string|array Value of `$_GET[ $key ]` if exists or `$default_value`.
  */
-function gp_get( $key, $default = '' ) {
+function gp_get( $key, $default_value = '' ) {
 	// phpcs:ignore WordPress.Security.NonceVerification -- Helper to retrieve item from the request.
-	return wp_unslash( gp_array_get( $_GET, $key, $default ) );
+	return wp_unslash( gp_array_get( $_GET, $key, $default_value ) );
 }
 
 /**
@@ -36,12 +36,12 @@ function gp_get( $key, $default = '' ) {
  *
  * @see wp_nonce_field()
  *
- * @param int|string $action Action name.
- * @param bool       $echo   Optional. Whether to display or return hidden form field. Default true.
+ * @param int|string $action  Action name.
+ * @param bool       $display Optional. Whether to display or return hidden form field. Default true.
  * @return string Nonce field HTML markup.
  */
-function gp_route_nonce_field( $action, $echo = true ) {
-	return wp_nonce_field( $action, '_gp_route_nonce', true, $echo );
+function gp_route_nonce_field( $action, $display = true ) {
+	return wp_nonce_field( $action, '_gp_route_nonce', true, $display );
 }
 
 /**
@@ -60,26 +60,26 @@ function gp_route_nonce_url( $url, $action ) {
 }
 
 /**
- * Retrieves a value from $array
+ * Retrieves a value from array.
  *
- * @param array  $array   The array to get the value from.
- * @param string $key     Name of array value.
- * @param mixed  $default Value to return if $array[$key] doesn't exist. Default is ''.
- * @return mixed $array[$key] if exists or $default
+ * @param array  $items         The array to get the value from.
+ * @param string $key           Name of array value.
+ * @param mixed  $default_value Value to return if $array[$key] doesn't exist. Default is ''.
+ * @return mixed $array[$key] if exists or $default_value
  */
-function gp_array_get( $array, $key, $default = '' ) {
-	return ( is_scalar( $key ) && isset( $array[ $key ] ) ) ? $array[ $key ] : $default;
+function gp_array_get( $items, $key, $default_value = '' ) {
+	return ( is_scalar( $key ) && isset( $items[ $key ] ) ) ? $items[ $key ] : $default_value;
 }
 
 /**
  * Retrieves a constant value or a default value if the constant isn't defined.
  *
- * @param string $name    Name of the constant.
- * @param mixed  $default Value to return if the constant isn't defined. Default is ''.
- * @return mixed Constant value if defined or $default.
+ * @param string $name          Name of the constant.
+ * @param mixed  $default_value Value to return if the constant isn't defined. Default is ''.
+ * @return mixed Constant value if defined or $default_value.
  */
-function gp_const_get( $name, $default = '' ) {
-	return defined( $name ) ? constant( $name ) : $default;
+function gp_const_get( $name, $default_value = '' ) {
+	return defined( $name ) ? constant( $name ) : $default_value;
 }
 
 /**
@@ -100,24 +100,24 @@ function gp_const_set( $name, $value ) {
 /**
  * Retrieves a member variable from an object.
  *
- * @param object       $object  The object to get the member from.
- * @param string       $key     Name of member variable.
- * @param string|array $default Value to return if $object->$key doesn't exist. Default is ''.
- * @return string|array $object->$key if exists or $default
+ * @param object       $obj           The object to get the member from.
+ * @param string       $key           Name of member variable.
+ * @param string|array $default_value Value to return if $object->$key doesn't exist. Default is ''.
+ * @return string|array $obj->$key if exists or $default_value
  */
-function gp_member_get( $object, $key, $default = '' ) {
-	return ( is_string( $key ) && property_exists( $object, $key ) ) ? $object->$key : $default;
+function gp_member_get( $obj, $key, $default_value = '' ) {
+	return ( is_string( $key ) && property_exists( $obj, $key ) ) ? $obj->$key : $default_value;
 }
 
 /**
  * Makes from an array of arrays a flat array.
  *
- * @param array $array The array to flatten.
+ * @param array $values The array to flatten.
  * @return array Flattened array.
  */
-function gp_array_flatten( $array ) {
+function gp_array_flatten( $values ) {
 	$res = array();
-	foreach ( $array as $value ) {
+	foreach ( $values as $value ) {
 		$res = array_merge( $res, is_array( $value ) ? gp_array_flatten( $value ) : array( $value ) );
 	}
 	return $res;
@@ -281,12 +281,12 @@ function gp_array_zip( ...$args ) {
  * Returns true if callback returns true for any item in array.
  *
  * @param callable     $callback The callback to run for each item.
- * @param array        $array    The array to iterate over.
+ * @param array        $items    The array to iterate over.
  * @param mixed|string $arg      Optional. An additional argument to pass to the callback. Default null.
  * @return bool
  */
-function gp_array_any( $callback, $array, $arg = null ) {
-	foreach ( $array as $item ) {
+function gp_array_any( $callback, $items, $arg = null ) {
+	foreach ( $items as $item ) {
 		if ( is_array( $callback ) ) {
 			if ( $callback[0]->{$callback[1]}( $item, $arg ) ) {
 				return true;
@@ -302,11 +302,11 @@ function gp_array_any( $callback, $array, $arg = null ) {
  * Returns true if callback returns true for all items in array.
  *
  * @param callable $callback The callback to run for each item.
- * @param array    $array    The array to iterate over.
+ * @param array    $items    The array to iterate over.
  * @return bool
  */
-function gp_array_all( $callback, $array ) {
-	foreach ( $array as $item ) {
+function gp_array_all( $callback, $items ) {
+	foreach ( $items as $item ) {
 		if ( ! $callback( $item ) ) {
 			return false;
 		}
@@ -329,12 +329,12 @@ function gp_error_log_dump( $value ) {
 /**
  * Checks if an object has a member variable.
  *
- * @param object $object   The object to check.
+ * @param object $instance The object to check.
  * @param string $var_name Name of member variable.
  * @return bool
  */
-function gp_object_has_var( $object, $var_name ) {
-	return in_array( $var_name, array_keys( get_object_vars( $object ) ), true );
+function gp_object_has_var( $instance, $var_name ) {
+	return in_array( $var_name, array_keys( get_object_vars( $instance ) ), true );
 }
 
 /**
@@ -495,12 +495,12 @@ function gp_is_between_exclusive( $value, $start, $end ) {
  *
  * @since 3.0.0
  *
- * @param string $value The value you want to check.
- * @param array  $list  The list of values you want to check against.
+ * @param string $value  The value you want to check.
+ * @param array  $values The list of values you want to check against.
  * @return bool
  */
-function gp_is_one_of( $value, $list ) {
-	return in_array( $value, $list, true );
+function gp_is_one_of( $value, $values ) {
+	return in_array( $value, $values, true );
 }
 
 /**
@@ -819,19 +819,19 @@ function gp_set_translations_import_max_memory_limit() {
  *
  * @since 4.1.0
  *
- * @param string $string The string to check.
+ * @param string $value The string to check.
  * @return bool True if the string is valid UTF-8, false otherwise.
  */
-function gp_is_valid_utf8( $string ) {
+function gp_is_valid_utf8( $value ) {
 	if ( function_exists( 'wp_is_valid_utf8' ) ) {
-		return wp_is_valid_utf8( $string );
+		return wp_is_valid_utf8( $value );
 	}
 
 	if ( function_exists( 'mb_check_encoding' ) ) {
-		return mb_check_encoding( $string, 'UTF-8' );
+		return mb_check_encoding( $value, 'UTF-8' );
 	}
 
-	return 1 === preg_match( '//u', $string );
+	return 1 === preg_match( '//u', $value );
 }
 
 /**

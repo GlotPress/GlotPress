@@ -650,16 +650,16 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 /**
  * Converts an array of GP_Thing objects to a JSON string.
  *
- * @param array $array An array of GP_Thing objects.
+ * @param array $things An array of GP_Thing objects.
  * @return string JSON string representing the array of GP_Thing objects.
  */
-function gp_array_of_things_to_json( $array ) {
+function gp_array_of_things_to_json( $things ) {
 	return wp_json_encode(
 		array_map(
 			function ( $thing ) {
 				return $thing->fields();
 			},
-			$array
+			$things
 		)
 	);
 }
@@ -667,20 +667,20 @@ function gp_array_of_things_to_json( $array ) {
 /**
  * Converts an array of arrays of GP_Thing objects to a JSON string.
  *
- * @param array $array An array of arrays of GP_Thing objects.
+ * @param array $things An array of arrays of GP_Thing objects.
  * @return string JSON string representing the array of arrays of GP_Thing objects.
  */
-function gp_array_of_array_of_things_to_json( $array ) {
-	$map_to_fields = function ( $array ) {
+function gp_array_of_array_of_things_to_json( $things ) {
+	$map_to_fields = function ( $things ) {
 		return array_map(
 			function ( $thing ) {
 				return $thing->fields();
 			},
-			$array
+			$things
 		);
 	};
 
-	return wp_json_encode( array_map( $map_to_fields, $array ) );
+	return wp_json_encode( array_map( $map_to_fields, $things ) );
 }
 
 /**
