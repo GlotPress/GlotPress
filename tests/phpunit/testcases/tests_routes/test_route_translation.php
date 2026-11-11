@@ -223,11 +223,77 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 	}
 
 	/**
-	 * Saving a fuzzy translation unchanged doesn't copy it under another user's name and set the fuzzy one to old.
+	 * A validator saving a waiting or fuzzy translation unchanged approves it, and its translator stays its author.
 	 */
-	function test_translations_post_refuses_a_translation_identical_to_a_fuzzy_one() {
+	function test_translations_post_approves_an_identical_waiting_or_fuzzy_translation_for_a_validator() {
+		foreach ( array( 'waiting', 'fuzzy' ) as $status ) {
+			$set        = $this->factory->translation_set->create_with_project_and_locale();
+			$translator = $this->factory->user->create();
+			$this->become_validator_for_set( $set );
+
+			$original   = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
+			$current    = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Speichern', 'status' => 'current' ) );
+			$suggestion = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => $status, 'user_id' => $translator ) );
+
+			$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern' );
+
+			$suggestion = GP::$translation->get( $suggestion->id );
+			$this->assertSame( 'current', $suggestion->status, $status );
+			$this->assertSame( $translator, (int) $suggestion->user_id, $status );
+			$this->assertSame( 'old', GP::$translation->get( $current->id )->status, $status );
+			$this->assertCount( 2, GP::$translation->find_many( array( 'original_id' => $original->id ) ), $status );
+		}
+	}
+
+	/**
+	 * Saving doesn't approve an identical waiting translation the validator may not approve, and doesn't replace an identical current one.
+	 */
+	function test_translations_post_refuses_an_identical_translation_it_cannot_or_need_not_approve() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$this->become_validator_for_set( $set );
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
+		$waiting  = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'waiting' ) );
+
+		add_filter( 'gp_pre_can_set_translation_status', '__return_false' );
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern' );
+		remove_filter( 'gp_pre_can_set_translation_status', '__return_false' );
+
+		$this->assertSame( 'waiting', GP::$translation->get( $waiting->id )->status );
+		$this->assertStringContainsString( 'Identical waiting translation already exists.', $this->route->template_output );
+
+		$current = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'current' ) );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern' );
+
+		$this->assertSame( 'current', GP::$translation->get( $current->id )->status );
+		$this->assertSame( 'waiting', GP::$translation->get( $waiting->id )->status );
+		$this->assertStringContainsString( 'Identical current translation already exists.', $this->route->template_output );
+	}
+
+	/**
+	 * Saving as waiting doesn't approve an identical waiting translation.
+	 */
+	function test_translations_post_refuses_an_identical_waiting_translation_when_saving_as_waiting() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
+		$waiting  = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'waiting' ) );
+
+		$_POST['status'] = 'waiting';
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern' );
+
+		$this->assertSame( 'waiting', GP::$translation->get( $waiting->id )->status );
+		$this->assertStringContainsString( 'Identical waiting translation already exists.', $this->route->template_output );
+	}
+
+	/**
+	 * Saving a fuzzy translation unchanged without the right to approve doesn't copy it under another user's name.
+	 */
+	function test_translations_post_refuses_a_translation_identical_to_a_fuzzy_one_from_a_user_who_cannot_approve() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->set_normal_user_as_current();
 
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
 		$fuzzy    = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'fuzzy' ) );

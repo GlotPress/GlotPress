@@ -373,50 +373,76 @@ class GP_Route_Translation extends GP_Route_Main {
 				),
 				array()
 			);
+
+			$identical = array();
 			foreach ( $existing_translations as $e ) {
 				if ( array_pad( $translations, $locale->nplurals, null ) == $e->translations ) {
-					if ( 'fuzzy' === $e->translation_status ) {
-						$message = __( 'Identical fuzzy translation already exists.', 'glotpress' );
-					} elseif ( 'waiting' === $e->translation_status ) {
+					$identical[ $e->translation_status ] = $e;
+				}
+			}
+
+			$translation = null;
+			if ( $identical ) {
+				// Saving it unchanged means it's right, and approving it keeps its translator as the author.
+				if ( 'current' === $set_status && ! isset( $identical['current'] ) ) {
+					foreach ( array( 'waiting', 'fuzzy' ) as $status ) {
+						$existing = isset( $identical[ $status ] ) ? GP::$translation->get( $identical[ $status ]->id ) : null;
+						if ( $existing && $existing->can_set_status( 'current' ) ) {
+							$translation = $existing;
+							break;
+						}
+					}
+				}
+
+				if ( ! $translation ) {
+					if ( isset( $identical['current'] ) ) {
+						$message = __( 'Identical current translation already exists.', 'glotpress' );
+					} elseif ( isset( $identical['waiting'] ) ) {
 						$message = __( 'Identical waiting translation already exists.', 'glotpress' );
 					} else {
-						$message = __( 'Identical current translation already exists.', 'glotpress' );
+						$message = __( 'Identical fuzzy translation already exists.', 'glotpress' );
 					}
 
 					return $this->die_with_error( $message, 200 );
 				}
 			}
 
-			$this->validate_not_rejected_or_changesrequested( $translation_set, $original_id, $translations, $set_status );
+			if ( $translation ) {
+				if ( ! $translation->set_status( $set_status ) ) {
+					return $this->die_with_error( __( 'Error in saving the translation!', 'glotpress' ) );
+				}
+			} else {
+				$this->validate_not_rejected_or_changesrequested( $translation_set, $original_id, $translations, $set_status );
 
-			$translation = GP::$translation->create( $data );
+				$translation = GP::$translation->create( $data );
 
-			if ( ! $translation ) {
-				return $this->die_with_error( __( 'Error in saving the translation!', 'glotpress' ) );
+				if ( ! $translation ) {
+					return $this->die_with_error( __( 'Error in saving the translation!', 'glotpress' ) );
+				}
+
+				if ( ! $translation->validate() ) {
+					$translation->delete();
+
+					return $this->die_with_error( $this->error_messages_html( $translation->errors ), 200 );
+				}
+
+				$translation->set_status( $set_status );
 			}
 
-			if ( ! $translation->validate() ) {
-				$translation->delete();
+			$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array( 'translation_id' => $translation->id ), array() );
+			$translations = GP::$translation->add_related_translations( $translations, $translation_set );
 
-				return $this->die_with_error( $this->error_messages_html( $translation->errors ), 200 );
+			if ( ! empty( $translations ) ) {
+				$translation = $translations[0];
+
+				$can_edit                = $this->can( 'edit', 'translation-set', $translation_set->id );
+				$can_write               = $this->can( 'write', 'project', $project->id );
+				$can_approve             = $this->can( 'approve', 'translation-set', $translation_set->id );
+				$can_approve_translation = $this->can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
+
+				$output[ $original_id ] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
 			} else {
-				$translation->set_status( $set_status );
-
-				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array( 'translation_id' => $translation->id ), array() );
-				$translations = GP::$translation->add_related_translations( $translations, $translation_set );
-
-				if ( ! empty( $translations ) ) {
-					$translation = $translations[0];
-
-					$can_edit                = $this->can( 'edit', 'translation-set', $translation_set->id );
-					$can_write               = $this->can( 'write', 'project', $project->id );
-					$can_approve             = $this->can( 'approve', 'translation-set', $translation_set->id );
-					$can_approve_translation = $this->can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
-
-					$output[ $original_id ] = gp_tmpl_get_output( 'translation-row', get_defined_vars() );
-				} else {
-					$output[ $original_id ] = false;
-				}
+				$output[ $original_id ] = false;
 			}
 		}
 		$this->send_filter_counts_header( $translation_set );
