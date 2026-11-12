@@ -19,28 +19,28 @@ class GP_Validator_Permission extends GP_Permission {
 	 *
 	 * @var string $table_basename
 	 */
-	var $table_basename = 'gp_permissions';
+	public $table_basename = 'gp_permissions';
 
 	/**
 	 * List of field names for a validator permission.
 	 *
 	 * @var array $field_names
 	 */
-	var $field_names = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
+	public $field_names = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
 
 	/**
 	 * List of non-database field names.
 	 *
 	 * @var array $non_db_field_names
 	 */
-	var $non_db_field_names = array( 'project_id', 'locale_slug', 'set_slug' );
+	public $non_db_field_names = array( 'project_id', 'locale_slug', 'set_slug' );
 
 	/**
 	 * List of field names which cannot be updated.
 	 *
 	 * @var array $non_updatable_attributes
 	 */
-	var $non_updatable_attributes = array( 'id' );
+	public $non_updatable_attributes = array( 'id' );
 
 	/**
 	 * Type of the object.

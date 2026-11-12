@@ -22,7 +22,7 @@ class GP_Route {
 	 *
 	 * @var array
 	 */
-	public $errors  = array();
+	public $errors = array();
 
 	/**
 	 * Notices collected during the request.
@@ -45,98 +45,98 @@ class GP_Route {
 	 *
 	 * @var bool
 	 */
-	var $request_running = false;
+	public $request_running = false;
 
 	/**
 	 * Path to templates.
 	 *
 	 * @var string|null
 	 */
-	var $template_path = null;
+	public $template_path = null;
 
 	/**
 	 * Whether this is a fake request (for testing).
 	 *
 	 * @var bool
 	 */
-	var $fake_request = false;
+	public $fake_request = false;
 
 	/**
 	 * Whether exit() has been called.
 	 *
 	 * @var bool
 	 */
-	var $exited = false;
+	public $exited = false;
 
 	/**
 	 * Message passed to exit().
 	 *
 	 * @var mixed
 	 */
-	var $exit_message;
+	public $exit_message;
 
 	/**
 	 * Whether a redirect has been performed.
 	 *
 	 * @var bool
 	 */
-	var $redirected = false;
+	public $redirected = false;
 
 	/**
 	 * URL redirected to.
 	 *
 	 * @var string|null
 	 */
-	var $redirected_to = null;
+	public $redirected_to = null;
 
 	/**
 	 * Whether a template has been rendered.
 	 *
 	 * @var bool
 	 */
-	var $rendered_template = false;
+	public $rendered_template = false;
 
 	/**
 	 * The name of the loaded template.
 	 *
 	 * @var string|null
 	 */
-	var $loaded_template = null;
+	public $loaded_template = null;
 
 	/**
 	 * The output of the template when in fake request mode.
 	 *
 	 * @var string|null
 	 */
-	var $template_output = null;
+	public $template_output = null;
 
 	/**
 	 * Headers sent during fake request.
 	 *
 	 * @var array
 	 */
-	var $headers = array();
+	public $headers = array();
 
 	/**
 	 * The class name of the route.
 	 *
 	 * @var string
 	 */
-	var $class_name;
+	public $class_name;
 
 	/**
 	 * The HTTP status code sent during fake request.
 	 *
 	 * @var int
 	 */
-	var $http_status;
+	public $http_status;
 
 	/**
 	 * The last method called on the route.
 	 *
 	 * @var string
 	 */
-	var $last_method_called;
+	public $last_method_called;
 
 	/**
 	 * Constructor.
