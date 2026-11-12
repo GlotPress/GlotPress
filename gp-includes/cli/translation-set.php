@@ -193,7 +193,21 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 		$project = GP::$project->get( $translation_set->project_id );
 		$locale  = GP_Locales::by_slug( $translation_set->locale );
 		foreach ( GP::$translation->for_translation( $project, $translation_set, 'no-limit' ) as $entry ) {
-			$warnings = GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale );
+			$original = new GP_Original(
+				array(
+					'id'         => $entry->original_id,
+					'project_id' => $project->id,
+					'context'    => $entry->context,
+					'singular'   => $entry->singular,
+					'plural'     => $entry->plural,
+					'comment'    => $entry->extracted_comments,
+					'references' => implode( ' ', $entry->references ),
+					'priority'   => $entry->priority,
+					'status'     => $entry->original_status,
+					'date_added' => $entry->original_added,
+				)
+			);
+			$warnings = GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale, $original );
 			if ( $warnings == $entry->warnings ) {
 				continue;
 			}

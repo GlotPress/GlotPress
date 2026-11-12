@@ -375,19 +375,6 @@ class GP_Translation_Set extends GP_Thing {
 			 */
 			$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : $desired_status, $entry, null );
 
-			/**
-			 * Filters the warnings of imported translations of a translation set.
-			 *
-			 * @since 4.2.0
-			 *
-			 * @param array            $warnings The warnings array.
-			 * @param Translation_Entry $entry   The translation entry being imported.
-			 */
-			$entry->warnings = apply_filters( 'gp_translation_set_import_warnings', maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) ), $entry );
-			if ( ! empty( $entry->warnings ) && 'current' === $entry->status ) {
-				$entry->status = 'waiting';
-			}
-
 			$entry_original = new GP_Original(
 				array(
 					'project_id' => $this->project_id,
@@ -397,6 +384,19 @@ class GP_Translation_Set extends GP_Thing {
 					'comment'    => $entry->extracted_comments,
 				)
 			);
+
+			/**
+			 * Filters the warnings of imported translations of a translation set.
+			 *
+			 * @since 4.2.0
+			 *
+			 * @param array            $warnings The warnings array.
+			 * @param Translation_Entry $entry   The translation entry being imported.
+			 */
+			$entry->warnings = apply_filters( 'gp_translation_set_import_warnings', maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale, $entry_original ) ), $entry );
+			if ( ! empty( $entry->warnings ) && 'current' === $entry->status ) {
+				$entry->status = 'waiting';
+			}
 
 			$has_errors = null !== GP::$translation_errors->check( $entry_original, $entry->translations, $locale );
 
