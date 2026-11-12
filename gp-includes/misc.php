@@ -891,3 +891,180 @@ function gp_get_placeholder_regex_pattern( $specifiers = '[bcdefglosuxEFGX@]' ) 
 		'|(?:' . $specifiers . ')' .
 	'))';
 }
+
+/**
+ * Sanitizes a timezone as offered by wp_timezone_choice().
+ *
+ * @since 4.2.0
+ *
+ * @param mixed $timezone A timezone identifier, like 'Europe/Berlin', or an offset from UTC, like 'UTC+5.5'.
+ * @return string The timezone, or an empty string if it isn't valid.
+ */
+function gp_sanitize_timezone( $timezone ) {
+	static $identifiers = null;
+
+	if ( ! is_string( $timezone ) ) {
+		return '';
+	}
+
+	if ( null === $identifiers ) {
+		$identifiers = array_flip( timezone_identifiers_list( DateTimeZone::ALL_WITH_BC ) );
+	}
+
+	if ( isset( $identifiers[ $timezone ] ) || preg_match( '/^UTC[+-]\d{1,2}(?:\.\d+)?$/', $timezone ) ) {
+		return $timezone;
+	}
+
+	return '';
+}
+
+/**
+ * Gets the timezone of the site in the format wp_timezone_choice() offers it.
+ *
+ * @since 4.2.0
+ *
+ * @return string The timezone identifier of the site, or its offset from UTC, like 'UTC+2'.
+ */
+function gp_get_site_timezone_choice() {
+	$timezone = get_option( 'timezone_string' );
+
+	// Like the general settings of WordPress, which don't offer the old Etc/GMT zones and show the offset instead.
+	if ( $timezone && false === strpos( $timezone, 'Etc/GMT' ) ) {
+		return $timezone;
+	}
+
+	$offset = (float) get_option( 'gmt_offset' );
+	if ( 0.0 === $offset ) {
+		return 'UTC+0';
+	}
+
+	return 'UTC' . ( $offset < 0 ? '' : '+' ) . $offset;
+}
+
+/**
+ * Gets the timezone the current user chose, or the one of the site, in the format wp_timezone_choice() offers it.
+ *
+ * @since 4.2.0
+ *
+ * @return string The timezone identifier, or an offset from UTC, like 'UTC+5.5'.
+ */
+function gp_get_user_timezone_choice() {
+	$timezone = gp_sanitize_timezone( get_user_option( 'gp_timezone' ) );
+
+	return '' !== $timezone ? $timezone : gp_get_site_timezone_choice();
+}
+
+/**
+ * Gets the timezone of the current user, or the one of the site if the user didn't choose one.
+ *
+ * @since 4.2.0
+ *
+ * @return DateTimeZone The timezone.
+ */
+function gp_get_user_timezone() {
+	static $timezones = array();
+
+	$choice = gp_get_user_timezone_choice();
+
+	if ( ! isset( $timezones[ $choice ] ) ) {
+		// DateTimeZone doesn't know the offsets offered by wp_timezone_choice(), like WordPress converts its own gmt_offset.
+		if ( preg_match( '/^UTC([+-])(\d+(?:\.\d+)?)$/', $choice, $matches ) ) {
+			$hours           = (int) $matches[2];
+			$minutes         = (int) round( ( (float) $matches[2] - $hours ) * 60 );
+			$choice_timezone = sprintf( '%s%02d:%02d', $matches[1], $hours, $minutes );
+		} else {
+			$choice_timezone = $choice;
+		}
+
+		$timezones[ $choice ] = new DateTimeZone( $choice_timezone );
+	}
+
+	return $timezones[ $choice ];
+}
+
+/**
+ * Gets the date formats a user can choose from.
+ *
+ * @since 4.2.0
+ *
+ * @return string[] The date formats.
+ */
+function gp_get_date_format_choices() {
+	/**
+	 * Filters the date formats a user can choose from.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string[] $formats The date formats.
+	 */
+	return apply_filters( 'gp_date_format_choices', array( 'F j, Y', 'j. F Y', 'Y-m-d', 'm/d/Y', 'd/m/Y', 'd.m.Y' ) );
+}
+
+/**
+ * Gets the date format the current user chose.
+ *
+ * @since 4.2.0
+ *
+ * @return string The date format, or an empty string if the user follows the site.
+ */
+function gp_get_user_date_format_choice() {
+	$date_format = get_user_option( 'gp_date_format' );
+
+	return in_array( $date_format, gp_get_date_format_choices(), true ) ? $date_format : '';
+}
+
+/**
+ * Gets the date format of the current user, or the one of the site if the user didn't choose one.
+ *
+ * @since 4.2.0
+ *
+ * @return string The date format.
+ */
+function gp_get_user_date_format() {
+	$date_format = gp_get_user_date_format_choice();
+
+	return '' !== $date_format ? $date_format : get_option( 'date_format' );
+}
+
+/**
+ * Checks whether the site uses 24-hour time, which is the default for users who didn't choose.
+ *
+ * @since 4.2.0
+ *
+ * @return bool Whether the time format of the site has a 24-hour hour.
+ */
+function gp_site_uses_24_hour_time() {
+	return (bool) preg_match( '/(?<!\\\\)[GH]/', get_option( 'time_format' ) );
+}
+
+/**
+ * Checks whether the current user uses 24-hour time, or the site if the user didn't choose.
+ *
+ * @since 4.2.0
+ *
+ * @return bool Whether the user uses 24-hour time.
+ */
+function gp_user_uses_24_hour_time() {
+	$use_24_hour_time = get_user_option( 'gp_time_format_24h' );
+	if ( false === $use_24_hour_time || '' === $use_24_hour_time ) {
+		return gp_site_uses_24_hour_time();
+	}
+
+	return (bool) $use_24_hour_time;
+}
+
+/**
+ * Gets the time format of the current user, which only chooses between 12-hour and 24-hour time.
+ *
+ * @since 4.2.0
+ *
+ * @return string The time format, the one of the site if the user didn't choose.
+ */
+function gp_get_user_time_format() {
+	$use_24_hour_time = get_user_option( 'gp_time_format_24h' );
+	if ( false === $use_24_hour_time || '' === $use_24_hour_time ) {
+		return get_option( 'time_format' );
+	}
+
+	return $use_24_hour_time ? 'H:i' : 'g:i a';
+}
