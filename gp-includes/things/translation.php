@@ -246,7 +246,7 @@ class GP_Translation extends GP_Thing {
 			}
 		}
 
-		if ( gp_array_get( $args, 'warnings' ) == array() ) {
+		if ( gp_array_get( $args, 'warnings' ) === array() ) {
 			$args['warnings'] = null;
 		}
 
@@ -422,16 +422,16 @@ class GP_Translation extends GP_Thing {
 		if ( gp_array_get( $filters, 'original_id' ) ) {
 			$where[] = $wpdb->prepare( 'o.id = %d', gp_array_get( $filters, 'original_id' ) );
 		}
-		if ( 'yes' == gp_array_get( $filters, 'warnings' ) ) {
+		if ( 'yes' === gp_array_get( $filters, 'warnings' ) ) {
 			$where[] = 't.warnings IS NOT NULL';
 			$where[] = 't.warnings != ""';
-		} elseif ( 'no' == gp_array_get( $filters, 'warnings' ) ) {
+		} elseif ( 'no' === gp_array_get( $filters, 'warnings' ) ) {
 			$where[] = 't.warnings IS NULL';
 		}
-		if ( 'yes' == gp_array_get( $filters, 'with_context' ) ) {
+		if ( 'yes' === gp_array_get( $filters, 'with_context' ) ) {
 			$where[] = 'o.context IS NOT NULL';
 		}
-		if ( 'yes' == gp_array_get( $filters, 'with_comment' ) ) {
+		if ( 'yes' === gp_array_get( $filters, 'with_comment' ) ) {
 			$where[] = 'o.comment IS NOT NULL AND o.comment <> ""';
 		}
 
@@ -474,7 +474,7 @@ class GP_Translation extends GP_Thing {
 		$status   = gp_array_get( $filters, 'status', 'current_or_waiting_or_fuzzy_or_untranslated_or_changesrequested' );
 		$statuses = explode( '_or_', $status );
 		if ( in_array( 'untranslated', $statuses, true ) ) {
-			if ( array( 'untranslated' ) == $statuses ) {
+			if ( array( 'untranslated' ) === $statuses ) {
 				$where[] = 't.translation_0 IS NULL';
 			}
 			$join_type = 'LEFT';

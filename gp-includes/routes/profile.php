@@ -38,7 +38,7 @@ class GP_Route_Profile extends GP_Route_Main {
 	 * @param string $user A user nicename.
 	 */
 	public function profile_view( $user = '' ) {
-		if ( '' == $user ) { // WPCS: loose comparison ok.
+		if ( empty( $user ) ) {
 			$user = wp_get_current_user();
 		} else {
 			$user = get_user_by( 'slug', $user );

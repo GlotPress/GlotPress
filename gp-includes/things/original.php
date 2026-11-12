@@ -316,7 +316,7 @@ class GP_Original extends GP_Thing {
 		$obsolete_originals = array_filter(
 			$originals_by_key,
 			function ( $entry ) {
-				return ( '-obsolete' == $entry->status );
+				return ( '-obsolete' === $entry->status );
 			}
 		);
 
@@ -344,7 +344,7 @@ class GP_Original extends GP_Thing {
 			// Set the Priority if specified as a flag.
 			if ( $entry->flags ) {
 				foreach ( self::$priorities as $priority => $text ) {
-					if ( in_array( "gp-priority: {$text}", $entry->flags ) ) {
+					if ( in_array( "gp-priority: {$text}", $entry->flags, true ) ) {
 						$data['priority'] = $priority;
 						break;
 					}
@@ -394,7 +394,7 @@ class GP_Original extends GP_Thing {
 
 		// Mark missing strings as possible removals.
 		foreach ( $originals_by_key as $key => $value ) {
-			if ( '-obsolete' != $value->status && is_array( $translations->entries ) && ! array_key_exists( $key, $translations->entries ) ) {
+			if ( '-obsolete' !== $value->status && is_array( $translations->entries ) && ! array_key_exists( $key, $translations->entries ) ) {
 				$possibly_dropped[ $key ] = $value;
 			}
 		}

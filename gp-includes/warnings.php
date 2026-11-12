@@ -613,7 +613,7 @@ class GP_Builtin_Translation_Warnings {
 		// Check to see if only the scheme (https <=> http) or a trailing slash was changed, discard if so.
 		foreach ( $missing_urls as $key => $missing_url ) {
 			$scheme               = parse_url( $missing_url, PHP_URL_SCHEME );
-			$alternate_scheme     = ( 'http' == $scheme ? 'https' : 'http' );
+			$alternate_scheme     = ( 'http' === $scheme ? 'https' : 'http' );
 			$alternate_scheme_url = preg_replace( "@^$scheme(?=:)@", $alternate_scheme, $missing_url );
 
 			$alt_urls = array(

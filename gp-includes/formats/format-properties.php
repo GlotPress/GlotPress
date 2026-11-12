@@ -93,7 +93,7 @@ class GP_Format_Properties extends GP_Format {
 
 			$comment = preg_replace( '/(^\s+)|(\s+$)/us', '', $entry->extracted_comments );
 
-			if ( '' == $comment ) {
+			if ( '' === $comment ) {
 				$comment = 'No comment provided.';
 			}
 
@@ -469,7 +469,7 @@ class GP_Format_Properties extends GP_Format {
 			} elseif ( true === $inline ) {
 				// If we're processing a multi-line entry, add the line to the translation.
 				// Check to make sure we're not a blank line.
-				if ( '' != trim( $line ) ) {
+				if ( '' !== trim( $line ) ) {
 					// If there's still more lines to add, trim off the trailing slash.
 					if ( gp_endswith( $line, '\\' ) ) {
 						$line = rtrim( $line, '\\' );
