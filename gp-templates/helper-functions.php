@@ -407,11 +407,11 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 
 	// Create array of glossary terms, longest first.
 	foreach ( $glossary_entries as $value ) {
-		$term = strtolower( $value->term );
+		$term = mb_strtolower( $value->term );
 		$type = $value->part_of_speech;
 
 		// Check if is multiple word term.
-		if ( preg_match( '/\s/', $term ) ) {
+		if ( preg_match( '/\s/u', $term ) ) {
 
 			// Don't add suffix to terms with multiple words.
 			$glossary_entries_suffixes[ $term ] = array();
@@ -432,11 +432,11 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				foreach ( $rule['endings'] as $ending_pattern => $new_ending ) {
 
 					// Check if noun ends with known suffix.
-					if ( preg_match( '/' . $rule['preceded'] . $ending_pattern . '\b/i', $term, $match ) ) {
+					if ( preg_match( '/' . $rule['preceded'] . $ending_pattern . '\b/iu', $term, $match ) ) {
 						$matched_rule = true;
 
 						// Set ending.
-						$old_ending = preg_replace( '/^' . $rule['preceded'] . '/', '', $match[0] );
+						$old_ending = preg_replace( '/^' . $rule['preceded'] . '/u', '', $match[0] );
 
 						// Format endings using %s or %1$s placeholders to allow using the ending itself in the changing string.
 						// Eg.: '%1$s%1$s' to match 'Commi[t]' -> Commi[tt][ing]
@@ -525,7 +525,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 
 		$glossary_entries_reference = array();
 		foreach ( $glossary_entries as $id => $value ) {
-			$term = strtolower( $value->term );
+			$term = mb_strtolower( $value->term );
 			if ( ! isset( $glossary_entries_reference[ $term ] ) ) {
 				$glossary_entries_reference[ $term ] = array( $id );
 				continue;
@@ -573,21 +573,23 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		// Terms are bounded with lookarounds instead of \b because \b inverts
 		// its meaning next to a non-word character: a term like `note:` or
 		// `are you sure...?` could never match. A hyphen counts as part of the
-		// word, so `add` is not marked inside `add-on`. Character references
-		// are split off first, so a term like `&` is not marked inside `&#38;`.
+		// word, so `add` is not marked inside `add-on`, and so do letters,
+		// combining marks and digits of any script. Character references are
+		// split off first, so a term like `&` is not marked inside `&#38;`.
 		// URLs are split off too, as their hosts and paths aren't text to translate.
+		$word_character      = '[\p{L}\p{M}\p{N}_-]';
 		$placeholders_search = gp_get_placeholder_regex_pattern();
-		$terms_search        = '(' . gp_get_url_regex_pattern() . ')|(&(?:#[0-9]+|#x[0-9a-f]+|[a-z][a-z0-9]*);)|(?:((?<![\w-])|' . $placeholders_search . ')(';
+		$terms_search        = '(' . gp_get_url_regex_pattern() . ')|(&(?:#[0-9]+|#x[0-9a-f]+|[a-z][a-z0-9]*);)|(?:((?<!' . $word_character . ')|' . $placeholders_search . ')(';
 		foreach ( $regex_group as $suffix => $terms ) {
 			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
 		}
 
 		// Remove the trailing |.
 		$terms_search  = rtrim( $terms_search, '|' );
-		$terms_search .= ')(?![\w-]))|(' . $placeholders_search . ')';
+		$terms_search .= ')(?!' . $word_character . '))|(' . $placeholders_search . ')';
 	}
 	// Split the singular string on glossary terms boundaries.
-	$singular_split = preg_split( '/' . $terms_search . '/i', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
+	$singular_split = preg_split( '/' . $terms_search . '/iu', $translation->singular, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 	// Loop through each chunk of the split to find glossary terms.
 	if ( is_array( $singular_split ) ) {
 		$singular_combined = '';
@@ -603,7 +605,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			}
 
 			// Create a lower case version to compare with the glossary terms.
-			$lower_chunk = strtolower( $chunk );
+			$lower_chunk = mb_strtolower( $chunk );
 
 			// Search the glossary terms for a matching entry.
 			if ( isset( $glossary_entries_reference[ $lower_chunk ] ) ) {
@@ -647,7 +649,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 	// Add glossary terms to the plural if we have one.
 	if ( $translation->plural ) {
 		// Split the plural string on glossary terms boundaries.
-		$plural_split = @preg_split( '/' . $terms_search . '/i', $translation->plural, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
+		$plural_split = @preg_split( '/' . $terms_search . '/iu', $translation->plural, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE );
 
 		// Loop through each chunk of the split to find glossary terms.
 		if ( is_array( $plural_split ) ) {
@@ -664,7 +666,7 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 				}
 
 				// Create a lower case version to compare with the glossary terms.
-				$lower_chunk = strtolower( $chunk );
+				$lower_chunk = mb_strtolower( $chunk );
 
 				// Search the glossary terms for a matching entry.
 				if ( isset( $glossary_entries_reference[ $lower_chunk ] ) ) {
