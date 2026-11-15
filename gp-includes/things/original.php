@@ -19,28 +19,28 @@ class GP_Original extends GP_Thing {
 	 *
 	 * @var string $table_basename
 	 */
-	var $table_basename = 'gp_originals';
+	public $table_basename = 'gp_originals';
 
 	/**
 	 * List of field names for an original.
 	 *
 	 * @var array $field_names
 	 */
-	var $field_names = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
+	public $field_names = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
 
 	/**
 	 * List of field names which have an integer value.
 	 *
 	 * @var array $int_fields
 	 */
-	var $int_fields = array( 'id', 'project_id', 'priority' );
+	public $int_fields = array( 'id', 'project_id', 'priority' );
 
 	/**
 	 * List of field names which cannot be updated.
 	 *
 	 * @var array $non_updatable_attributes
 	 */
-	var $non_updatable_attributes = array( 'id', 'path' );
+	public $non_updatable_attributes = array( 'id', 'path' );
 
 	/**
 	 * ID of the original.
@@ -117,7 +117,7 @@ class GP_Original extends GP_Thing {
 	 *
 	 * @var array $priorities
 	 */
-	static $priorities = array(
+	public static $priorities = array(
 		'-2' => 'hidden',
 		'-1' => 'low',
 		'0'  => 'normal',
@@ -129,7 +129,7 @@ class GP_Original extends GP_Thing {
 	 *
 	 * @var string $count_cache_group
 	 */
-	static $count_cache_group = 'active_originals_count_by_project_id';
+	public static $count_cache_group = 'active_originals_count_by_project_id';
 
 	/**
 	 * Sets restriction rules for fields.

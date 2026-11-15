@@ -19,49 +19,49 @@ class GP_Thing {
 	 *
 	 * @var array $field_names
 	 */
-	var $field_names = array();
+	public $field_names = array();
 
 	/**
 	 * List of non-database field names.
 	 *
 	 * @var array $non_db_field_names
 	 */
-	var $non_db_field_names = array();
+	public $non_db_field_names = array();
 
 	/**
 	 * List of field names which have an integer value.
 	 *
 	 * @var array $int_fields
 	 */
-	var $int_fields = array();
+	public $int_fields = array();
 
 	/**
 	 * Validation rules for this thing.
 	 *
 	 * @var GP_Validation_Rules $validation_rules
 	 */
-	var $validation_rules = null;
+	public $validation_rules = null;
 
 	/**
 	 * Number of items per page.
 	 *
 	 * @var int $per_page
 	 */
-	var $per_page = 30;
+	public $per_page = 30;
 
 	/**
 	 * Whether to map results to GP_Thing objects.
 	 *
 	 * @var bool $map_results
 	 */
-	var $map_results = true;
+	public $map_results = true;
 
 	/**
 	 * Static variables for this class.
 	 *
 	 * @var array $static
 	 */
-	var $static = array();
+	public $static = array();
 
 	/**
 	 * Class name of the thing.
@@ -103,7 +103,7 @@ class GP_Thing {
 	 *
 	 * @var string $table
 	 */
-	public $table  = null;
+	public $table = null;
 
 	/**
 	 * Errors found during validation.
@@ -117,14 +117,14 @@ class GP_Thing {
 	 *
 	 * @var array $static_by_class
 	 */
-	static $static_by_class = array();
+	public static $static_by_class = array();
 
 	/**
 	 * Validation rules by class.
 	 *
 	 * @var array $validation_rules_by_class
 	 */
-	static $validation_rules_by_class = array();
+	public static $validation_rules_by_class = array();
 
 	/**
 	 * Constructor.

@@ -19,28 +19,28 @@ class GP_Permission extends GP_Thing {
 	 *
 	 * @var string $table_basename
 	 */
-	var $table_basename = 'gp_permissions';
+	public $table_basename = 'gp_permissions';
 
 	/**
 	 * List of field names for a permission.
 	 *
 	 * @var array $field_names
 	 */
-	var $field_names = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
+	public $field_names = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
 
 	/**
 	 * List of field names which have an integer value.
 	 *
 	 * @var array $int_fields
 	 */
-	var $int_fields = array( 'id', 'user_id' );
+	public $int_fields = array( 'id', 'user_id' );
 
 	/**
 	 * List of field names which cannot be updated.
 	 *
 	 * @var array $non_updatable_attributes
 	 */
-	var $non_updatable_attributes = array( 'id' );
+	public $non_updatable_attributes = array( 'id' );
 
 	/**
 	 * ID of the permission.

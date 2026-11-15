@@ -79,7 +79,7 @@ class GP_Validation_Rules {
 	 *
 	 * @var array $rules
 	 */
-	var $rules = array();
+	public $rules = array();
 
 	/**
 	 * An array of validation errors.
@@ -101,7 +101,7 @@ class GP_Validation_Rules {
 	 *
 	 * @var array $positive_suffices
 	 */
-	static $positive_suffices = array(
+	public static $positive_suffices = array(
 		'should_be',
 		'should',
 		'can',
@@ -113,7 +113,7 @@ class GP_Validation_Rules {
 	 *
 	 * @var array $negative_suffices
 	 */
-	static $negative_suffices = array(
+	public static $negative_suffices = array(
 		'should_not_be',
 		'should_not',
 		'cant',
@@ -289,7 +289,7 @@ class GP_Validators {
 	 *
 	 * @var array $callbacks
 	 */
-	static $callbacks = array();
+	public static $callbacks = array();
 
 	/**
 	 * Registers a validation callback for a specific key.
