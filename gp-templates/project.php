@@ -96,12 +96,12 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 				}
 
 				/**
-				 * Fires after the last header column of a translation set.
+				 * Filters the columns of the translation sets table.
 				 *
 				 * @since 4.2.0
 				 *
-				 * @param GP_Translation_Set $set     The translation set.
-				 * @param GP_Project         $project The current project.
+				 * @param string[]   $columns Column labels, keyed by column class.
+				 * @param GP_Project $project The current project.
 				 */
 				$translation_sets_columns = apply_filters( 'gp_project_template_translation_set_manage_columns', $translation_sets_columns, $project );
 
