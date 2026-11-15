@@ -100,12 +100,8 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 	<?php endif; ?>
 	<?php if ( $translation->translation_added && '0000-00-00 00:00:00' !== $translation->translation_added ) : ?>
 		<dl>
-			<dt><?php _e( 'Date added (GMT):', 'glotpress' ); ?></dt>
-			<dd id="gmt-date-added-<?php echo esc_attr( $translation->row_id ); ?>"><?php echo esc_html( $translation->translation_added ); ?></dd>
-		</dl>
-		<dl>
-			<dt><?php _e( 'Date added (local):', 'glotpress' ); ?></dt>
-			<dd id="local-date-added-<?php echo esc_attr( $translation->row_id ); ?>"><?php _e( 'Calculating...', 'glotpress' ); ?></dd>
+			<dt><?php _e( 'Date added:', 'glotpress' ); ?></dt>
+			<dd><?php echo esc_html( gp_format_user_date( $translation->translation_added ) ); ?></dd>
 		</dl>
 	<?php endif; ?>
 	<?php if ( $translation->user ) : ?>
