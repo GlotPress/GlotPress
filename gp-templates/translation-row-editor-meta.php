@@ -26,19 +26,35 @@ if ( $translation->translation_status ) {
 	$more_links['original-permalink'] = '<a tabindex="-1" href="' . esc_url( $original_permalink ) . '">' . __( 'Permalink to this original', 'glotpress' ) . '</a>';
 }
 
-$original_history = gp_url_project_locale(
-	$project,
-	$locale->slug,
-	$translation_set->slug,
-	array(
-		'filters[status]'      => 'either',
-		'filters[original_id]' => $translation->original_id,
-		'sort[by]'             => 'translation_date_added',
-		'sort[how]'            => 'asc',
-	)
-);
+$translations_count = $translation->translations_count ?? null;
 
-$more_links['history'] = '<a tabindex="-1" href="' . esc_url( $original_history ) . '">' . __( 'All translations of this original', 'glotpress' ) . '</a>';
+// Without a count the history may hold more translations, so the link stays. An untranslated
+// row isn't one of the translations, so a single one is worth the link there.
+if ( null === $translations_count || $translations_count > ( $translation->id ? 1 : 0 ) ) {
+	$original_history = gp_url_project_locale(
+		$project,
+		$locale->slug,
+		$translation_set->slug,
+		array(
+			'filters[status]'      => 'either',
+			'filters[original_id]' => $translation->original_id,
+			'sort[by]'             => 'translation_date_added',
+			'sort[how]'            => 'asc',
+		)
+	);
+
+	if ( null === $translations_count ) {
+		$history_text = __( 'All translations of this original', 'glotpress' );
+	} else {
+		$history_text = sprintf(
+			/* translators: %s: Number of translations. */
+			_n( 'All %s translation of this original', 'All %s translations of this original', $translations_count, 'glotpress' ),
+			number_format_i18n( $translations_count )
+		);
+	}
+
+	$more_links['history'] = '<a tabindex="-1" href="' . esc_url( $original_history ) . '">' . $history_text . '</a>';
+}
 
 /**
  * Allows to modify the more links in the translation editor.
@@ -84,12 +100,14 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 	<?php endif; ?>
 	<?php if ( $translation->translation_added && '0000-00-00 00:00:00' !== $translation->translation_added ) : ?>
 		<dl>
-			<dt><?php _e( 'Date added (GMT):', 'glotpress' ); ?></dt>
-			<dd id="gmt-date-added-<?php echo esc_attr( $translation->row_id ); ?>"><?php echo esc_html( $translation->translation_added ); ?></dd>
+			<dt><?php _e( 'Date added:', 'glotpress' ); ?></dt>
+			<dd><?php echo esc_html( gp_format_user_date( $translation->translation_added ) ); ?></dd>
 		</dl>
+	<?php endif; ?>
+	<?php if ( $translation->date_modified && '0000-00-00 00:00:00' !== $translation->date_modified && $translation->date_modified !== $translation->translation_added ) : ?>
 		<dl>
-			<dt><?php _e( 'Date added (local):', 'glotpress' ); ?></dt>
-			<dd id="local-date-added-<?php echo esc_attr( $translation->row_id ); ?>"><?php _e( 'Calculating...', 'glotpress' ); ?></dd>
+			<dt><?php _e( 'Last modified:', 'glotpress' ); ?></dt>
+			<dd><?php echo esc_html( gp_format_user_date( $translation->date_modified ) ); ?></dd>
 		</dl>
 	<?php endif; ?>
 	<?php if ( $translation->user ) : ?>

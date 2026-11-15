@@ -108,11 +108,6 @@ $gp.editor = (
 			show: function( element ) {
 				var row_id = element.closest( 'tr' ).attr( 'row' );
 				var editor = $( '#editor-' + row_id );
-				var gmt_date_added = $( '#gmt-date-added-' + row_id );
-				var local_date_added = $( '#local-date-added-' + row_id );
-				var offset = new Date().getTimezoneOffset();
-				var gmt_date = new Date( gmt_date_added.text() );
-				var local_date = new Date( ( gmt_date - ( offset * 60 * 1000 ) ) );
 
 				if ( ! editor.length ) {
 					return;
@@ -131,8 +126,6 @@ $gp.editor = (
 
 				$gp.editor.current = editor;
 				$gp.editor.add_placeholder_buttons( editor );
-
-				local_date_added.text( local_date.toLocaleDateString() + ' ' + local_date.toLocaleTimeString() );
 
 				editor.show();
 				editor.preview.hide();
@@ -154,8 +147,23 @@ $gp.editor = (
 						.attr( 'title', title );
 				} );
 			},
+			/*
+			 * When the original of the placeholder is right above its own textarea, like the singular
+			 * and the plural of a locale with two plural forms, the placeholder goes there. Otherwise,
+			 * like for locales with more plural forms, where the originals are shown above all the
+			 * forms, it goes into the textarea used last, where the translator is working.
+			 */
+			placeholder_textarea: function( button ) {
+				var next = button.closest( 'p' ).nextAll( '.textareas, p:not(.original_raw)' ).first();
+
+				if ( next.is( '.textareas' ) ) {
+					return $( 'textarea.foreign-text', next ).get( 0 );
+				}
+
+				return $gp.editor.current.last_textarea || $( 'textarea.foreign-text', $gp.editor.current ).get( 0 );
+			},
 			insert_placeholder: function( button ) {
-				var textarea = $gp.editor.current.last_textarea || $( 'textarea.foreign-text', $gp.editor.current ).get( 0 );
+				var textarea = $gp.editor.placeholder_textarea( button );
 
 				textarea.setRangeText( button.text(), textarea.selectionStart, textarea.selectionEnd, 'end' );
 				textarea.focus();
@@ -270,7 +278,7 @@ $gp.editor = (
 					if ( target.nextAll( 'textarea' ).length ) {
 						target.nextAll( 'textarea' ).eq( 0 ).focus();
 					} else {
-						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok' ) );
+						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok:not([data-status])' ) );
 					}
 				} else if ( ( 13 === e.keyCode && e.ctrlKey ) || ( 66 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-Enter or Ctrl-Shift-B = Copy original.
 					copy = $( '.editor:visible' ).find( '.copy' );
@@ -327,12 +335,16 @@ $gp.editor = (
 
 				editor = $gp.editor.current;
 				button.prop( 'disabled', true );
-				$gp.notices.notice( wp.i18n.__( 'Saving&hellip;', 'glotpress' ) );
+				$gp.notices.progress( wp.i18n.__( 'Saving&hellip;', 'glotpress' ) );
 
 				data = {
 					original_id: editor.original_id,
 					_gp_route_nonce: button.data( 'nonce' ),
 				};
+
+				if ( button.data( 'status' ) ) {
+					data.status = button.data( 'status' );
+				}
 
 				textareaName = 'translation[' + editor.original_id + '][]';
 				translations = $( 'textarea[name="' + textareaName + '"]', editor ).map( function() {
@@ -379,7 +391,7 @@ $gp.editor = (
 
 				editor = $gp.editor.current;
 				select.prop( 'disabled', true );
-				$gp.notices.notice( wp.i18n.__( 'Setting priority&hellip;', 'glotpress' ) );
+				$gp.notices.progress( wp.i18n.__( 'Setting priority&hellip;', 'glotpress' ) );
 
 				data = {
 					priority: $( 'option:selected', select ).val(),
@@ -446,7 +458,7 @@ $gp.editor = (
 				}
 
 				/* translators: %s: Status name. */
-				$gp.notices.notice( wp.i18n.sprintf( wp.i18n.__( 'Setting status to &#8220;%s&#8221;&hellip;', 'glotpress' ), status_name ) );
+				$gp.notices.progress( wp.i18n.sprintf( wp.i18n.__( 'Setting status to &#8220;%s&#8221;&hellip;', 'glotpress' ), status_name ) );
 
 				data = {
 					translation_id: editor.translation_id,
@@ -479,7 +491,7 @@ $gp.editor = (
 					return;
 				}
 
-				$gp.notices.notice( wp.i18n.__( 'Discarding&hellip;', 'glotpress' ) );
+				$gp.notices.progress( wp.i18n.__( 'Discarding&hellip;', 'glotpress' ) );
 
 				data = {
 					translation_id: $gp.editor.current.translation_id,
@@ -494,7 +506,7 @@ $gp.editor = (
 					url: $gp_editor_options.discard_warning_url,
 					data: data,
 					success: function( response ) {
-						$gp.notices.success( wp.i18n.__( 'Saved!', 'glotpress' ) );
+						$gp.notices.success( wp.i18n.__( 'Warning discarded!', 'glotpress' ) );
 						$gp.editor.replace_current( response );
 						$gp.editor.schedule_filter_counts();
 					},

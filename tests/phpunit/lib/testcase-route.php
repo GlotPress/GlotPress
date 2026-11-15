@@ -10,6 +10,7 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 		$this->route->fake_request = true;
 		$this->route->errors = array();
 		$this->route->notices = array();
+		$this->route->successes = array();
 	}
 
 	/**
@@ -85,6 +86,10 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 
 	function assertThereIsANoticeContaining( $text ) {
 		$this->assertThereIsAnArrayElementContaining( $text, $this->route->notices, "No notice contains '$text'" );
+	}
+
+	function assertThereIsASuccessContaining( $text ) {
+		$this->assertThereIsAnArrayElementContaining( $text, $this->route->successes, "No success message contains '$text'" );
 	}
 
 	function assertThereIsAnArrayElementContaining( $text, $array, $message = null ) {

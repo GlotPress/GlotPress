@@ -184,11 +184,11 @@ class GP_Format_Strings extends GP_Format {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string The string to strip escapes from.
+	 * @param string $value The string to strip escapes from.
 	 * @return string The unescaped string.
 	 */
-	private function unescape( $string ) {
-		return stripcslashes( $string );
+	private function unescape( $value ) {
+		return stripcslashes( $value );
 	}
 
 	/**
@@ -196,11 +196,11 @@ class GP_Format_Strings extends GP_Format {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $string The string to add escapes to.
+	 * @param string $value The string to add escapes to.
 	 * @return string The escaped string.
 	 */
-	private function escape( $string ) {
-		return addcslashes( $string, '"\\/' );
+	private function escape( $value ) {
+		return addcslashes( $value, '"\\/' );
 	}
 }
 
