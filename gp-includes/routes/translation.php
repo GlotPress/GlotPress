@@ -260,6 +260,8 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$translations             = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $query_sort );
 		$total_translations_count = GP::$translation->found_rows;
+		$search_error             = GP::$translation->regex_error;
+
 		if ( ! $this->api ) {
 			$translations = GP::$translation->add_related_translations( $translations, $translation_set );
 		}
