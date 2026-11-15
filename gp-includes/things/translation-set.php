@@ -507,7 +507,9 @@ class GP_Translation_Set extends GP_Thing {
 						 * The row is already current, so the other translations of the original are
 						 * superseded whether or not the current user may approve it. set_status() would
 						 * refuse without that permission, a WP-CLI import without a user for example,
-						 * and the original would end up with two current translations.
+						 * and the original would end up with two current translations. Its other check,
+						 * the translation errors, was done above: an entry with errors is never created
+						 * as current.
 						 */
 						$translation->set_as_current();
 					} else {
