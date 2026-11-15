@@ -374,23 +374,25 @@ class GP_Route_Translation extends GP_Route_Main {
 				array()
 			);
 
+			$opened_id = (int) gp_post( 'translation_id' );
+			$opened    = null;
 			$identical = array();
 			foreach ( $existing_translations as $e ) {
 				if ( array_pad( $translations, $locale->nplurals, null ) == $e->translations ) {
-					$identical[ $e->translation_status ] = $e;
+					$identical[ $e->translation_status ] = true;
+					if ( (int) $e->id === $opened_id ) {
+						$opened = $e;
+					}
 				}
 			}
 
 			$translation = null;
 			if ( $identical ) {
-				// Saving it unchanged means it's right, and approving it keeps its translator as the author.
-				if ( 'current' === $set_status && ! isset( $identical['current'] ) ) {
-					foreach ( array( 'waiting', 'fuzzy' ) as $status ) {
-						$existing = isset( $identical[ $status ] ) ? GP::$translation->get( $identical[ $status ]->id ) : null;
-						if ( $existing && $existing->can_set_status( 'current' ) ) {
-							$translation = $existing;
-							break;
-						}
+				// Saving the opened suggestion unchanged approves it like the approve button, which keeps its translator as the author.
+				if ( 'current' === $set_status && $opened && ! isset( $identical['current'] ) ) {
+					$existing = GP::$translation->get( $opened->id );
+					if ( $existing && $existing->can_set_status( 'current' ) ) {
+						$translation = $existing;
 					}
 				}
 

@@ -235,7 +235,7 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 			$current    = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Speichern', 'status' => 'current' ) );
 			$suggestion = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => $status, 'user_id' => $translator ) );
 
-			$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern' );
+			$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern', $suggestion->id );
 
 			$suggestion = GP::$translation->get( $suggestion->id );
 			$this->assertSame( 'current', $suggestion->status, $status );
@@ -243,6 +243,35 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 			$this->assertSame( 'old', GP::$translation->get( $current->id )->status, $status );
 			$this->assertCount( 2, GP::$translation->find_many( array( 'original_id' => $original->id ) ), $status );
 		}
+	}
+
+	/**
+	 * Saving only approves the suggestion that was opened, so the validator decides whose identical suggestion is credited.
+	 */
+	function test_translations_post_approves_only_the_opened_suggestion() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
+		$other    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save' ) );
+		$first    = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'waiting' ) );
+		$second   = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'waiting' ) );
+		$foreign  = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $other->id, 'translation_0' => 'Änderungen speichern', 'status' => 'waiting' ) );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern' );
+		$this->assertStringContainsString( 'Identical waiting translation already exists.', $this->route->template_output );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern', $foreign->id );
+
+		$this->assertSame( 'waiting', GP::$translation->get( $first->id )->status );
+		$this->assertSame( 'waiting', GP::$translation->get( $second->id )->status );
+		$this->assertSame( 'waiting', GP::$translation->get( $foreign->id )->status );
+		$this->assertStringContainsString( 'Identical waiting translation already exists.', $this->route->template_output );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern', $second->id );
+
+		$this->assertSame( 'current', GP::$translation->get( $second->id )->status );
+		$this->assertSame( 'old', GP::$translation->get( $first->id )->status );
 	}
 
 	/**
@@ -256,7 +285,7 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$waiting  = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'waiting' ) );
 
 		add_filter( 'gp_pre_can_set_translation_status', '__return_false' );
-		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern' );
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern', $waiting->id );
 		remove_filter( 'gp_pre_can_set_translation_status', '__return_false' );
 
 		$this->assertSame( 'waiting', GP::$translation->get( $waiting->id )->status );
@@ -264,7 +293,7 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 
 		$current = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'current' ) );
 
-		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern' );
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern', $waiting->id );
 
 		$this->assertSame( 'current', GP::$translation->get( $current->id )->status );
 		$this->assertSame( 'waiting', GP::$translation->get( $waiting->id )->status );
@@ -282,7 +311,7 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$waiting  = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'waiting' ) );
 
 		$_POST['status'] = 'waiting';
-		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern' );
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern', $waiting->id );
 
 		$this->assertSame( 'waiting', GP::$translation->get( $waiting->id )->status );
 		$this->assertStringContainsString( 'Identical waiting translation already exists.', $this->route->template_output );
@@ -298,14 +327,17 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
 		$fuzzy    = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'fuzzy' ) );
 
-		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern' );
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern', $fuzzy->id );
 
 		$this->assertCount( 1, GP::$translation->find_many( array( 'original_id' => $original->id ) ) );
 		$this->assertSame( 'fuzzy', GP::$translation->get( $fuzzy->id )->status );
 		$this->assertStringContainsString( 'Identical fuzzy translation already exists.', $this->route->template_output );
 	}
 
-	private function submit_translation( $set, $nonce_original_id, $submitted_original_id, $text ) {
+	private function submit_translation( $set, $nonce_original_id, $submitted_original_id, $text, $translation_id = null ) {
+		if ( $translation_id ) {
+			$_POST['translation_id'] = $translation_id;
+		}
 		$_POST['original_id']        = $nonce_original_id;
 		$_POST['translation']        = array( $submitted_original_id => array( $text ) );
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation_' . $nonce_original_id );
@@ -316,7 +348,7 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 			}
 		);
 
-		unset( $_POST['original_id'], $_POST['translation'], $_REQUEST['_gp_route_nonce'] );
+		unset( $_POST['original_id'], $_POST['translation'], $_POST['translation_id'], $_REQUEST['_gp_route_nonce'] );
 	}
 
 	/**
