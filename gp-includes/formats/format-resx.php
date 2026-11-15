@@ -132,11 +132,11 @@ class GP_Format_ResX extends GP_Format {
 	/**
 	 * Adds a line to the exported string.
 	 *
-	 * @param string $string       The string to add.
+	 * @param string $value        The string to add.
 	 * @param int    $prepend_tabs The number of tabs to prepend.
 	 */
-	private function line( $string, $prepend_tabs = 0 ) {
-		$this->exported .= str_repeat( "\t", $prepend_tabs ) . "$string\n";
+	private function line( $value, $prepend_tabs = 0 ) {
+		$this->exported .= str_repeat( "\t", $prepend_tabs ) . "$value\n";
 	}
 
 	/**
@@ -154,22 +154,22 @@ class GP_Format_ResX extends GP_Format {
 	/**
 	 * Unescapes a string from a RESX file.
 	 *
-	 * @param string $string The string to unescape.
+	 * @param string $value The string to unescape.
 	 * @return string The unescaped string.
 	 */
-	private function unescape( $string ) {
-		return $string;
+	private function unescape( $value ) {
+		return $value;
 	}
 
 	/**
 	 * Escapes a string for use in a RESX file.
 	 *
-	 * @param string $string The string to escape.
+	 * @param string $value The string to escape.
 	 * @return string The escaped string.
 	 */
-	private function escape( $string ) {
-		$string = str_replace( array( '&', '<' ), array( '&amp;', '&lt;' ), $string );
-		return $string;
+	private function escape( $value ) {
+		$value = str_replace( array( '&', '<' ), array( '&amp;', '&lt;' ), $value );
+		return $value;
 	}
 
 	/**

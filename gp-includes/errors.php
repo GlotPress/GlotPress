@@ -125,18 +125,19 @@ class GP_Translation_Errors {
  */
 class GP_Builtin_Translation_Errors {
 	/**
-	 * Matches a sprintf() placeholder or an escaped percent sign.
+	 * Gets the regular expression that matches a sprintf() placeholder or an escaped percent sign.
 	 *
-	 * The first group holds the argument number of a positional placeholder.
 	 * Specifiers are case-sensitive because sprintf() throws a ValueError on
-	 * unknown ones like `%S`, while `%X` and `%E` are valid. Argument number 0
-	 * and a `*` width are left out, as they make sprintf() fail as well.
+	 * unknown ones like `%S`, while `%X` and `%E` are valid. A padded percent
+	 * sign like `%5%` reads an argument.
 	 *
 	 * @since 4.2.0
 	 *
-	 * @var string
+	 * @return string The regular expression.
 	 */
-	const SPRINTF_PLACEHOLDER_REGEX = '!%(?:([1-9]\d*\$(?:\d+)?)?(?:[0-9]+)?(?:\.[0-9]+)?(?:l?[bcdeEfFgGhHosuxX]|%))!';
+	private function sprintf_placeholder_regex() {
+		return '/' . gp_get_placeholder_regex_pattern( 'l?[bcdeEfFgGhHosuxX]' ) . '|%(?:[1-9]\d*\$)?\d+(?:\.\d+)?%/';
+	}
 
 	/**
 	 * Adds an error for adding unexpected percent signs in a sprintf-like string.
@@ -156,13 +157,13 @@ class GP_Builtin_Translation_Errors {
 	public function error_unexpected_sprintf_token( $original, $translation ) {
 		$unexpected_tokens = array();
 
-		$original_without_placeholder = preg_replace( self::SPRINTF_PLACEHOLDER_REGEX, '', $original );
+		$original_without_placeholder = preg_replace( $this->sprintf_placeholder_regex(), '', $original );
 
 		$is_sprintf = $original_without_placeholder !== $original && false === strpos( $original_without_placeholder, '%' );
 
 		// Find any percents that are not valid or escaped.
 		if ( $is_sprintf ) {
-			$translation_without_placeholder = preg_replace( self::SPRINTF_PLACEHOLDER_REGEX, '', $translation );
+			$translation_without_placeholder = preg_replace( $this->sprintf_placeholder_regex(), '', $translation );
 
 			$p = strpos( $translation_without_placeholder, '%' );
 			while ( false !== $p ) {
@@ -210,7 +211,7 @@ class GP_Builtin_Translation_Errors {
 		$is_sprintf          = false;
 		$available_arguments = 0;
 		foreach ( $originals as $text ) {
-			$text_without_placeholders = preg_replace( self::SPRINTF_PLACEHOLDER_REGEX, '', $text );
+			$text_without_placeholders = preg_replace( $this->sprintf_placeholder_regex(), '', $text );
 			if ( false !== strpos( $text_without_placeholders, '%' ) ) {
 				return true;
 			}
@@ -255,7 +256,7 @@ class GP_Builtin_Translation_Errors {
 	 * @return array<int, array{0: string, 1: int}> Pairs of placeholder and 1-based argument number.
 	 */
 	private function get_sprintf_placeholders( $text ) {
-		preg_match_all( self::SPRINTF_PLACEHOLDER_REGEX, $text, $matches, PREG_SET_ORDER );
+		preg_match_all( $this->sprintf_placeholder_regex(), $text, $matches, PREG_SET_ORDER );
 
 		$placeholders  = array();
 		$next_argument = 0;
@@ -265,7 +266,7 @@ class GP_Builtin_Translation_Errors {
 				continue;
 			}
 
-			$placeholders[] = array( $match[0], empty( $match[1] ) ? ++$next_argument : (int) $match[1] );
+			$placeholders[] = array( $match[0], preg_match( '/^%([1-9]\d*)\$/', $match[0], $argument ) ? (int) $argument[1] : ++$next_argument );
 		}
 
 		return $placeholders;

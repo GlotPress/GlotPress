@@ -813,6 +813,18 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
+	 * Expects highlighting non-breaking and narrow no-break spaces wherever they are, as they look like normal spaces.
+	 */
+	function test_prepare_original_with_non_breaking_spaces() {
+		$test_string     = "Bonjour\u{00A0}! 100\u{00A0}\u{00A0}% et 5 km\u{202F}; Ça va\u{202F}\u{00A0}?";
+		$expected_result = 'Bonjour' . $this->highlight_non_breaking_spaces( "\u{00A0}" ) . '! 100' . $this->highlight_non_breaking_spaces( "\u{00A0}\u{00A0}" ) . '% et 5 km' . $this->highlight_non_breaking_spaces( "\u{202F}", 'Narrow no-break space' ) . '; Ça va' . $this->highlight_non_breaking_spaces( "\u{202F}", 'Narrow no-break space' ) . $this->highlight_non_breaking_spaces( "\u{00A0}" ) . '?';
+
+		$orig = prepare_original( esc_translation( $test_string ) );
+
+		$this->assertEquals( $expected_result, $orig );
+	}
+
+	/**
 	 * Expects highlighting placeholders in strings.
 	 */
 	function test_prepare_original_with_placeholders_bounded_by_words() {
@@ -821,6 +833,19 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 
 		$orig = prepare_original( $test_string );
 		$this->assertEquals( $orig, $expected_result );
+	}
+
+	/**
+	 * Expects highlighting placeholders with flags, width and precision, but not percent signs in text.
+	 */
+	function test_prepare_original_with_placeholders_with_flags_and_precision() {
+		foreach ( array( '%.2f', '%5.2f', '%1$.2f', '%-10s', '%+d', '%05d', "%'*10s", '%10s' ) as $placeholder ) {
+			$this->assertSame( 'a ' . $this->highlight_placeholder( $placeholder ) . ' b', prepare_original( "a $placeholder b" ), $placeholder );
+		}
+
+		foreach ( array( '50% of all', '100% sure', 'up to 10%-20%', 'Get 10%-off', '5%-discount', '50%+bonus', '100%-Garantie' ) as $text ) {
+			$this->assertSame( $text, prepare_original( $text ), $text );
+		}
 	}
 
 	/**
@@ -1440,6 +1465,41 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+	}
+
+	/**
+	 * Expects glossary terms inside plain-text URLs not to be marked, while the same terms outside them are.
+	 */
+	function test_map_glossary_entries_to_translation_originals_skips_terms_inside_urls() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		foreach ( array( 'wordpress', 'affiliate', 'debug' ) as $term ) {
+			GP::$glossary_entry->create_and_select(
+				array(
+					'glossary_id'    => $glossary->id,
+					'term'           => $term,
+					'part_of_speech' => 'noun',
+					'translation'    => 'x',
+				)
+			);
+		}
+
+		$entry = new Translation_Entry( array( 'singular' => 'See https://refer.wordpress.com/affiliate/ or //developer.wordpress.org/debug-wordpress/ to debug WordPress (https://wordpress.org).' ) );
+		$orig  = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertSame(
+			'See https://refer.wordpress.com/affiliate/ or //developer.wordpress.org/debug-wordpress/ to ' . $this->glossary_match( 'x', 'noun', 'debug' ) . ' ' . $this->glossary_match( 'x', 'noun', 'WordPress' ) . ' (https://wordpress.org).',
+			$orig->singular_glossary_markup
+		);
+
+		$entry = new Translation_Entry( array( 'singular' => 'Set it to "https://wordpress.org/debug/" or <a title="https://wordpress.org">debug WordPress</a>.' ) );
+		$orig  = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertSame(
+			'Set it to "https://wordpress.org/debug/" or &lt;a title="https://wordpress.org"&gt;' . $this->glossary_match( 'x', 'noun', 'debug' ) . ' ' . $this->glossary_match( 'x', 'noun', 'WordPress' ) . '&lt;/a&gt;.',
+			$orig->singular_glossary_markup
+		);
 	}
 
 	/**
@@ -2389,6 +2449,10 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 */
 	function highlight_invisible_spaces( $spaces ) {
 		return '<span class="invisible-spaces">' . $spaces . '</span>';
+	}
+
+	function highlight_non_breaking_spaces( $spaces, $title = 'Non-breaking space' ) {
+		return '<span class="invisible-spaces non-breaking-spaces" title="' . $title . '">' . $spaces . '</span>';
 	}
 
 	/**
