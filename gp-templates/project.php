@@ -310,12 +310,9 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 					$sub_project
 				);
 
-				// Render project row items.
-				foreach ( $project_row_items as $project_row_item ) {
-					if ( ! is_null( $project_row_item ) ) {
-						echo wp_kses_post( $project_row_item );
-					}
-				}
+				// Render the sub-project row items, without the empty ones like the buttons the user can't use.
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The default items are escaped by the link helpers, filtered items come from code.
+				echo implode( ' ', array_filter( $project_row_items ) );
 				?>
 			</dt>
 			<dd class="<?php echo esc_attr( $sub_project_class ); ?>">
