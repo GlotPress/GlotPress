@@ -655,16 +655,16 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 /**
  * Converts an array of GP_Thing objects to a JSON string.
  *
- * @param array $array An array of GP_Thing objects.
+ * @param array $things An array of GP_Thing objects.
  * @return string JSON string representing the array of GP_Thing objects.
  */
-function gp_array_of_things_to_json( $array ) {
+function gp_array_of_things_to_json( $things ) {
 	return wp_json_encode(
 		array_map(
 			function ( $thing ) {
 				return $thing->fields();
 			},
-			$array
+			$things
 		)
 	);
 }
@@ -672,20 +672,20 @@ function gp_array_of_things_to_json( $array ) {
 /**
  * Converts an array of arrays of GP_Thing objects to a JSON string.
  *
- * @param array $array An array of arrays of GP_Thing objects.
+ * @param array $things An array of arrays of GP_Thing objects.
  * @return string JSON string representing the array of arrays of GP_Thing objects.
  */
-function gp_array_of_array_of_things_to_json( $array ) {
-	$map_to_fields = function ( $array ) {
+function gp_array_of_array_of_things_to_json( $things ) {
+	$map_to_fields = function ( $things ) {
 		return array_map(
 			function ( $thing ) {
 				return $thing->fields();
 			},
-			$array
+			$things
 		);
 	};
 
-	return wp_json_encode( array_map( $map_to_fields, $array ) );
+	return wp_json_encode( array_map( $map_to_fields, $things ) );
 }
 
 /**
@@ -897,4 +897,32 @@ function gp_get_translation_row_classes( $translation ) {
 function gp_translation_row_classes( $translation ) {
 	$classes = gp_get_translation_row_classes( $translation );
 	echo esc_attr( implode( ' ', $classes ) );
+}
+
+/**
+ * Formats a GMT date for the current user, in their timezone, date format and time format.
+ *
+ * @since 4.2.0
+ *
+ * @param string $date_gmt      A date in GMT, in the MySQL format.
+ * @param bool   $with_timezone Optional. Whether to name the timezone. Default true.
+ * @return string The formatted date, as plain text.
+ */
+function gp_format_user_date( $date_gmt, $with_timezone = true ) {
+	$timestamp = gp_gmt_strtotime( $date_gmt );
+	if ( ! $timestamp || $timestamp < 0 ) {
+		return '';
+	}
+
+	$timezone = gp_get_user_timezone();
+	$date     = wp_date( gp_get_user_date_format(), $timestamp, $timezone );
+	$time     = wp_date( gp_get_user_time_format(), $timestamp, $timezone );
+
+	if ( ! $with_timezone ) {
+		/* translators: 1: Date. 2: Time. */
+		return sprintf( __( '%1$s at %2$s', 'glotpress' ), $date, $time );
+	}
+
+	/* translators: 1: Date. 2: Time. 3: Timezone. */
+	return sprintf( __( '%1$s at %2$s (%3$s)', 'glotpress' ), $date, $time, gp_get_user_timezone_choice() );
 }

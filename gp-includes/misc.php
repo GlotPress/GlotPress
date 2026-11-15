@@ -8,25 +8,25 @@
 /**
  * Retrieves a value from $_POST.
  *
- * @param string       $key     Name of post value.
- * @param string|array $default Optional. Value to return if `$_POST[ $key ]` doesn't exist. Default empty.
- * @return string|array Value of `$_POST[ $key ]` if exists or `$default`.
+ * @param string       $key           Name of post value.
+ * @param string|array $default_value Optional. Value to return if `$_POST[ $key ]` doesn't exist. Default empty.
+ * @return string|array Value of `$_POST[ $key ]` if exists or `$default_value`.
  */
-function gp_post( $key, $default = '' ) {
+function gp_post( $key, $default_value = '' ) {
 	// phpcs:ignore WordPress.Security.NonceVerification -- Helper to retrieve item from the request.
-	return wp_unslash( gp_array_get( $_POST, $key, $default ) );
+	return wp_unslash( gp_array_get( $_POST, $key, $default_value ) );
 }
 
 /**
  * Retrieves a value from $_GET.
  *
- * @param string       $key     Name of get value.
- * @param string|array $default Optional. Value to return if `$_GET[ $key ]` doesn't exist. Default empty.
- * @return string|array Value of `$_GET[ $key ]` if exists or `$default`.
+ * @param string       $key           Name of get value.
+ * @param string|array $default_value Optional. Value to return if `$_GET[ $key ]` doesn't exist. Default empty.
+ * @return string|array Value of `$_GET[ $key ]` if exists or `$default_value`.
  */
-function gp_get( $key, $default = '' ) {
+function gp_get( $key, $default_value = '' ) {
 	// phpcs:ignore WordPress.Security.NonceVerification -- Helper to retrieve item from the request.
-	return wp_unslash( gp_array_get( $_GET, $key, $default ) );
+	return wp_unslash( gp_array_get( $_GET, $key, $default_value ) );
 }
 
 /**
@@ -36,12 +36,12 @@ function gp_get( $key, $default = '' ) {
  *
  * @see wp_nonce_field()
  *
- * @param int|string $action Action name.
- * @param bool       $echo   Optional. Whether to display or return hidden form field. Default true.
+ * @param int|string $action  Action name.
+ * @param bool       $display Optional. Whether to display or return hidden form field. Default true.
  * @return string Nonce field HTML markup.
  */
-function gp_route_nonce_field( $action, $echo = true ) {
-	return wp_nonce_field( $action, '_gp_route_nonce', true, $echo );
+function gp_route_nonce_field( $action, $display = true ) {
+	return wp_nonce_field( $action, '_gp_route_nonce', true, $display );
 }
 
 /**
@@ -60,26 +60,26 @@ function gp_route_nonce_url( $url, $action ) {
 }
 
 /**
- * Retrieves a value from $array
+ * Retrieves a value from array.
  *
- * @param array  $array   The array to get the value from.
- * @param string $key     Name of array value.
- * @param mixed  $default Value to return if $array[$key] doesn't exist. Default is ''.
- * @return mixed $array[$key] if exists or $default
+ * @param array  $items         The array to get the value from.
+ * @param string $key           Name of array value.
+ * @param mixed  $default_value Value to return if $items[$key] doesn't exist. Default is ''.
+ * @return mixed $items[$key] if exists or $default_value
  */
-function gp_array_get( $array, $key, $default = '' ) {
-	return ( is_scalar( $key ) && isset( $array[ $key ] ) ) ? $array[ $key ] : $default;
+function gp_array_get( $items, $key, $default_value = '' ) {
+	return ( is_scalar( $key ) && isset( $items[ $key ] ) ) ? $items[ $key ] : $default_value;
 }
 
 /**
  * Retrieves a constant value or a default value if the constant isn't defined.
  *
- * @param string $name    Name of the constant.
- * @param mixed  $default Value to return if the constant isn't defined. Default is ''.
- * @return mixed Constant value if defined or $default.
+ * @param string $name          Name of the constant.
+ * @param mixed  $default_value Value to return if the constant isn't defined. Default is ''.
+ * @return mixed Constant value if defined or $default_value.
  */
-function gp_const_get( $name, $default = '' ) {
-	return defined( $name ) ? constant( $name ) : $default;
+function gp_const_get( $name, $default_value = '' ) {
+	return defined( $name ) ? constant( $name ) : $default_value;
 }
 
 /**
@@ -100,24 +100,24 @@ function gp_const_set( $name, $value ) {
 /**
  * Retrieves a member variable from an object.
  *
- * @param object       $object  The object to get the member from.
- * @param string       $key     Name of member variable.
- * @param string|array $default Value to return if $object->$key doesn't exist. Default is ''.
- * @return string|array $object->$key if exists or $default
+ * @param object       $obj           The object to get the member from.
+ * @param string       $key           Name of member variable.
+ * @param string|array $default_value Value to return if $obj->$key doesn't exist. Default is ''.
+ * @return string|array $obj->$key if exists or $default_value
  */
-function gp_member_get( $object, $key, $default = '' ) {
-	return ( is_string( $key ) && property_exists( $object, $key ) ) ? $object->$key : $default;
+function gp_member_get( $obj, $key, $default_value = '' ) {
+	return ( is_string( $key ) && property_exists( $obj, $key ) ) ? $obj->$key : $default_value;
 }
 
 /**
  * Makes from an array of arrays a flat array.
  *
- * @param array $array The array to flatten.
+ * @param array $values The array to flatten.
  * @return array Flattened array.
  */
-function gp_array_flatten( $array ) {
+function gp_array_flatten( $values ) {
 	$res = array();
-	foreach ( $array as $value ) {
+	foreach ( $values as $value ) {
 		$res = array_merge( $res, is_array( $value ) ? gp_array_flatten( $value ) : array( $value ) );
 	}
 	return $res;
@@ -282,12 +282,12 @@ function gp_array_zip( ...$args ) {
  * Returns true if callback returns true for any item in array.
  *
  * @param callable     $callback The callback to run for each item.
- * @param array        $array    The array to iterate over.
+ * @param array        $items    The array to iterate over.
  * @param mixed|string $arg      Optional. An additional argument to pass to the callback. Default null.
  * @return bool
  */
-function gp_array_any( $callback, $array, $arg = null ) {
-	foreach ( $array as $item ) {
+function gp_array_any( $callback, $items, $arg = null ) {
+	foreach ( $items as $item ) {
 		if ( is_array( $callback ) ) {
 			if ( $callback[0]->{$callback[1]}( $item, $arg ) ) {
 				return true;
@@ -303,11 +303,11 @@ function gp_array_any( $callback, $array, $arg = null ) {
  * Returns true if callback returns true for all items in array.
  *
  * @param callable $callback The callback to run for each item.
- * @param array    $array    The array to iterate over.
+ * @param array    $items    The array to iterate over.
  * @return bool
  */
-function gp_array_all( $callback, $array ) {
-	foreach ( $array as $item ) {
+function gp_array_all( $callback, $items ) {
+	foreach ( $items as $item ) {
 		if ( ! $callback( $item ) ) {
 			return false;
 		}
@@ -330,12 +330,12 @@ function gp_error_log_dump( $value ) {
 /**
  * Checks if an object has a member variable.
  *
- * @param object $object   The object to check.
+ * @param object $instance The object to check.
  * @param string $var_name Name of member variable.
  * @return bool
  */
-function gp_object_has_var( $object, $var_name ) {
-	return in_array( $var_name, array_keys( get_object_vars( $object ) ), true );
+function gp_object_has_var( $instance, $var_name ) {
+	return in_array( $var_name, array_keys( get_object_vars( $instance ) ), true );
 }
 
 /**
@@ -496,12 +496,12 @@ function gp_is_between_exclusive( $value, $start, $end ) {
  *
  * @since 3.0.0
  *
- * @param string $value The value you want to check.
- * @param array  $list  The list of values you want to check against.
+ * @param string $value  The value you want to check.
+ * @param array  $values The list of values you want to check against.
  * @return bool
  */
-function gp_is_one_of( $value, $list ) {
-	return in_array( $value, $list, true );
+function gp_is_one_of( $value, $values ) {
+	return in_array( $value, $values, true );
 }
 
 /**
@@ -585,24 +585,24 @@ function gp_set_cookie( $name, ...$args ) {
  *
  * @since 1.0.0
  *
- * @param string $string The string representation of the time to convert.
+ * @param string $value The string representation of the time to convert.
  * @return int
  */
-function gp_gmt_strtotime( $string ) {
-	if ( is_numeric( $string ) ) {
-		return $string;
+function gp_gmt_strtotime( $value ) {
+	if ( is_numeric( $value ) ) {
+		return $value;
 	}
-	if ( ! is_string( $string ) ) {
+	if ( ! is_string( $value ) ) {
 		return -1;
 	}
 
-	if ( stristr( $string, 'utc' ) || stristr( $string, 'gmt' ) || stristr( $string, '+0000' ) ) {
-		return strtotime( $string );
+	if ( stristr( $value, 'utc' ) || stristr( $value, 'gmt' ) || stristr( $value, '+0000' ) ) {
+		return strtotime( $value );
 	}
 
-	$time = strtotime( $string . ' +0000' );
-	if ( -1 == $time ) {
-		return strtotime( $string );
+	$time = strtotime( $value . ' +0000' );
+	if ( false === $time ) {
+		return strtotime( $value );
 	}
 
 	return $time;
@@ -821,19 +821,19 @@ function gp_set_translations_import_max_memory_limit() {
  *
  * @since 4.1.0
  *
- * @param string $string The string to check.
+ * @param string $value The string to check.
  * @return bool True if the string is valid UTF-8, false otherwise.
  */
-function gp_is_valid_utf8( $string ) {
+function gp_is_valid_utf8( $value ) {
 	if ( function_exists( 'wp_is_valid_utf8' ) ) {
-		return wp_is_valid_utf8( $string );
+		return wp_is_valid_utf8( $value );
 	}
 
 	if ( function_exists( 'mb_check_encoding' ) ) {
-		return mb_check_encoding( $string, 'UTF-8' );
+		return mb_check_encoding( $value, 'UTF-8' );
 	}
 
-	return 1 === preg_match( '//u', $string );
+	return 1 === preg_match( '//u', $value );
 }
 
 /**
@@ -892,4 +892,181 @@ function gp_get_placeholder_regex_pattern( $specifiers = '[bcdefglosuxEFGX@]' ) 
 		'|' . $flags . '++(?:' . $specifiers . ')(?![a-zA-Z])' .
 		'|(?:' . $specifiers . ')' .
 	'))';
+}
+
+/**
+ * Sanitizes a timezone as offered by wp_timezone_choice().
+ *
+ * @since 4.2.0
+ *
+ * @param mixed $timezone A timezone identifier, like 'Europe/Berlin', or an offset from UTC, like 'UTC+5.5'.
+ * @return string The timezone, or an empty string if it isn't valid.
+ */
+function gp_sanitize_timezone( $timezone ) {
+	static $identifiers = null;
+
+	if ( ! is_string( $timezone ) ) {
+		return '';
+	}
+
+	if ( null === $identifiers ) {
+		$identifiers = array_flip( timezone_identifiers_list( DateTimeZone::ALL_WITH_BC ) );
+	}
+
+	if ( isset( $identifiers[ $timezone ] ) || preg_match( '/^UTC[+-]\d{1,2}(?:\.\d+)?$/', $timezone ) ) {
+		return $timezone;
+	}
+
+	return '';
+}
+
+/**
+ * Gets the timezone of the site in the format wp_timezone_choice() offers it.
+ *
+ * @since 4.2.0
+ *
+ * @return string The timezone identifier of the site, or its offset from UTC, like 'UTC+2'.
+ */
+function gp_get_site_timezone_choice() {
+	$timezone = get_option( 'timezone_string' );
+
+	// Like the general settings of WordPress, which don't offer the old Etc/GMT zones and show the offset instead.
+	if ( $timezone && false === strpos( $timezone, 'Etc/GMT' ) ) {
+		return $timezone;
+	}
+
+	$offset = (float) get_option( 'gmt_offset' );
+	if ( 0.0 === $offset ) {
+		return 'UTC+0';
+	}
+
+	return 'UTC' . ( $offset < 0 ? '' : '+' ) . $offset;
+}
+
+/**
+ * Gets the timezone the current user chose, or the one of the site, in the format wp_timezone_choice() offers it.
+ *
+ * @since 4.2.0
+ *
+ * @return string The timezone identifier, or an offset from UTC, like 'UTC+5.5'.
+ */
+function gp_get_user_timezone_choice() {
+	$timezone = gp_sanitize_timezone( get_user_option( 'gp_timezone' ) );
+
+	return '' !== $timezone ? $timezone : gp_get_site_timezone_choice();
+}
+
+/**
+ * Gets the timezone of the current user, or the one of the site if the user didn't choose one.
+ *
+ * @since 4.2.0
+ *
+ * @return DateTimeZone The timezone.
+ */
+function gp_get_user_timezone() {
+	static $timezones = array();
+
+	$choice = gp_get_user_timezone_choice();
+
+	if ( ! isset( $timezones[ $choice ] ) ) {
+		// DateTimeZone doesn't know the offsets offered by wp_timezone_choice(), like WordPress converts its own gmt_offset.
+		if ( preg_match( '/^UTC([+-])(\d+(?:\.\d+)?)$/', $choice, $matches ) ) {
+			$hours           = (int) $matches[2];
+			$minutes         = (int) round( ( (float) $matches[2] - $hours ) * 60 );
+			$choice_timezone = sprintf( '%s%02d:%02d', $matches[1], $hours, $minutes );
+		} else {
+			$choice_timezone = $choice;
+		}
+
+		$timezones[ $choice ] = new DateTimeZone( $choice_timezone );
+	}
+
+	return $timezones[ $choice ];
+}
+
+/**
+ * Gets the date formats a user can choose from.
+ *
+ * @since 4.2.0
+ *
+ * @return string[] The date formats.
+ */
+function gp_get_date_format_choices() {
+	/**
+	 * Filters the date formats a user can choose from.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string[] $formats The date formats.
+	 */
+	return apply_filters( 'gp_date_format_choices', array( 'F j, Y', 'j. F Y', 'Y-m-d', 'm/d/Y', 'd/m/Y', 'd.m.Y' ) );
+}
+
+/**
+ * Gets the date format the current user chose.
+ *
+ * @since 4.2.0
+ *
+ * @return string The date format, or an empty string if the user follows the site.
+ */
+function gp_get_user_date_format_choice() {
+	$date_format = get_user_option( 'gp_date_format' );
+
+	return in_array( $date_format, gp_get_date_format_choices(), true ) ? $date_format : '';
+}
+
+/**
+ * Gets the date format of the current user, or the one of the site if the user didn't choose one.
+ *
+ * @since 4.2.0
+ *
+ * @return string The date format.
+ */
+function gp_get_user_date_format() {
+	$date_format = gp_get_user_date_format_choice();
+
+	return '' !== $date_format ? $date_format : get_option( 'date_format' );
+}
+
+/**
+ * Checks whether the site uses 24-hour time, which is the default for users who didn't choose.
+ *
+ * @since 4.2.0
+ *
+ * @return bool Whether the time format of the site has a 24-hour hour.
+ */
+function gp_site_uses_24_hour_time() {
+	return (bool) preg_match( '/(?<!\\\\)[GH]/', get_option( 'time_format' ) );
+}
+
+/**
+ * Checks whether the current user uses 24-hour time, or the site if the user didn't choose.
+ *
+ * @since 4.2.0
+ *
+ * @return bool Whether the user uses 24-hour time.
+ */
+function gp_user_uses_24_hour_time() {
+	$use_24_hour_time = get_user_option( 'gp_time_format_24h' );
+	if ( false === $use_24_hour_time || '' === $use_24_hour_time ) {
+		return gp_site_uses_24_hour_time();
+	}
+
+	return (bool) $use_24_hour_time;
+}
+
+/**
+ * Gets the time format of the current user, which only chooses between 12-hour and 24-hour time.
+ *
+ * @since 4.2.0
+ *
+ * @return string The time format, the one of the site if the user didn't choose.
+ */
+function gp_get_user_time_format() {
+	$use_24_hour_time = get_user_option( 'gp_time_format_24h' );
+	if ( false === $use_24_hour_time || '' === $use_24_hour_time ) {
+		return get_option( 'time_format' );
+	}
+
+	return $use_24_hour_time ? 'H:i' : 'g:i a';
 }

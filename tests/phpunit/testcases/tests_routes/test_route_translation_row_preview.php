@@ -67,4 +67,32 @@ class GP_Test_Route_Translation_Row_Preview extends GP_UnitTestCase_Route {
 			'with a glossary with an entry' => array( 'with entries' ),
 		);
 	}
+
+	/**
+	 * The editor tells when a translation was last changed, for example approved, if it isn't the date it was added.
+	 */
+	function test_editor_shows_the_date_a_translation_was_last_modified() {
+		$set         = $this->factory->translation_set->create_with_project_and_locale();
+		$original    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'current' ) );
+
+		$this->set_translation_dates( $translation, '2026-03-01 10:00:00', '2026-03-01 10:00:00' );
+		$this->assertStringNotContainsString( 'Last modified:', $this->render_set( $set ) );
+
+		$this->set_translation_dates( $translation, '2026-03-01 10:00:00', '2026-04-15 08:30:00' );
+		$output = $this->render_set( $set );
+		$this->assertStringContainsString( 'Last modified:', $output );
+		$this->assertStringContainsString( gp_format_user_date( '2026-04-15 08:30:00' ), $output );
+	}
+
+	private function set_translation_dates( $translation, $added, $modified ) {
+		global $wpdb;
+		$wpdb->update( $wpdb->gp_translations, array( 'date_added' => $added, 'date_modified' => $modified ), array( 'id' => $translation->id ) );
+	}
+
+	private function render_set( $set ) {
+		$this->route->translations_get( $set->project->path, $set->locale, $set->slug );
+
+		return $this->route->template_output;
+	}
 }
