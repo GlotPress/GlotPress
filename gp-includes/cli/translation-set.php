@@ -1,12 +1,41 @@
 <?php
+/**
+ * GlotPress CLI Command to Manage Translation Sets
+ *
+ * @package GlotPress
+ */
 
+/**
+ * WP-CLI command class to manage translation sets in GlotPress.
+ */
 class GP_CLI_Translation_Set extends WP_CLI_Command {
+	/**
+	 * Project of the current translation set.
+	 *
+	 * @var GP_Project|false
+	 */
+	protected $project;
+
+	/**
+	 * Locale of the current translation set.
+	 *
+	 * @var GP_Locale|null
+	 */
+	protected $locale;
+
+	/**
+	 * Current translation set.
+	 *
+	 * @var GP_Translation_Set|false
+	 */
+	protected $translation_set;
+
 	/**
 	 * Get a translation set for a project.
 	 *
-	 * @param string $project Project path
-	 * @param string $locale Locale slug
-	 * @param string $set Set slug
+	 * @param string $project Project path.
+	 * @param string $locale Locale slug.
+	 * @param string $set Set slug.
 	 * @return GP_Translation_Set|WP_Error Translation set if available, error otherwise.
 	 */
 	protected function get_translation_set( $project, $locale, $set = 'default' ) {
@@ -53,6 +82,9 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 	 *
 	 * [--priority=<priorities>]
 	 * : Original priorities, comma separated. Possible values are "hidden,low,normal,high"
+	 *
+	 * @param string[] $args       Positional arguments.
+	 * @param array    $assoc_args Associative arguments.
 	 */
 	public function export( $args, $assoc_args ) {
 		$set_slug        = isset( $assoc_args['set'] ) ? $assoc_args['set'] : 'default';
@@ -161,7 +193,21 @@ class GP_CLI_Translation_Set extends WP_CLI_Command {
 		$project = GP::$project->get( $translation_set->project_id );
 		$locale  = GP_Locales::by_slug( $translation_set->locale );
 		foreach ( GP::$translation->for_translation( $project, $translation_set, 'no-limit' ) as $entry ) {
-			$warnings = GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale );
+			$original = new GP_Original(
+				array(
+					'id'         => $entry->original_id,
+					'project_id' => $project->id,
+					'context'    => $entry->context,
+					'singular'   => $entry->singular,
+					'plural'     => $entry->plural,
+					'comment'    => $entry->extracted_comments,
+					'references' => implode( ' ', $entry->references ),
+					'priority'   => $entry->priority,
+					'status'     => $entry->original_status,
+					'date_added' => $entry->original_added,
+				)
+			);
+			$warnings = GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale, $original );
 			if ( $warnings == $entry->warnings ) {
 				continue;
 			}

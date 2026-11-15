@@ -10,7 +10,7 @@ jQuery( function( $ ) {
 			$( '#preview' ).hide();
 			return;
 		}
-		$gp.notices.notice( $gp_mass_create_sets_options.loading );
+		$gp.notices.progress( $gp_mass_create_sets_options.loading );
 		select.prop( 'disabled', true );
 		$.ajax( { type: 'POST', url: $gp_mass_create_sets_options.url, data: { project_id: project_id }, dataType: 'json',
 			success: function( data ) {
@@ -30,7 +30,7 @@ jQuery( function( $ ) {
 					if ( sets.length ) {
 						html += '<ul>';
 						$.each( sets, function() {
-							html += '<li>' + $gp.esc_html( this.name ) + ' (' + this.locale + '/' + this.slug + ')</li>';
+							html += '<li>' + $gp.esc_html( this.name ) + ' (' + $gp.esc_html( this.locale ) + '/' + $gp.esc_html( this.slug ) + ')</li>';
 						} );
 						html += '</ul>';
 					}
@@ -48,7 +48,7 @@ jQuery( function( $ ) {
 			error: function( xhr, msg ) {
 				select.prop( 'disabled', false );
 				/* translators: %s: Error message. */
-				msg = xhr.responsehtml ? wp.i18n.sprintf( wp.i18n.__( 'Error: %s', 'glotpress' ), xhr.responsehtml ) : wp.i18n.__( 'Error saving the translation!', 'glotpress' );
+				msg = xhr.responseText ? wp.i18n.sprintf( wp.i18n.__( 'Error: %s', 'glotpress' ), xhr.responseText ) : wp.i18n.__( 'Error loading the translation sets to create!', 'glotpress' );
 				$gp.notices.error( msg );
 			},
 		} );

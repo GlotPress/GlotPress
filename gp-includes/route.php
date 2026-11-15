@@ -1,34 +1,166 @@
 <?php
 /**
+ * GlotPress Route
+ *
+ * @package GlotPress
+ */
+
+/**
  * Base controller class
  */
 class GP_Route {
 
+	/**
+	 * Whether the route is processing an API request.
+	 *
+	 * @var bool
+	 */
 	public $api = false;
 
+	/**
+	 * Errors collected during the request.
+	 *
+	 * @var array
+	 */
 	public $errors  = array();
+
+	/**
+	 * Notices collected during the request.
+	 *
+	 * @var array
+	 */
 	public $notices = array();
 
-	var $request_running = false;
-	var $template_path   = null;
+	/**
+	 * Success messages collected during the request.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var array
+	 */
+	public $successes = array();
 
+	/**
+	 * Whether the request is currently running.
+	 *
+	 * @var bool
+	 */
+	var $request_running = false;
+
+	/**
+	 * Path to templates.
+	 *
+	 * @var string|null
+	 */
+	var $template_path = null;
+
+	/**
+	 * Whether this is a fake request (for testing).
+	 *
+	 * @var bool
+	 */
 	var $fake_request = false;
-	var $exited       = false;
+
+	/**
+	 * Whether exit() has been called.
+	 *
+	 * @var bool
+	 */
+	var $exited = false;
+
+	/**
+	 * Message passed to exit().
+	 *
+	 * @var mixed
+	 */
 	var $exit_message;
-	var $redirected        = false;
-	var $redirected_to     = null;
+
+	/**
+	 * Whether a redirect has been performed.
+	 *
+	 * @var bool
+	 */
+	var $redirected = false;
+
+	/**
+	 * URL redirected to.
+	 *
+	 * @var string|null
+	 */
+	var $redirected_to = null;
+
+	/**
+	 * Whether a template has been rendered.
+	 *
+	 * @var bool
+	 */
 	var $rendered_template = false;
-	var $loaded_template   = null;
-	var $template_output   = null;
-	var $headers           = array();
+
+	/**
+	 * The name of the loaded template.
+	 *
+	 * @var string|null
+	 */
+	var $loaded_template = null;
+
+	/**
+	 * The output of the template when in fake request mode.
+	 *
+	 * @var string|null
+	 */
+	var $template_output = null;
+
+	/**
+	 * Headers sent during fake request.
+	 *
+	 * @var array
+	 */
+	var $headers = array();
+
+	/**
+	 * The class name of the route.
+	 *
+	 * @var string
+	 */
 	var $class_name;
+
+	/**
+	 * The HTTP status code sent during fake request.
+	 *
+	 * @var int
+	 */
 	var $http_status;
+
+	/**
+	 * The last method called on the route.
+	 *
+	 * @var string
+	 */
 	var $last_method_called;
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 
 		// Make sure that the current URL has a trailing slash.
 		add_action( 'gp_before_request', array( $this, 'check_uri_trailing_slash' ) );
+	}
+
+	/**
+	 * Formats error messages for an error response, as a list only if there is more than one.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string[] $messages The error messages, as HTML.
+	 * @return string The error messages, as HTML.
+	 */
+	protected function error_messages_html( array $messages ): string {
+		if ( 1 === count( $messages ) ) {
+			return reset( $messages );
+		}
+
+		return '<ul><li>' . implode( '</li><li>', $messages ) . '</li></ul>';
 	}
 
 	/**
@@ -60,6 +192,9 @@ class GP_Route {
 		}
 	}
 
+	/**
+	 * Actions to perform before a route method is called.
+	 */
 	public function before_request() {
 		/**
 		 * Fires before a route method is called.
@@ -72,13 +207,16 @@ class GP_Route {
 		do_action( 'gp_before_request', $this->class_name, $this->last_method_called );
 	}
 
+	/**
+	 * Actions to perform after a route method was called.
+	 */
 	public function after_request() {
-		// we can't unregister a shutdown function
-		// this check prevents this method from being run twice
+		// we can't unregister a shutdown function.
+		// this check prevents this method from being run twice.
 		if ( ! $this->request_running ) {
 			return;
 		}
-		// set errors and notices
+		// set errors and notices.
 		if ( ! headers_sent() ) {
 			$this->set_notices_and_errors();
 		}
@@ -97,8 +235,8 @@ class GP_Route {
 	/**
 	 * Validates a thing and add its errors to the route's errors.
 	 *
-	 * @param object $thing a GP_Thing instance to validate
-	 * @return bool whether the thing is valid
+	 * @param object $thing A GP_Thing instance to validate.
+	 * @return bool Whether the thing is valid.
 	 */
 	public function validate( $thing ) {
 		$verdict      = $thing->validate();
@@ -112,9 +250,9 @@ class GP_Route {
 	 * Note: this method calls $this->exit_() after the redirect and the code after it won't
 	 * be executed.
 	 *
-	 * @param object $thing a GP_Thing instance to validate
-	 * @param string $url where to redirect if the thing doesn't validate
-	 * @return bool whether the thing is valid
+	 * @param object $thing A GP_Thing instance to validate.
+	 * @param string $url Where to redirect if the thing doesn't validate.
+	 * @return bool True if the thing was invalid and a redirect was issued, false if it is valid.
 	 */
 	public function invalid_and_redirect( $thing, $url = null ) {
 		$valid = $this->validate( $thing );
@@ -221,17 +359,31 @@ class GP_Route {
 		return false;
 	}
 
+	/**
+	 * Ensures that a user is logged in, otherwise shows a 403 Forbidden error.
+	 */
 	public function logged_in_or_forbidden() {
 		if ( ! is_user_logged_in() ) {
 			$this->die_with_error( 'Forbidden', 403 );
 		}
 	}
 
+	/**
+	 * Redirects to a URL with an error message.
+	 *
+	 * @param string      $message The error message.
+	 * @param string|null $url     The URL to redirect to. Default: 'null', the referrer.
+	 */
 	public function redirect_with_error( $message, $url = null ) {
 		$this->errors[] = $message;
 		$this->redirect( $url );
 	}
 
+	/**
+	 * Redirects to a URL.
+	 *
+	 * @param string|null $url The URL to redirect to. Default: 'null', the referrer.
+	 */
 	public function redirect( $url = null ) {
 		if ( $this->fake_request ) {
 			$this->redirected    = true;
@@ -301,20 +453,29 @@ class GP_Route {
 		$this->header( 'Connection: close' );
 	}
 
+	/**
+	 * Sets notices and errors to be displayed.
+	 */
 	public function set_notices_and_errors() {
 		if ( $this->fake_request ) {
 			return;
 		}
 
-		foreach ( $this->notices as $notice ) {
-			gp_notice_set( $notice );
+		// Each type reaches the next page through a single cookie, which keeps only the last message.
+		$messages = array(
+			'notice'  => $this->notices,
+			'success' => $this->successes,
+			'error'   => $this->errors,
+		);
+		foreach ( $messages as $key => $texts ) {
+			if ( $texts ) {
+				gp_notice_set( implode( '<br>', $texts ), $key );
+			}
 		}
-		$this->notices = array();
 
-		foreach ( $this->errors as $error ) {
-			gp_notice_set( $error, 'error' );
-		}
-		$this->errors = array();
+		$this->notices   = array();
+		$this->successes = array();
+		$this->errors    = array();
 	}
 
 	/**
@@ -345,6 +506,11 @@ class GP_Route {
 		return gp_tmpl_load( $template, $args, $this->template_path );
 	}
 
+	/**
+	 * Shows a 404 Not Found page and exits.
+	 *
+	 * @param array $args Additional arguments to pass to the template.
+	 */
 	public function die_with_404( $args = array() ) {
 		$this->status_header( 404 );
 		$this->tmpl(
@@ -357,6 +523,12 @@ class GP_Route {
 		$this->exit_();
 	}
 
+	/**
+	 * Exits the request.
+	 *
+	 * @param mixed $message Optional. Message to output before exit. Default: 0.
+	 * @throws GP_Route_Exit_Exception If the request is a fake request.
+	 */
 	public function exit_( $message = 0 ) {
 		if ( $this->fake_request ) {
 			$this->exited       = true;
@@ -369,15 +541,25 @@ class GP_Route {
 		exit( $message );
 	}
 
-	public function header( $string ) {
+	/**
+	 * Sends a HTTP header.
+	 *
+	 * @param string $header_string The header string.
+	 */
+	public function header( $header_string ) {
 		if ( $this->fake_request ) {
-			list( $header, $value )   = explode( ':', $string, 2 );
+			list( $header, $value )   = explode( ':', $header_string, 2 );
 			$this->headers[ $header ] = $value;
 		} else {
-			header( $string );
+			header( $header_string );
 		}
 	}
 
+	/**
+	 * Sends a HTTP status header.
+	 *
+	 * @param int $status The HTTP status code.
+	 */
 	public function status_header( $status ) {
 		if ( $this->fake_request ) {
 			$this->http_status = $status;
@@ -414,8 +596,9 @@ class GP_Route {
 				$redirect_url .= '?' . $current_uri['query'];
 			}
 
-			// Redirect to URL with trailing slash.
+			// Redirect to URL with trailing slash, and stop the route from running too.
 			$this->redirect( $redirect_url );
+			$this->exit_();
 		}
 	}
 }

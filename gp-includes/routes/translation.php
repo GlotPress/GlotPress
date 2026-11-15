@@ -14,6 +14,13 @@
  */
 class GP_Route_Translation extends GP_Route_Main {
 
+	/**
+	 * Displays the import translations page.
+	 *
+	 * @param string $project_path         The project path.
+	 * @param string $locale_slug          The locale slug.
+	 * @param string $translation_set_slug The translation set slug.
+	 */
 	public function import_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
@@ -40,6 +47,13 @@ class GP_Route_Translation extends GP_Route_Main {
 		$this->tmpl( 'project-import', get_defined_vars() );
 	}
 
+	/**
+	 * Handles the import translations POST request.
+	 *
+	 * @param string $project_path         The project path.
+	 * @param string $locale_slug          The locale slug.
+	 * @param string $translation_set_slug The translation set slug.
+	 */
 	public function import_translations_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
@@ -100,15 +114,28 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		$translations_added = $translation_set->import( $translations, $import_status );
-		$this->notices[]    = sprintf(
+		$message            = sprintf(
 			/* translators: %s: Translations count. */
-			_n( '%s translation was added', '%s translations were added', $translations_added, 'glotpress' ),
+			_n( '%s translation was added.', '%s translations were added.', $translations_added, 'glotpress' ),
 			$translations_added
 		);
+
+		if ( $translations_added ) {
+			$this->successes[] = $message;
+		} else {
+			$this->notices[] = $message;
+		}
 
 		$this->redirect( gp_url_project( $project, gp_url_join( $locale->slug, $translation_set->slug ) ) );
 	}
 
+	/**
+	 * Exports translations for a translation set.
+	 *
+	 * @param string $project_path         The project path.
+	 * @param string $locale_slug          The locale slug.
+	 * @param string $translation_set_slug The translation set slug.
+	 */
 	public function export_translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
@@ -178,6 +205,13 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 	}
 
+	/**
+	 * Displays the translations page.
+	 *
+	 * @param string $project_path         The project path.
+	 * @param string $locale_slug          The locale slug.
+	 * @param string $translation_set_slug The translation set slug.
+	 */
 	public function translations_get( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
@@ -201,7 +235,11 @@ class GP_Route_Translation extends GP_Route_Main {
 		$sort    = (array) gp_get( 'sort', array() );
 		$sort    = array_filter( $sort, 'is_scalar' );
 
-		if ( 'random' === gp_array_get( $sort, 'by' ) ) {
+		// Kept apart from the requested sort, which the template uses to tell the current filter.
+		$default_sort = get_user_option( 'gp_default_sort' );
+		$query_sort   = is_array( $default_sort ) ? $sort + $default_sort : $sort;
+
+		if ( 'random' === gp_array_get( $query_sort, 'by' ) ) {
 			add_filter( 'gp_pagination', '__return_null' );
 		}
 
@@ -220,8 +258,11 @@ class GP_Route_Translation extends GP_Route_Main {
 			$sort = array();
 		}
 
-		$translations             = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $sort );
+		$translations             = GP::$translation->for_translation( $project, $translation_set, $page, $filters, $query_sort );
 		$total_translations_count = GP::$translation->found_rows;
+		if ( ! $this->api ) {
+			$translations = GP::$translation->add_related_translations( $translations, $translation_set );
+		}
 
 		$can_edit            = $this->can( 'edit', 'translation-set', $translation_set->id );
 		$can_write           = $this->can( 'write', 'project', $project->id );
@@ -235,7 +276,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$bulk_action         = gp_url_join( $url, '-bulk' );
 		$word_count_type     = $locale->word_count_type;
 
-		// Add action to use different font for translations
+		// Add action to use different font for translations.
 		add_action(
 			'gp_head',
 			function () use ( $locale ) {
@@ -246,6 +287,13 @@ class GP_Route_Translation extends GP_Route_Main {
 		$this->tmpl( 'translations', get_defined_vars() );
 	}
 
+	/**
+	 * Handles the translations POST request.
+	 *
+	 * @param string $project_path         The project path.
+	 * @param string $locale_slug          The locale slug.
+	 * @param string $translation_set_slug The translation set slug.
+	 */
 	public function translations_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
@@ -260,6 +308,8 @@ class GP_Route_Translation extends GP_Route_Main {
 			return $this->die_with_error( __( 'An error has occurred. Please try again.', 'glotpress' ), 403 );
 		}
 
+		$authorized_original_id = (int) $original_id;
+
 		$translation_set = GP::$translation_set->by_project_id_slug_and_locale( $project->id, $translation_set_slug, $locale_slug );
 
 		if ( ! $translation_set ) {
@@ -270,11 +320,23 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$glossary = $this->get_extended_glossary( $translation_set, $project );
 
+		$can_write = $this->can( 'write', 'project', $project->id );
+
 		$output = array();
 		foreach ( gp_post( 'translation', array() ) as $original_id => $translations ) {
+			// The nonce covers a single original, which is the only one this request may write to.
+			if ( (int) $original_id !== $authorized_original_id ) {
+				continue;
+			}
+
 			$original = GP::$original->get( $original_id );
 
 			if ( ! $this->original_belongs_to_project( $original, $project ) ) {
+				continue;
+			}
+
+			// Hidden originals are left out of the listings of users without write permission.
+			if ( (int) $original->priority <= -2 && ! $can_write ) {
 				continue;
 			}
 
@@ -289,34 +351,16 @@ class GP_Route_Translation extends GP_Route_Main {
 				}
 			}
 
-			if ( isset( $data['status'] ) ) {
-				$set_status = $data['status'];
-			} else {
-				$set_status = 'waiting';
-			}
-
 			$data['status'] = 'waiting';
 
-			if ( $this->can( 'approve', 'translation-set', $translation_set->id ) || $this->can( 'write', 'project', $project->id ) ) {
-				$set_status = 'current';
-			} else {
-				$set_status = 'waiting';
-			}
+			// Only waiting is taken from the request, so it can't approve a translation.
+			$can_approve_set = $this->can( 'approve', 'translation-set', $translation_set->id ) || $can_write;
+			$set_status      = $can_approve_set && 'waiting' !== gp_post( 'status' ) ? 'current' : 'waiting';
 
-			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
+			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale, $original );
 			$errors           = GP::$translation_errors->check( $original, $translations, $locale );
 			if ( $errors ) {
-				$output = '<ul>';
-				foreach ( $errors as $error ) {
-					foreach ( $error as $key => $value ) {
-						$output .= '<li>';
-						$output .= htmlentities( $value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8' );
-						$output .= '</li>';
-					}
-				}
-				$output .= '</ul>';
-
-				return $this->die_with_error( $output, 403 );
+				return $this->die_with_error( $this->translation_errors_list( gp_array_flatten( $errors ) ), 403 );
 			}
 
 			$existing_translations = GP::$translation->for_translation(
@@ -325,15 +369,25 @@ class GP_Route_Translation extends GP_Route_Main {
 				'no-limit',
 				array(
 					'original_id' => $original_id,
-					'status'      => 'current_or_waiting',
+					'status'      => 'current_or_waiting_or_fuzzy',
 				),
 				array()
 			);
 			foreach ( $existing_translations as $e ) {
 				if ( array_pad( $translations, $locale->nplurals, null ) == $e->translations ) {
-					return $this->die_with_error( __( 'Identical current or waiting translation already exists.', 'glotpress' ), 200 );
+					if ( 'fuzzy' === $e->translation_status ) {
+						$message = __( 'Identical fuzzy translation already exists.', 'glotpress' );
+					} elseif ( 'waiting' === $e->translation_status ) {
+						$message = __( 'Identical waiting translation already exists.', 'glotpress' );
+					} else {
+						$message = __( 'Identical current translation already exists.', 'glotpress' );
+					}
+
+					return $this->die_with_error( $message, 200 );
 				}
 			}
+
+			$this->validate_not_rejected_or_changesrequested( $translation_set, $original_id, $translations, $set_status );
 
 			$translation = GP::$translation->create( $data );
 
@@ -342,22 +396,14 @@ class GP_Route_Translation extends GP_Route_Main {
 			}
 
 			if ( ! $translation->validate() ) {
-				$error_output = '<ul>';
-				foreach ( $translation->errors as $error ) {
-					$error_output .= '<li>' . $error . '</li>';
-				}
-				$error_output .= '</ul>';
 				$translation->delete();
 
-				return $this->die_with_error( $error_output, 200 );
+				return $this->die_with_error( $this->error_messages_html( $translation->errors ), 200 );
 			} else {
-				if ( 'current' === $set_status ) {
-					$translation->set_status( 'current' );
-				} else {
-					$translation->set_status( 'waiting' );
-				}
+				$translation->set_status( $set_status );
 
 				$translations = GP::$translation->for_translation( $project, $translation_set, 'no-limit', array( 'translation_id' => $translation->id ), array() );
+				$translations = GP::$translation->add_related_translations( $translations, $translation_set );
 
 				if ( ! empty( $translations ) ) {
 					$translation = $translations[0];
@@ -373,9 +419,18 @@ class GP_Route_Translation extends GP_Route_Main {
 				}
 			}
 		}
+		$this->send_filter_counts_header( $translation_set );
+
 		echo wp_json_encode( $output );
 	}
 
+	/**
+	 * Handles the bulk actions POST request.
+	 *
+	 * @param string $project_path         The project path.
+	 * @param string $locale_slug          The locale slug.
+	 * @param string $translation_set_slug The translation set slug.
+	 */
 	public function bulk_post( $project_path, $locale_slug, $translation_set_slug ) {
 		$project = GP::$project->by_path( $project_path );
 		$locale  = GP_Locales::by_slug( $locale_slug );
@@ -413,6 +468,9 @@ class GP_Route_Translation extends GP_Route_Main {
 					break;
 				case 'fuzzy':
 					$this->_bulk_fuzzy( $bulk );
+					break;
+				case 'copy-original':
+					$this->_bulk_copy_original( $project, $translation_set, $bulk );
 					break;
 				case 'set-priority':
 					$this->_bulk_set_priority( $project, $bulk );
@@ -495,11 +553,16 @@ class GP_Route_Translation extends GP_Route_Main {
 		return $original && (int) $original->project_id === (int) $project->id;
 	}
 
+	/**
+	 * Processes the bulk action to approve, reject or request changes for translations.
+	 *
+	 * @param array $bulk The bulk data to process.
+	 */
 	private function _bulk_approve( $bulk ) {
 
 		$action = $bulk['action'];
 
-		$ok = $error = 0;
+		$ok = $error = $refused = 0;
 		switch ( $action ) {
 			case 'approve':
 				$new_status = 'current';
@@ -519,34 +582,42 @@ class GP_Route_Translation extends GP_Route_Main {
 			}
 			if ( $translation->set_status( $new_status ) ) {
 				++$ok;
+			} elseif ( $translation->errors ) {
+				++$refused;
 			} else {
 				++$error;
 			}
 		}
 
-		if ( 0 === $error ) {
+		if ( 0 === $error && ( $ok > 0 || 0 === $refused ) ) {
 			switch ( $action ) {
 				case 'approve':
-					$this->notices[] = sprintf(
+					$message = sprintf(
 					/* translators: %d: Translations count. */
 						_n( '%d translation was approved.', '%d translations were approved.', $ok, 'glotpress' ),
 						$ok
 					);
 					break;
 				case 'reject':
-					$this->notices[] = sprintf(
+					$message = sprintf(
 					/* translators: %d: Translations count. */
 						_n( '%d translation was rejected.', '%d translations were rejected.', $ok, 'glotpress' ),
 						$ok
 					);
 					break;
 				case 'changesrequested':
-					$this->notices[] = sprintf(
+					$message = sprintf(
 					/* translators: %d: Translations count. */
 						_n( '%d translation has changes requested.', '%d translations have changes requested.', $ok, 'glotpress' ),
 						$ok
 					);
 					break;
+			}
+
+			if ( $ok ) {
+				$this->successes[] = $message;
+			} else {
+				$this->notices[] = $message;
 			}
 		} elseif ( $ok > 0 ) {
 			switch ( $action ) {
@@ -597,7 +668,7 @@ class GP_Route_Translation extends GP_Route_Main {
 					break;
 			}
 				$this->errors[] = $message;
-		} else {
+		} elseif ( $error > 0 ) {
 			switch ( $action ) {
 				case 'approve':
 					$this->errors[] = sprintf(
@@ -621,6 +692,14 @@ class GP_Route_Translation extends GP_Route_Main {
 					);
 					break;
 			}
+		}
+
+		if ( $refused ) {
+			$this->errors[] = sprintf(
+				/* translators: %d: Translations count. */
+				_n( '%d translation was not approved because it has translation errors.', '%d translations were not approved because they have translation errors.', $refused, 'glotpress' ),
+				$refused
+			);
 		}
 	}
 
@@ -650,11 +729,17 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		if ( 0 === $error ) {
-			$this->notices[] = sprintf(
+			$message = sprintf(
 				/* translators: %d: Translations count. */
 				_n( '%d translation was marked as fuzzy.', '%d translations were marked as fuzzy.', $ok, 'glotpress' ),
 				$ok
 			);
+
+			if ( $ok ) {
+				$this->successes[] = $message;
+			} else {
+				$this->notices[] = $message;
+			}
 		} elseif ( $ok > 0 ) {
 				$message = sprintf(
 					/* translators: %d: Translations count. */
@@ -678,6 +763,144 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 	}
 
+	/**
+	 * Processes the bulk action to add the original as current translation of untranslated originals.
+	 *
+	 * Originals with a current or an open translation are skipped, as approving the copy would set
+	 * those to old.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param GP_Project         $project         The current project.
+	 * @param GP_Translation_Set $translation_set The current translation set.
+	 * @param array              $bulk            The bulk data to process.
+	 */
+	private function _bulk_copy_original( $project, $translation_set, $bulk ) {
+		$locale       = GP_Locales::by_slug( $translation_set->locale );
+		$can_write    = $this->can( 'write', 'project', $project->id );
+		$original_ids = array_map(
+			function ( $row_id ) {
+				return (int) gp_array_get( explode( '-', $row_id ), 0 );
+			},
+			$bulk['row-ids']
+		);
+		$translated   = wp_list_pluck(
+			GP::$translation->find_many(
+				array(
+					'original_id'        => $original_ids,
+					'translation_set_id' => $translation_set->id,
+					'status'             => array( 'current', 'waiting', 'fuzzy', 'changesrequested' ),
+				)
+			),
+			'original_id',
+			'original_id'
+		);
+		$originals    = GP::$original->find_many(
+			array(
+				'id'     => $original_ids,
+				'status' => '+active',
+			)
+		);
+		$copied       = 0;
+		$suggested    = 0;
+		$skipped      = 0;
+		$failed       = 0;
+
+		foreach ( $originals as $original ) {
+			if ( isset( $translated[ $original->id ] ) ) {
+				++$skipped;
+				continue;
+			}
+
+			// Hidden originals are left out of the listings of users without write permission.
+			if ( (int) $original->priority <= -2 && ! $can_write ) {
+				continue;
+			}
+
+			// Like the copy button of the editor, the first form gets the singular and all others the plural.
+			$translations = array( $original->singular );
+			if ( null !== $original->plural ) {
+				$translations = array_pad( $translations, $locale->nplurals, $original->plural );
+			}
+
+			if ( GP::$translation_errors->check( $original, $translations, $locale ) ) {
+				++$failed;
+				continue;
+			}
+
+			$data = array(
+				'original_id'        => $original->id,
+				'translation_set_id' => $translation_set->id,
+				'user_id'            => get_current_user_id(),
+				'status'             => 'waiting',
+				'warnings'           => GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale, $original ),
+			);
+			foreach ( $translations as $index => $form ) {
+				$data[ "translation_$index" ] = $form;
+			}
+
+			$translation = GP::$translation->create( $data );
+			if ( ! $translation || ! $translation->validate() ) {
+				if ( $translation ) {
+					$translation->delete();
+				}
+				++$failed;
+				continue;
+			}
+
+			// Like a translation saved in the editor, a copy that can't be approved stays a suggestion.
+			if ( $translation->set_status( 'current' ) ) {
+				++$copied;
+			} else {
+				++$suggested;
+			}
+		}
+
+		$notices = array();
+		if ( $copied ) {
+			$notices[] = sprintf(
+				/* translators: %d: Translations count. */
+				_n( '%d translation was copied from the original.', '%d translations were copied from the original.', $copied, 'glotpress' ),
+				$copied
+			);
+		}
+
+		if ( $suggested ) {
+			$notices[] = sprintf(
+				/* translators: %d: Translations count. */
+				_n( '%d translation was copied from the original as suggestion, as it could not be approved.', '%d translations were copied from the original as suggestions, as they could not be approved.', $suggested, 'glotpress' ),
+				$suggested
+			);
+		}
+
+		if ( $skipped ) {
+			$notices[] = sprintf(
+				/* translators: %d: Strings count. */
+				_n( '%d string was skipped because it already has a translation.', '%d strings were skipped because they already have a translation.', $skipped, 'glotpress' ),
+				$skipped
+			);
+		}
+
+		// Notices reach the next page through a single cookie, which keeps only the last one.
+		if ( $notices ) {
+			$this->notices[] = implode( ' ', $notices );
+		}
+
+		if ( $failed ) {
+			$this->errors[] = sprintf(
+				/* translators: %d: Strings count. */
+				_n( 'Error with copying the original of %d string.', 'Error with copying the originals of %d strings.', $failed, 'glotpress' ),
+				$failed
+			);
+		}
+	}
+
+	/**
+	 * Processes the bulk action to set priority for originals.
+	 *
+	 * @param GP_Project $project The current project.
+	 * @param array      $bulk    The bulk data to process.
+	 */
 	private function _bulk_set_priority( $project, $bulk ) {
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $project->id ) ) {
@@ -707,11 +930,17 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 
 		if ( 0 === $error ) {
-			$this->notices[] = sprintf(
+			$message = sprintf(
 				/* translators: %d: Originals count. */
 				_n( 'Priority of %d original was modified.', 'Priority of %d originals were modified.', $ok, 'glotpress' ),
 				$ok
 			);
+
+			if ( $ok ) {
+				$this->successes[] = $message;
+			} else {
+				$this->notices[] = $message;
+			}
 		} elseif ( $ok > 0 ) {
 				$message = sprintf(
 					/* translators: %d: Originals count. */
@@ -734,6 +963,13 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 	}
 
+	/**
+	 * Discards a warning for a translation.
+	 *
+	 * @param string $project_path         The path of the project.
+	 * @param string $locale_slug          The locale slug.
+	 * @param string $translation_set_slug The slug of the translation set.
+	 */
 	public function discard_warning( $project_path, $locale_slug, $translation_set_slug ) {
 		$index = gp_post( 'index' );
 		$key   = gp_post( 'key' );
@@ -745,6 +981,13 @@ class GP_Route_Translation extends GP_Route_Main {
 		return $this->edit_single_translation( $project_path, $locale_slug, $translation_set_slug, array( $this, 'discard_warning_edit_function' ) );
 	}
 
+	/**
+	 * Sets the status for a translation.
+	 *
+	 * @param string $project_path         The path of the project.
+	 * @param string $locale_slug          The locale slug.
+	 * @param string $translation_set_slug The slug of the translation set.
+	 */
 	public function set_status( $project_path, $locale_slug, $translation_set_slug ) {
 		$status         = gp_post( 'status' );
 		$translation_id = gp_post( 'translation_id' );
@@ -802,6 +1045,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			),
 			array()
 		);
+		$translations = GP::$translation->add_related_translations( $translations, $translation_set );
 		if ( ! empty( $translations ) ) {
 			$translation = $translations[0];
 
@@ -809,6 +1053,8 @@ class GP_Route_Translation extends GP_Route_Main {
 			$can_write               = $this->can( 'write', 'project', $project->id );
 			$can_approve             = $this->can( 'approve', 'translation-set', $translation_set->id );
 			$can_approve_translation = $this->can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
+
+			$this->send_filter_counts_header( $translation_set );
 
 			$this->tmpl( 'translation-row', get_defined_vars() );
 		} else {
@@ -866,14 +1112,81 @@ class GP_Route_Translation extends GP_Route_Main {
 		}
 	}
 
+	/**
+	 * Sets the status of a translation.
+	 *
+	 * @param GP_Project         $project         The project.
+	 * @param GP_Locale          $locale          The GlotPress locale.
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 * @param GP_Translation     $translation     The translation object.
+	 */
 	private function set_status_edit_function( $project, $locale, $translation_set, $translation ) {
 		$res = $translation->set_status( gp_post( 'status' ) );
 
 		if ( ! $res ) {
-			return $this->die_with_error( 'Error in saving the translation status!' );
+			if ( $translation->errors ) {
+				return $this->die_with_error( $this->translation_errors_list( $translation->errors ), 403 );
+			}
+
+			return $this->die_with_error( __( 'Error in saving the translation status!', 'glotpress' ) );
 		}
 	}
 
+	/**
+	 * Sends the counts of the status filters, so the editor can update them after a change.
+	 *
+	 * The editor cannot work them out itself, because they depend on the other
+	 * translations of an original, which the page does not show.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 */
+	private function send_filter_counts_header( $translation_set ) {
+		// A hook may have loaded the counts before the change.
+		$translation_set->update_status_breakdown();
+
+		// Some locales use an HTML entity as the thousands separator, the editor sets the counts as text.
+		$format = static function ( $count ) {
+			return html_entity_decode( number_format_i18n( $count ), ENT_QUOTES, 'UTF-8' );
+		};
+
+		$counts = array(
+			'translated'       => $format( $translation_set->current_count() ),
+			'untranslated'     => $format( $translation_set->untranslated_count() ),
+			'waiting'          => $format( $translation_set->waiting_count() ),
+			'changesrequested' => $format( $translation_set->changesrequested_count() ),
+			'fuzzy'            => $format( $translation_set->fuzzy_count() ),
+			'warnings'         => $format( $translation_set->warnings_count() ),
+		);
+
+		$this->header( 'X-GlotPress-Filter-Counts: ' . wp_json_encode( $counts ) );
+	}
+
+	/**
+	 * Builds the HTML of translation error messages for an error response.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string[] $messages The error messages.
+	 * @return string The HTML of the error messages.
+	 */
+	private function translation_errors_list( $messages ) {
+		return $this->error_messages_html(
+			array_map(
+				function ( $message ) {
+					return htmlspecialchars( $message, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' );
+				},
+				$messages
+			)
+		);
+	}
+
+	/**
+	 * Checks if the current user can approve the translation or throws a forbidden error.
+	 *
+	 * @param GP_Translation $translation The translation to check.
+	 */
 	private function can_approve_translation_or_forbidden( $translation ) {
 		$requested_status  = gp_post( 'status' );
 		$requires_approval = in_array( $requested_status, array( 'current', 'changesrequested' ), true );
@@ -891,6 +1204,34 @@ class GP_Route_Translation extends GP_Route_Main {
 	}
 
 	/**
+	 * Validates that an incoming suggestion is not already rejected or changes-requested.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param GP_Translation_Set $translation_set The translation set.
+	 * @param int                $original_id     The original ID.
+	 * @param array              $translations    The incoming translation strings.
+	 * @param string             $set_status      Target status for the new translation.
+	 */
+	private function validate_not_rejected_or_changesrequested( $translation_set, $original_id, $translations, $set_status ) {
+		if ( 'waiting' !== $set_status ) {
+			return;
+		}
+
+		$blocked_reason = $translation_set->get_blocked_suggestion_reason( $original_id, $translations );
+		if ( ! $blocked_reason ) {
+			return;
+		}
+
+		// Without the status, translations with changes requested are shown as rejected ones.
+		if ( 'changesrequested' === $blocked_reason && apply_filters( 'gp_enable_changesrequested_status', false ) ) {
+			$this->die_with_error( __( 'Identical translation with changes requested already exists.', 'glotpress' ), 200 );
+		}
+
+		$this->die_with_error( __( 'Identical rejected translation already exists.', 'glotpress' ), 200 );
+	}
+
+	/**
 	 * Get the glossary for the translation set.
 	 *
 	 * This also fetches contents from a potential locale glossary, as well as from a parent project.
@@ -904,14 +1245,7 @@ class GP_Route_Translation extends GP_Route_Main {
 	protected function get_extended_glossary( $translation_set, $project ) {
 		$glossary = GP::$glossary->by_set_or_parent_project( $translation_set, $project );
 
-		$locale_glossary_project_id      = 0;
-		$locale_glossary_translation_set = GP::$translation_set->by_project_id_slug_and_locale( $locale_glossary_project_id, $translation_set->slug, $translation_set->locale );
-
-		if ( ! $locale_glossary_translation_set ) {
-			return $glossary;
-		}
-
-		$locale_glossary = GP::$glossary->by_set_id( $locale_glossary_translation_set->id );
+		$locale_glossary = GP::$glossary->by_locale_and_set_slug( $translation_set->locale, $translation_set->slug );
 
 		// Return locale glossary if a project has no glossary.
 		if ( false === $glossary && $locale_glossary instanceof GP_Glossary ) {

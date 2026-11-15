@@ -74,7 +74,7 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 		$_POST['set'] = $this->factory->translation_set->generate_args();
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation-set' );
 		$this->route->new_post();
-		$this->assertThereIsANoticeContaining( 'created' );
+		$this->assertThereIsASuccessContaining( 'created' );
 	}
 
 	function test_edit_get_forbidden_redirect_if_not_logged_in() {
@@ -137,7 +137,7 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 		$_POST['set'] = $this->factory->translation_set->generate_args();
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'edit-translation-set_' . $this->set->id );
 		$this->route->edit_post( $this->set->id );
-		$this->assertThereIsANoticeContaining( 'updated' );
+		$this->assertThereIsASuccessContaining( 'updated' );
 	}
 
 	function test_edit_post_error_redirect_if_create_was_unsuccessful() {

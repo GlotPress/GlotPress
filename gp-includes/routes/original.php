@@ -14,6 +14,11 @@
  */
 class GP_Route_Original extends GP_Route_Main {
 
+	/**
+	 * Sets the priority of an original.
+	 *
+	 * @param int $original_id The ID of the original.
+	 */
 	public function set_priority( $original_id ) {
 		$original = GP::$original->get( $original_id );
 

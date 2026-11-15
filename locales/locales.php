@@ -223,9 +223,22 @@ class GP_Locale {
 	 */
 	public function index_for_number( $number ) {
 		if ( ! isset( $this->_index_for_number ) ) {
-			$gettext = new Gettext_Translations;
-			$expression = $gettext->parenthesize_plural_exression( $this->plural_expression );
-			$this->_index_for_number = $gettext->make_plural_form_function( $this->nplurals, $expression );
+			if ( class_exists( 'Plural_Forms' ) ) {
+				try {
+					$plural_forms = new Plural_Forms( rtrim( $this->plural_expression, ';' ) );
+				} catch ( Exception $e ) {
+					// Fall back to the default plural form, same as Gettext_Translations::make_plural_form_function().
+					$plural_forms = new Plural_Forms( 'n != 1' );
+				}
+
+				$this->_index_for_number = array( $plural_forms, 'get' );
+			} else {
+				// WordPress versions before 4.9 have no Plural_Forms class. There the expression
+				// is evaluated directly, so it still needs the ternary parts parenthesized.
+				$gettext                 = new Gettext_Translations();
+				$expression              = $gettext->parenthesize_plural_exression( $this->plural_expression );
+				$this->_index_for_number = $gettext->make_plural_form_function( $this->nplurals, $expression );
+			}
 		}
 
 		$f = $this->_index_for_number;

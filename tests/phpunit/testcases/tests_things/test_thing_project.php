@@ -308,6 +308,51 @@ class GP_Test_Project extends GP_UnitTestCase {
 		$this->assertEquals( count( $originals_sub ), count( $originals_branch_sub ) );
 	}
 
+	function test_branching_copies_project_glossaries() {
+		$root_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'root' ) );
+		$root = $root_set->project;
+
+		$sub_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'sub', 'parent_project_id' => $root->id ) );
+
+		foreach ( array( $root_set, $sub_set ) as $set ) {
+			$glossary = GP::$glossary->create( array( 'translation_set_id' => $set->id, 'description' => 'Glossary of set ' . $set->id ) );
+			foreach ( array( 'term a', 'term b' ) as $term ) {
+				GP::$glossary_entry->create( array( 'glossary_id' => $glossary->id, 'term' => $term, 'part_of_speech' => 'noun', 'translation' => 'translation of ' . $term, 'comment' => 'comment', 'last_edited_by' => 7 ) );
+			}
+		}
+
+		$branch = $this->factory->project->create( array( 'name' => 'branch' ) );
+		$branch->duplicate_project_contents_from( $root );
+
+		$this->assertEmpty( $branch->errors );
+
+		$branch_sub = $branch->sub_projects();
+		$branch_sub = array_shift( $branch_sub );
+
+		foreach ( array( array( $root_set, $branch ), array( $sub_set, $branch_sub ) ) as list( $source_set, $project ) ) {
+			$branch_sets = GP::$translation_set->by_project_id( $project->id );
+			$branch_glossary = GP::$glossary->by_set_id( $branch_sets[0]->id );
+
+			$this->assertNotEmpty( $branch_glossary );
+			$this->assertSame( 'Glossary of set ' . $source_set->id, $branch_glossary->description );
+
+			$entries = GP::$glossary_entry->by_glossary_id( $branch_glossary->id );
+
+			$this->assertEqualsCanonicalizing(
+				array(
+					'term a' => 'translation of term a',
+					'term b' => 'translation of term b',
+				),
+				wp_list_pluck( $entries, 'translation', 'term' )
+			);
+			$this->assertEquals( array( 7, 7 ), wp_list_pluck( $entries, 'last_edited_by' ) );
+
+			// The glossary of the source project is left as it was.
+			$source_glossary = GP::$glossary->by_set_id( $source_set->id );
+			$this->assertCount( 2, GP::$glossary_entry->by_glossary_id( $source_glossary->id ) );
+		}
+	}
+
 	function test_branching_paths(){
 		$root_set = $this->factory->translation_set->create_with_project_and_locale( array( 'locale' => 'bg' ), array( 'name' => 'root' ) );
 		$root = $root_set->project;
@@ -343,6 +388,68 @@ class GP_Test_Project extends GP_UnitTestCase {
 
 		$this->assertFalse( empty( $pre_delete ) );
 		$this->assertNotEquals( $pre_delete, $post_delete );
+	}
+
+	/**
+	 * @ticket gh-1845
+	 */
+	function test_delete_removes_grandchild_projects_and_their_contents() {
+		$root       = $this->factory->project->create();
+		$child      = $this->factory->project->create( array( 'parent_project_id' => $root->id ) );
+		$grandchild = $this->factory->project->create( array( 'parent_project_id' => $child->id ) );
+
+		$locale   = $this->factory->locale->create();
+		$set      = $this->factory->translation_set->create( array( 'project_id' => $grandchild->id, 'locale' => $locale->slug ) );
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+		GP::$glossary_entry->create( array( 'glossary_id' => $glossary->id, 'term' => 'term', 'part_of_speech' => 'noun', 'last_edited_by' => 1 ) );
+		$this->factory->translation->create_with_original_for_translation_set( $set );
+
+		$root->delete();
+
+		$this->assertFalse( GP::$project->get( $child->id ) );
+		$this->assertFalse( GP::$project->get( $grandchild->id ) );
+		$this->assertEmpty( GP::$translation_set->find_many( array( 'project_id' => $grandchild->id ) ) );
+		$this->assertEmpty( GP::$original->find_many( array( 'project_id' => $grandchild->id ) ) );
+		$this->assertEmpty( GP::$translation->find_many( array( 'translation_set_id' => $set->id ) ) );
+		$this->assertFalse( GP::$glossary->get( $glossary->id ) );
+		$this->assertEmpty( GP::$glossary_entry->find_many( array( 'glossary_id' => $glossary->id ) ) );
+	}
+
+	/**
+	 * @ticket gh-2153
+	 */
+	function test_delete_removes_validator_permissions_of_the_project_and_its_sub_projects() {
+		$user  = $this->factory->user->create();
+		$root  = $this->factory->project->create();
+		$sub   = $this->factory->project->create( array( 'parent_project_id' => $root->id ) );
+		$other = $this->factory->project->create();
+
+		foreach ( array( $root, $sub, $other ) as $project ) {
+			GP::$validator_permission->create( array( 'user_id' => $user, 'action' => 'approve', 'project_id' => $project->id, 'locale_slug' => 'bg', 'set_slug' => 'default' ) );
+		}
+
+		$root->delete();
+
+		$this->assertEmpty( GP::$validator_permission->by_project_id( $root->id ) );
+		$this->assertEmpty( GP::$validator_permission->by_project_id( $sub->id ) );
+		$this->assertCount( 1, GP::$validator_permission->by_project_id( $other->id ) );
+	}
+
+	/**
+	 * @ticket gh-2153
+	 */
+	function test_delete_removes_project_permissions() {
+		$user    = $this->factory->user->create();
+		$project = $this->factory->project->create();
+		$other   = $this->factory->project->create();
+
+		GP::$permission->create( array( 'user_id' => $user, 'action' => 'write', 'object_type' => 'project', 'object_id' => $project->id ) );
+		GP::$permission->create( array( 'user_id' => $user, 'action' => 'write', 'object_type' => 'project', 'object_id' => $other->id ) );
+
+		$project->delete();
+
+		$this->assertEmpty( GP::$permission->find_many( array( 'object_type' => 'project', 'object_id' => $project->id ) ) );
+		$this->assertCount( 1, GP::$permission->find_many( array( 'object_type' => 'project', 'object_id' => $other->id ) ) );
 	}
 
 	public function test_previous_state_is_passed_to_saved_action() {

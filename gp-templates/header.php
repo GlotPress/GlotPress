@@ -1,3 +1,12 @@
+<?php
+/**
+ * Templates: Header
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,6 +58,12 @@
 		<?php if ( gp_notice( 'error' ) ) : ?>
 			<div class="error">
 				<?php echo gp_notice( 'error' ); ?>
+			</div>
+		<?php endif; ?>
+
+		<?php if ( gp_notice( 'success' ) ) : ?>
+			<div class="success">
+				<?php echo gp_notice( 'success' ); ?>
 			</div>
 		<?php endif; ?>
 

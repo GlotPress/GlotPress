@@ -66,28 +66,39 @@ class GP_Translation_Warnings {
 	/**
 	 * Checks translations for any issues/warnings.
 	 *
+	 * Each callback gets the original text, the translation, the locale, for an
+	 * original with a plural the index of the plural form the translation is for,
+	 * and the original, if it was passed.
+	 *
 	 * @since 1.0.0
+	 * @since 4.2.0 Passes the index of the plural form to the callbacks.
+	 * @since 4.2.0 Added the `$original` parameter.
 	 * @access public
 	 *
-	 * @param string    $singular     The singular form of an original string.
-	 * @param string    $plural       The plural form of an original string.
-	 * @param string[]  $translations An array of translations for an original.
-	 * @param GP_Locale $locale       The locale of the translations.
+	 * @param string           $singular     The singular form of an original string.
+	 * @param string           $plural       The plural form of an original string.
+	 * @param string[]         $translations An array of translations for an original.
+	 * @param GP_Locale        $locale       The locale of the translations.
+	 * @param GP_Original|null $original     Optional. The original, to give the callbacks
+	 *                                       access to fields like its context or comment.
+	 *                                       Callbacks have to handle null. Default null.
 	 * @return array|null Null if no issues have been found, otherwise an array
 	 *                    with warnings.
 	 */
-	public function check( $singular, $plural, $translations, $locale ) {
+	public function check( $singular, $plural, $translations, $locale, $original = null ) {
 		$problems = array();
 		foreach ( $translations as $translation_index => $translation ) {
 			if ( ! $translation ) {
 				continue;
 			}
 
-			$skip = array(
+			$skip        = array(
 				'singular' => false,
 				'plural'   => false,
 			);
+			$plural_form = null;
 			if ( null !== $plural ) {
+				$plural_form       = $translation_index;
 				$numbers_for_index = $locale->numbers_for_index( $translation_index );
 				if ( 1 === $locale->nplurals ) {
 					$skip['singular'] = true;
@@ -100,13 +111,13 @@ class GP_Translation_Warnings {
 
 			foreach ( $this->callbacks as $callback_id => $callback ) {
 				if ( ! $skip['singular'] ) {
-					$singular_test = $callback( $singular, $translation, $locale );
+					$singular_test = $callback( $singular, $translation, $locale, $plural_form, $original );
 					if ( true !== $singular_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $singular_test;
 					}
 				}
 				if ( null !== $plural && ! $skip['plural'] ) {
-					$plural_test = $callback( $plural, $translation, $locale );
+					$plural_test = $callback( $plural, $translation, $locale, $plural_form, $original );
 					if ( true !== $plural_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $plural_test;
 					}
@@ -342,21 +353,21 @@ class GP_Builtin_Translation_Warnings {
 	/**
 	 * Checks whether PHP placeholders are missing or have been added.
 	 *
-	 * The default regular expression:
-	 * bcdefgosuxEFGX are standard printf placeholders.
-	 * % is included to allow/expect %%.
-	 * l is included for wp_sprintf_l()'s custom %l format.
-	 * @ is included for Swift (as used for iOS mobile app) %@ string format.
+	 * A plural form that the locale uses for a single number may write that
+	 * number in words, for example "one" or "two", and leave out its placeholder.
 	 *
 	 * @since 1.0.0
+	 * @since 4.2.0 Added the `$plural_form` parameter.
 	 * @access public
 	 *
 	 * @param string    $original    The source string.
 	 * @param string    $translation The translation.
 	 * @param GP_Locale $locale      The locale of the translation.
+	 * @param int|null  $plural_form Optional. Index of the plural form the translation is for,
+	 *                               or null if the original has no plural. Default null.
 	 * @return string|true True if check is OK, otherwise warning message.
 	 */
-	public function warning_placeholders( $original, $translation, $locale ) {
+	public function warning_placeholders( $original, $translation, $locale, $plural_form = null ) {
 		/**
 		 * Filter the regular expression that is used to match placeholders in translations.
 		 *
@@ -364,11 +375,20 @@ class GP_Builtin_Translation_Warnings {
 		 *
 		 * @param string $placeholders_re Regular expression pattern without leading or trailing slashes.
 		 */
-		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '(?<!%)%(\d+\$(?:\d+)?)?(\.\d+)?[bcdefgosuxEFGX%l@]' );
+		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '(?<!%)' . gp_get_placeholder_regex_pattern() );
 
 		$original_counts    = $this->_placeholders_counts( $original, $placeholders_re );
 		$translation_counts = $this->_placeholders_counts( $translation, $placeholders_re );
-		$all_placeholders   = array_unique( array_merge( array_keys( $original_counts ), array_keys( $translation_counts ) ) );
+
+		if (
+			null !== $plural_form &&
+			$this->leaves_out_only_the_number( $original, $original_counts, $translation_counts, $placeholders_re ) &&
+			1 === count( $locale->numbers_for_index( $plural_form, 2 ) )
+		) {
+			return true;
+		}
+
+		$all_placeholders = array_unique( array_merge( array_keys( $original_counts ), array_keys( $translation_counts ) ) );
 		foreach ( $all_placeholders as $placeholder ) {
 			$original_count    = gp_array_get( $original_counts, $placeholder, 0 );
 			$translation_count = gp_array_get( $translation_counts, $placeholder, 0 );
@@ -397,18 +417,94 @@ class GP_Builtin_Translation_Warnings {
 	 * @since 1.0.0
 	 * @access private
 	 *
-	 * @param string $string The string to search.
+	 * @param string $text   The text to search.
 	 * @param string $re     Regular expressions to match placeholders.
 	 * @return array An array with counts per placeholder.
 	 */
-	private function _placeholders_counts( $string, $re ) {
+	private function _placeholders_counts( $text, $re ) {
 		$counts = array();
-		preg_match_all( "/$re/", $string, $matches );
+		preg_match_all( "/$re/", $text, $matches );
 		foreach ( $matches[0] as $match ) {
 			$counts[ $match ] = gp_array_get( $counts, $match, 0 ) + 1;
 		}
 
 		return $counts;
+	}
+
+	/**
+	 * Checks whether a translation leaves out one placeholder for a number and changes nothing else.
+	 *
+	 * Writing a number in words removes one placeholder occurrence. A translation
+	 * that also drops a second placeholder, or adds one, has lost more than the
+	 * number.
+	 *
+	 * If the original has a numeric placeholder (`%d`, `%u`, `%f` and the other
+	 * numeric conversions), the one left out has to be numeric too, so a
+	 * translation that keeps the number and drops a name still gets a warning.
+	 * Many counts go through number_format_i18n() and use `%s`, so without a
+	 * numeric placeholder the number can be any of them.
+	 *
+	 * A placeholder without an argument number takes the next argument, so only
+	 * the last of those may be left out, and only if no other one like it comes
+	 * before it. Leaving out the `%d` of `%d item in %s` would make `%s` print
+	 * the number, and the `%d` kept from `%d item and %d selected` would always
+	 * print the first number.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $original           The source string.
+	 * @param array  $original_counts    Counts per placeholder in the source string.
+	 * @param array  $translation_counts Counts per placeholder in the translation.
+	 * @param string $placeholders_re    Regular expression to match placeholders.
+	 * @return bool True if only the placeholder for a number is left out, false otherwise.
+	 */
+	private function leaves_out_only_the_number( string $original, array $original_counts, array $translation_counts, string $placeholders_re ): bool {
+		foreach ( $translation_counts as $placeholder => $count ) {
+			if ( $count > gp_array_get( $original_counts, $placeholder, 0 ) ) {
+				return false;
+			}
+		}
+
+		$left_out = null;
+		foreach ( $original_counts as $placeholder => $count ) {
+			$missing = $count - gp_array_get( $translation_counts, $placeholder, 0 );
+			if ( 0 === $missing ) {
+				continue;
+			}
+			if ( 1 !== $missing || null !== $left_out ) {
+				return false;
+			}
+			$left_out = $placeholder;
+		}
+
+		if ( null === $left_out ) {
+			return false;
+		}
+
+		$numeric_re = '/^%.*[bdeEfFgGouxX]$/';
+		if ( ! preg_match( $numeric_re, $left_out ) ) {
+			foreach ( array_keys( $original_counts ) as $placeholder ) {
+				if ( preg_match( $numeric_re, $placeholder ) ) {
+					return false;
+				}
+			}
+		}
+
+		$numbered_re = '/^%\d+\$/';
+		if ( preg_match( $numbered_re, $left_out ) ) {
+			return true;
+		}
+
+		// `%%` is a literal percent sign and takes no argument, so it is never the number.
+		preg_match_all( "/$placeholders_re/", $original, $matches );
+		$unnumbered = array();
+		foreach ( $matches[0] as $placeholder ) {
+			if ( '%%' !== $placeholder && ! preg_match( $numbered_re, $placeholder ) ) {
+				$unnumbered[] = $placeholder;
+			}
+		}
+
+		return end( $unnumbered ) === $left_out && 1 === count( array_keys( $unnumbered, $left_out, true ) );
 	}
 
 	/**
@@ -500,9 +596,7 @@ class GP_Builtin_Translation_Warnings {
 	 * @return string|true True if check is OK, otherwise warning message.
 	 */
 	public function warning_mismatching_urls( $original, $translation ) {
-		// Any http/https/schemeless URLs which are not encased in quotation marks
-		// nor contain whitespace and end with a valid URL ending char.
-		$urls_regex = '@(?<![\'"])((https?://|(?<![:\w])//)[^\s<]+[a-z0-9\-_&=#/])(?![\'"])@i';
+		$urls_regex = '@(?<![\'"])' . gp_get_url_regex_pattern() . '(?![\'"])@i';
 
 		preg_match_all( $urls_regex, $original, $original_urls );
 		$original_urls = array_unique( $original_urls[0] );
@@ -802,8 +896,8 @@ class GP_Builtin_Translation_Warnings {
 	 * @return  array|true True if check is OK, otherwise warning message.
 	 */
 	private function links_without_url_and_placeholders_are_equal( string $original_links, string $translation_links ) {
-		$urls_regex        = '@(?<![\'"])((https?://|(?<![:\w])//)[^\s<]+[a-z0-9\-_&=#/])(?![\'"])@i';
-		$placeholder_regex = '!%((\d+\$(?:\d+)?)?[bcdefgosux])!i';
+		$urls_regex        = '@(?<![\'"])' . gp_get_url_regex_pattern() . '(?![\'"])@i';
+		$placeholder_regex = '/' . gp_get_placeholder_regex_pattern( '[bcdefgosux]' ) . '/i';
 
 		// Remove the URLs.
 		preg_match_all( $urls_regex, $original_links, $original_urls );
@@ -965,13 +1059,103 @@ class GP_Builtin_Translation_Warnings {
 		$is_first_letter_uppercase_translation = preg_match( '/^\p{Lu}/u', $translation );
 		$is_first_letter_lowercase_original    = preg_match( '/^\p{Ll}/u', $original );
 		$is_first_letter_lowercase_translation = preg_match( '/^\p{Ll}/u', $translation );
-		if ( $is_first_letter_uppercase_original && $is_first_letter_lowercase_translation ) {
-			return __( 'The translation appears to be missing the initial uppercase.', 'glotpress' );
-		}
-		if ( $is_first_letter_lowercase_original && $is_first_letter_uppercase_translation ) {
-			return __( 'The translation appears to be missing the initial lowercase.', 'glotpress' );
+
+		$missing_uppercase = $is_first_letter_uppercase_original && $is_first_letter_lowercase_translation;
+		$missing_lowercase = $is_first_letter_lowercase_original && $is_first_letter_uppercase_translation;
+
+		if ( ! $missing_uppercase && ! $missing_lowercase ) {
+			return true;
 		}
 
-		return true;
+		/*
+		 * The check compares the first letter of the original with the first letter
+		 * of the translation, which assumes both sentences begin with the same term.
+		 * Languages that reorder the sentence can begin the translation with a name
+		 * carried over from the original, such as `WordPress.org`, `bbPress`, `v2`,
+		 * or `foo_bar`. The case of such a name comes from the original rather than
+		 * from the translator, so there is nothing to correct.
+		 */
+		if ( $this->begins_with_name_from_original( $original, $translation ) ) {
+			return true;
+		}
+
+		if ( $missing_uppercase ) {
+			return __( 'The translation appears to be missing the initial uppercase.', 'glotpress' );
+		}
+
+		return __( 'The translation appears to be missing the initial lowercase.', 'glotpress' );
+	}
+
+	/**
+	 * Determines whether the translation begins with a name copied from the original.
+	 *
+	 * Only names are considered, meaning terms that carry their own casing, such as
+	 * `WordPress.org`, `bbPress`, `v2` or `foo_bar`. Ordinary words, including
+	 * hyphenated compounds such as `front-end`, are not names, so a translation
+	 * beginning with one is still checked.
+	 *
+	 * The comparison is case sensitive and matches whole terms, so a translation
+	 * beginning with `Word` is not treated as a copy of `WordPress`.
+	 *
+	 * @since 4.2.0
+	 * @access private
+	 *
+	 * @param string $original    The source string.
+	 * @param string $translation The translation.
+	 *
+	 * @return bool True if the translation begins with a name from the original.
+	 */
+	private function begins_with_name_from_original( string $original, string $translation ): bool {
+		if ( ! preg_match( '/^\S+/u', $translation, $matches ) ) {
+			return false;
+		}
+
+		$first_term = $this->trim_punctuation( $matches[0] );
+
+		if ( '' === $first_term || ! preg_match( '/[\p{Lu}\p{Ll}]/u', $first_term ) ) {
+			return false;
+		}
+
+		/*
+		 * A name carries its own casing: an uppercase letter, or one of the
+		 * characters identifiers use and ordinary words do not, meaning a digit,
+		 * `.`, `_`, `/` or `\`. Marks and punctuation that occur inside ordinary
+		 * words are deliberately excluded, so a dash as in `front-end`, an
+		 * apostrophe as in `don't`, a middle dot as in `col·legi` and a
+		 * combining accent as in a decomposed `équipe` all stay ordinary words.
+		 *
+		 * The consequence is that an all-lowercase hyphenated identifier such as
+		 * `wp-admin` is also read as an ordinary word, because it is shaped
+		 * exactly like `front-end`. Telling the two apart needs a dictionary
+		 * rather than a boundary rule, so the check keeps the warning for both
+		 * instead of risking the loss of a real one.
+		 */
+		$carries_own_case = preg_match( '/\p{Lu}/u', $first_term ) || preg_match( '/[\p{N}._\/\\\\]/u', $first_term );
+
+		if ( ! $carries_own_case ) {
+			return false;
+		}
+
+		foreach ( preg_split( '/\s+/u', $original, -1, PREG_SPLIT_NO_EMPTY ) as $term ) {
+			if ( $first_term === $this->trim_punctuation( $term ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Removes leading and trailing punctuation from a term.
+	 *
+	 * @since 4.2.0
+	 * @access private
+	 *
+	 * @param string $term The term to trim.
+	 *
+	 * @return string The trimmed term.
+	 */
+	private function trim_punctuation( string $term ): string {
+		return (string) preg_replace( '/^[\p{P}\p{S}]+|[\p{P}\p{S}]+$/u', '', $term );
 	}
 }

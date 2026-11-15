@@ -1,4 +1,11 @@
 <?php
+/**
+ * Templates: Edit Translation Set
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 gp_title(
 	sprintf(
 		/* translators: 1: Translation set name. 2: Project name. */

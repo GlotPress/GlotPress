@@ -10,6 +10,7 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 		$this->route->fake_request = true;
 		$this->route->errors = array();
 		$this->route->notices = array();
+		$this->route->successes = array();
 	}
 
 	/**
@@ -24,6 +25,28 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 		} catch ( GP_Route_Exit_Exception $e ) {
 			// The route ended the request; its state is recorded on $this->route.
 		}
+	}
+
+	/**
+	 * Requests a status change for a translation through the route and reloads it.
+	 *
+	 * @param GP_Translation_Set $set         A set with its project/locale/slug available.
+	 * @param GP_Translation     $translation The translation to change.
+	 * @param string             $status      The requested status.
+	 * @return GP_Translation The reloaded translation.
+	 */
+	function set_status( $set, $translation, $status ) {
+		$_POST['status']             = $status;
+		$_POST['translation_id']     = $translation->id;
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'update-translation-status-' . $status . '_' . $translation->id );
+
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->set_status( $set->project->path, $set->locale, $set->slug );
+			}
+		);
+
+		return GP::$translation->get( $translation->id );
 	}
 
 	/**
@@ -63,6 +86,10 @@ class GP_UnitTestCase_Route extends GP_UnitTestCase {
 
 	function assertThereIsANoticeContaining( $text ) {
 		$this->assertThereIsAnArrayElementContaining( $text, $this->route->notices, "No notice contains '$text'" );
+	}
+
+	function assertThereIsASuccessContaining( $text ) {
+		$this->assertThereIsAnArrayElementContaining( $text, $this->route->successes, "No success message contains '$text'" );
 	}
 
 	function assertThereIsAnArrayElementContaining( $text, $array, $message = null ) {

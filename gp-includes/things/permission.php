@@ -14,15 +14,67 @@
  */
 class GP_Permission extends GP_Thing {
 
-	var $table_basename           = 'gp_permissions';
-	var $field_names              = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
-	var $int_fields               = array( 'id', 'user_id' );
+	/**
+	 * Name of the database table.
+	 *
+	 * @var string $table_basename
+	 */
+	var $table_basename = 'gp_permissions';
+
+	/**
+	 * List of field names for a permission.
+	 *
+	 * @var array $field_names
+	 */
+	var $field_names = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
+
+	/**
+	 * List of field names which have an integer value.
+	 *
+	 * @var array $int_fields
+	 */
+	var $int_fields = array( 'id', 'user_id' );
+
+	/**
+	 * List of field names which cannot be updated.
+	 *
+	 * @var array $non_updatable_attributes
+	 */
 	var $non_updatable_attributes = array( 'id' );
 
+	/**
+	 * ID of the permission.
+	 *
+	 * @var int $id
+	 */
 	public $id;
+
+	/**
+	 * ID of the user.
+	 *
+	 * @var int $user_id
+	 */
 	public $user_id;
+
+	/**
+	 * Action of the permission.
+	 *
+	 * @var string $action
+	 */
 	public $action;
+
+	/**
+	 * Object type of the permission.
+	 *
+	 * @var string $object_type
+	 */
 	public $object_type;
+
+	/**
+	 * Object ID of the permission.
+	 *
+	 * @var string|int|null $object_id
+	 */
 	public $object_id;
 
 	/**
@@ -51,10 +103,10 @@ class GP_Permission extends GP_Thing {
 	 *
 	 * Example: GP::$permission->current_user_can( 'read', 'translation-set', 11 );
 	 *
-	 * @param string $action
-	 * @param string $object_type
-	 * @param int    $object_id
-	 * @param mixed  $extra
+	 * @param string $action      Action to be executed.
+	 * @param string $object_type Object type to execute against.
+	 * @param int    $object_id   Object ID to execute against.
+	 * @param mixed  $extra       Extra information given to the permission check.
 	 */
 	public function current_user_can( $action, $object_type = null, $object_id = null, $extra = null ) {
 		$user = wp_get_current_user();
@@ -67,11 +119,12 @@ class GP_Permission extends GP_Thing {
 	 *
 	 * Example: GP::$permission->user_can( $user, 'read', 'translation-set', 11 );
 	 *
-	 * @param int|object $user
-	 * @param string     $action
-	 * @param string     $object_type
-	 * @param int        $object_id
-	 * @param mixed      $extra
+	 * @param int|object $user        The user ID or WP_User object.
+	 * @param string     $action      Action to be executed.
+	 * @param string     $object_type Object type to execute against.
+	 * @param int        $object_id   Object ID to execute against.
+	 * @param mixed      $extra       Extra information given to the permission check.
+	 * @return bool Whether the user can do the action.
 	 */
 	public function user_can( $user, $action, $object_type = null, $object_id = null, $extra = null ) {
 		if ( ! is_object( $user ) ) {

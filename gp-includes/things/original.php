@@ -14,22 +14,109 @@
  */
 class GP_Original extends GP_Thing {
 
-	var $table_basename           = 'gp_originals';
-	var $field_names              = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
-	var $int_fields               = array( 'id', 'project_id', 'priority' );
+	/**
+	 * Name of the database table.
+	 *
+	 * @var string $table_basename
+	 */
+	var $table_basename = 'gp_originals';
+
+	/**
+	 * List of field names for an original.
+	 *
+	 * @var array $field_names
+	 */
+	var $field_names = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
+
+	/**
+	 * List of field names which have an integer value.
+	 *
+	 * @var array $int_fields
+	 */
+	var $int_fields = array( 'id', 'project_id', 'priority' );
+
+	/**
+	 * List of field names which cannot be updated.
+	 *
+	 * @var array $non_updatable_attributes
+	 */
 	var $non_updatable_attributes = array( 'id', 'path' );
 
+	/**
+	 * ID of the original.
+	 *
+	 * @var int $id
+	 */
 	public $id;
+
+	/**
+	 * ID of the project.
+	 *
+	 * @var int $project_id
+	 */
 	public $project_id;
+
+	/**
+	 * Context of the original.
+	 *
+	 * @var string|null $context
+	 */
 	public $context;
+
+	/**
+	 * Singular form of the original.
+	 *
+	 * @var string $singular
+	 */
 	public $singular;
+
+	/**
+	 * Plural form of the original.
+	 *
+	 * @var string|null $plural
+	 */
 	public $plural;
+
+	/**
+	 * References of the original.
+	 *
+	 * @var string $references
+	 */
 	public $references;
+
+	/**
+	 * Comment for the original.
+	 *
+	 * @var string $comment
+	 */
 	public $comment;
+
+	/**
+	 * Status of the original.
+	 *
+	 * @var string $status
+	 */
 	public $status;
+
+	/**
+	 * Priority of the original.
+	 *
+	 * @var int $priority
+	 */
 	public $priority;
+
+	/**
+	 * Date the original was added.
+	 *
+	 * @var string $date_added
+	 */
 	public $date_added;
 
+	/**
+	 * Priority values mapped to their names.
+	 *
+	 * @var array $priorities
+	 */
 	static $priorities = array(
 		'-2' => 'hidden',
 		'-1' => 'low',
@@ -37,6 +124,11 @@ class GP_Original extends GP_Thing {
 		'1'  => 'high',
 	);
 
+	/**
+	 * Cache group for count_by_project_id results.
+	 *
+	 * @var string $count_cache_group
+	 */
 	static $count_cache_group = 'active_originals_count_by_project_id';
 
 	/**
@@ -82,6 +174,12 @@ class GP_Original extends GP_Thing {
 		return $args;
 	}
 
+	/**
+	 * Retrieves all originals for a project.
+	 *
+	 * @param int $project_id The project ID.
+	 * @return array The originals.
+	 */
 	public function by_project_id( $project_id ) {
 		return $this->many( "SELECT * FROM $this->table WHERE project_id= %d AND status = '+active'", $project_id );
 	}
@@ -158,6 +256,15 @@ class GP_Original extends GP_Thing {
 		return 0;
 	}
 
+	/**
+	 * Retrieves an original by project ID and entry.
+	 *
+	 * @param int               $project_id The project ID.
+	 * @param Translation_Entry $entry      The translation entry.
+	 * @param string|null       $status     Optional. The status of the original to retrieve.
+	 *                                      Default null to ignore status.
+	 * @return GP_Original|false The original or false if not found.
+	 */
 	public function by_project_id_and_entry( $project_id, $entry, $status = null ) {
 		global $wpdb;
 
@@ -165,7 +272,7 @@ class GP_Original extends GP_Thing {
 		$entry->context = isset( $entry->context ) ? $entry->context : null;
 
 		$where = array();
-		// now each condition has to contain a %s not to break the sequence
+		// now each condition has to contain a %s not to break the sequence.
 		$where[] = is_null( $entry->context ) ? '(context IS NULL OR %s IS NULL)' : 'context = BINARY %s';
 		$where[] = 'singular = BINARY %s';
 		$where[] = is_null( $entry->plural ) ? '(plural IS NULL OR %s IS NULL)' : 'plural = BINARY %s';
@@ -180,6 +287,13 @@ class GP_Original extends GP_Thing {
 		return $this->one( "SELECT * FROM $this->table WHERE $where", $entry->context, $entry->singular, $entry->plural, $project_id );
 	}
 
+	/**
+	 * Imports originals for a project from translations read from a file.
+	 *
+	 * @param GP_Project   $project      The project to import originals into.
+	 * @param Translations $translations The translations read from a file.
+	 * @return array Array containing number of originals added, existing, fuzzied, obsoleted, and errors.
+	 */
 	public function import_for_project( $project, $translations ) {
 		global $wpdb;
 
@@ -240,11 +354,11 @@ class GP_Original extends GP_Thing {
 			/**
 			 * Filter the data of an original being imported or updated.
 			 *
-			 * This filter is called twice per each entry. First time during determining if the original
-			 * already exists. The second time it is called before a new original is added or a close
-			 * old match is set fuzzy with this new data.
+			 * The filtered data is used to update an existing original, to add a new one, or to update
+			 * a close old match whose translations are set to fuzzy.
 			 *
 			 * @since 1.0.0
+			 * @since 4.2.0 Called once per entry instead of twice for entries without an existing original.
 			 *
 			 * @param array $data {
 			 *     An array that describes a single entry being imported or updated.
@@ -269,11 +383,12 @@ class GP_Original extends GP_Thing {
 				// But only if it's different, like a changed 'references', 'comment', or 'status' field.
 				if ( GP::$original->is_different_from( $data, $original ) ) {
 					$this->update( $data, array( 'id' => $original->id ) );
+					$this->recheck_translation_warnings( $original, $data );
 					++$originals_existing;
 				}
 			} else {
 				// We can't find this in our originals. Let's keep it for later.
-				$possibly_added[] = $entry;
+				$possibly_added[] = array( $entry, $data );
 			}
 		}
 
@@ -287,30 +402,7 @@ class GP_Original extends GP_Thing {
 
 		$prev_suspend_cache = wp_suspend_cache_invalidation( true );
 
-		foreach ( $possibly_added as $entry ) {
-			$data = array(
-				'project_id' => $project->id,
-				'context'    => $entry->context,
-				'singular'   => $entry->singular,
-				'plural'     => $entry->plural,
-				'comment'    => $entry->extracted_comments,
-				'references' => implode( ' ', $entry->references ),
-				'status'     => '+active',
-			);
-
-			// Set the Priority if specified as a flag.
-			if ( $entry->flags ) {
-				foreach ( self::$priorities as $priority => $text ) {
-					if ( in_array( "gp-priority: {$text}", $entry->flags ) ) {
-						$data['priority'] = $priority;
-						break;
-					}
-				}
-			}
-
-			/** This filter is documented in gp-includes/things/original.php */
-			$data = apply_filters( 'gp_import_original_array', $data, $entry );
-
+		foreach ( $possibly_added as list( $entry, $data ) ) {
 			// Search for match in the dropped strings and existing obsolete strings.
 			$close_original = $this->closest_original( $entry->key(), $comparison_array );
 
@@ -333,6 +425,7 @@ class GP_Original extends GP_Thing {
 
 				// We'll update the old original...
 				$this->update( $data, array( 'id' => $original->id ) );
+				$this->recheck_translation_warnings( $original, $data );
 
 				// and set existing translations to fuzzy.
 				if ( $do_fuzzy ) {
@@ -346,7 +439,7 @@ class GP_Original extends GP_Thing {
 				unset( $possibly_dropped[ $close_original ] );
 
 				continue;
-			} else { // Completely new string
+			} else { // Completely new string.
 				$created = GP::$original->create( $data );
 
 				if ( ! $created ) {
@@ -389,6 +482,11 @@ class GP_Original extends GP_Thing {
 		return array( $originals_added, $originals_existing, $originals_fuzzied, $originals_obsoleted, $originals_error );
 	}
 
+	/**
+	 * Sets all translations for an original to fuzzy.
+	 *
+	 * @param int $original_id The original ID.
+	 */
 	public function set_translations_for_original_to_fuzzy( $original_id ) {
 		$translations = GP::$translation->find_many( "original_id = '$original_id' AND status = 'current'" );
 		foreach ( $translations as $translation ) {
@@ -396,6 +494,70 @@ class GP_Original extends GP_Thing {
 		}
 	}
 
+	/**
+	 * Checks the warnings of the translations of an original again, after its text changed.
+	 *
+	 * The warnings were found for the text before the change, and approving a translation doesn't check them.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param GP_Original $original The original before the change.
+	 * @param array       $data     The fields of the changed original.
+	 */
+	public function recheck_translation_warnings( $original, $data ) {
+		// Filters may add keys to the imported data that aren't fields of an original.
+		$changed_original = new GP_Original( array_intersect_key( array_merge( (array) $original, $data ), array_flip( $this->field_names ) ) );
+		$singular         = $changed_original->singular;
+		$plural           = $changed_original->plural;
+
+		// Only the text matters, so warnings dismissed for it stay dismissed when the context or references change.
+		if ( $singular === $original->singular && (string) $plural === (string) $original->plural ) {
+			return;
+		}
+
+		$translations = GP::$translation->find_many(
+			array(
+				'original_id' => $original->id,
+				'status'      => array( 'current', 'waiting', 'fuzzy', 'changesrequested' ),
+			)
+		);
+		if ( ! $translations ) {
+			return;
+		}
+
+		// An import rechecks many originals of the same project, so the locales of its sets are only looked up once.
+		static $locales = array();
+
+		$missing_set_ids = array_diff( array_unique( wp_list_pluck( $translations, 'translation_set_id' ) ), array_keys( $locales ) );
+		if ( $missing_set_ids ) {
+			foreach ( GP::$translation_set->find_many( array( 'id' => array_values( $missing_set_ids ) ) ) as $translation_set ) {
+				$locales[ $translation_set->id ] = GP_Locales::by_slug( $translation_set->locale );
+			}
+		}
+
+		foreach ( $translations as $translation ) {
+			$locale = $locales[ $translation->translation_set_id ] ?? null;
+			if ( ! $locale ) {
+				continue;
+			}
+
+			// Forms the original doesn't use any more, like the plural forms of an original that lost its plural, are left out.
+			$forms    = array_slice( $translation->translations(), 0, null === $plural ? 1 : $locale->nplurals );
+			$warnings = GP::$translation_warnings->check( $singular, $plural, $forms, $locale, $changed_original );
+			if ( $warnings != $translation->warnings ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual -- No warnings are stored as null or an empty value.
+				$translation->update( array( 'warnings' => $warnings ) );
+			}
+		}
+	}
+
+	/**
+	 * Checks if provided data is different from the original.
+	 *
+	 * @param array            $data     Key-value pairs to check.
+	 * @param GP_Original|null $original Optional. The original to compare against.
+	 *                                   Default null to use current object.
+	 * @return bool True if different, false if the same.
+	 */
 	public function is_different_from( $data, $original = null ) {
 		if ( ! $original ) {
 			$original = $this;
@@ -409,11 +571,24 @@ class GP_Original extends GP_Thing {
 		return false;
 	}
 
+	/**
+	 * Gets the priority integer by its name.
+	 *
+	 * @param string $name The priority name.
+	 * @return int|null The priority integer or null if not found.
+	 */
 	public function priority_by_name( $name ) {
 		$by_name = array_flip( self::$priorities );
 		return isset( $by_name[ $name ] ) ? $by_name[ $name ] : null;
 	}
 
+	/**
+	 * Finds the closest matching original from a list of strings.
+	 *
+	 * @param string $input         Input string.
+	 * @param array  $other_strings List of strings to check against input string.
+	 * @return string|null The closest matching string or null if none found.
+	 */
 	public function closest_original( $input, $other_strings ) {
 		/**
 		 * Filters the preemptive return value of closest original check.
@@ -494,6 +669,11 @@ class GP_Original extends GP_Thing {
 		}
 	}
 
+	/**
+	 * Retrieves all originals matching this one in other projects.
+	 *
+	 * @return array Array of GP_Original.
+	 */
 	public function get_matching_originals_in_other_projects() {
 		$where   = array();
 		$where[] = 'singular = BINARY %s';
@@ -519,7 +699,7 @@ class GP_Original extends GP_Thing {
 		return parent::delete();
 	}
 
-	// Triggers
+	// Triggers.
 
 	/**
 	 * Executes after creating an original.

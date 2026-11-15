@@ -21,20 +21,6 @@ class GP_Test_Route_Translation_Self_Status extends GP_UnitTestCase_Route {
 		);
 	}
 
-	private function set_status( $set, $translation, $status ) {
-		$_POST['status']             = $status;
-		$_POST['translation_id']     = $translation->id;
-		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'update-translation-status-' . $status . '_' . $translation->id );
-
-		$this->do_route_request(
-			function () use ( $set ) {
-				$this->route->set_status( $set->project->path, $set->locale, $set->slug );
-			}
-		);
-
-		return GP::$translation->get( $translation->id );
-	}
-
 	public function test_user_cannot_approve_their_own_waiting_translation() {
 		$set         = $this->factory->translation_set->create_with_project_and_locale();
 		$user_id     = $this->set_normal_user_as_current();

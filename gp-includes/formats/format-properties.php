@@ -1,11 +1,41 @@
 <?php
+/**
+ * GlotPress Format Properties
+ *
+ * @package GlotPress
+ */
 
+/**
+ * Format class used to support Properties files.
+ */
 class GP_Format_Properties extends GP_Format {
 
-	public $name             = 'Java Properties File (.properties)';
-	public $extension        = 'properties';
+	/**
+	 * Name of file format, used in file format dropdowns.
+	 *
+	 * @var string
+	 */
+	public $name = 'Java Properties File (.properties)';
+
+	/**
+	 * File extension of the file format, used to autodetect formats and when creating the output file names.
+	 *
+	 * @var string
+	 */
+	public $extension = 'properties';
+
+	/**
+	 * Pattern used to generate the output file names.
+	 *
+	 * @var string
+	 */
 	public $filename_pattern = '%s_%s';
 
+	/**
+	 * Holds the exported string.
+	 *
+	 * @var string
+	 */
 	public $exported = '';
 
 	/**
@@ -13,14 +43,14 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param GP_Project         $project         The project the strings are being exported for, not used
-	 *                                            in this format but part of the scaffold of the parent object.
-	 * @param GP_Locale          $locale          The locale object the strings are being exported for. not used
-	 *                                            in this format but part of the scaffold of the parent object.
-	 * @param GP_Translation_Set $translation_set The locale object the strings are being
-	 *                                            exported for. not used in this format but part
-	 *                                            of the scaffold of the parent object.
-	 * @param GP_Translation     $entries         The entries to export.
+	 * @param GP_Project          $project         The project the strings are being exported for, not used
+	 *                                             in this format but part of the scaffold of the parent object.
+	 * @param GP_Locale           $locale          The locale object the strings are being exported for. not used
+	 *                                             in this format but part of the scaffold of the parent object.
+	 * @param GP_Translation_Set  $translation_set The locale object the strings are being
+	 *                                             exported for. not used in this format but part
+	 *                                             of the scaffold of the parent object.
+	 * @param Translation_Entry[] $entries         The entries to export.
 	 *
 	 * @return string
 	 */
@@ -84,16 +114,16 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $string The string to encode.
+	 * @param string $value The string to encode.
 	 *
 	 * @return string
 	 */
-	private function utf8_uni_encode( $string ) {
+	private function utf8_uni_encode( $value ) {
 		$result = '';
 		$offset = 0;
 
 		while ( $offset >= 0 ) {
-			$val = $this->ordutf8( $string, $offset );
+			$val = $this->ordutf8( $value, $offset );
 
 			if ( false === $val ) {
 				break;
@@ -112,22 +142,22 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $string The string to encode.
+	 * @param string $value The string to encode.
 	 *
 	 * @return string
 	 */
-	private function ascii_uni_encode( $string ) {
+	private function ascii_uni_encode( $value ) {
 		$result = '';
 
-		$string_length = strlen( $string );
+		$string_length = strlen( $value );
 
 		for ( $i = 0; $i < $string_length; $i++ ) {
-			$val = ord( $string[ $i ] );
+			$val = ord( $value[ $i ] );
 
 			if ( $val > 127 ) {
 				$result .= sprintf( '\u%04x', $val );
 			} else {
-				$result .= $string[ $i ];
+				$result .= $value[ $i ];
 			}
 		}
 
@@ -137,14 +167,14 @@ class GP_Format_Properties extends GP_Format {
 	/**
 	 * Decodes a unicode escaped string to a PHP string.
 	 *
-	 * @param string $string The string to decode.
+	 * @param string $value The string to decode.
 	 *
 	 * @since 2.0.0
 	 *
 	 * @return string
 	 */
-	private function uni_decode( $string ) {
-		return preg_replace_callback( "/\\\\u([a-fA-F0-9]{4})/", array( $this, 'uni_decode_callback' ), $string );
+	private function uni_decode( $value ) {
+		return preg_replace_callback( "/\\\\u([a-fA-F0-9]{4})/", array( $this, 'uni_decode_callback' ), $value );
 	}
 
 	/**
@@ -197,13 +227,13 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $string The UTF-8 string to process.
+	 * @param string $value  The UTF-8 string to process.
 	 * @param int    $offset The offset of the string to return the character value of.
 	 *
 	 * @return int|bool
 	 */
-	private function ordutf8( $string, &$offset ) {
-		$character = substr( $string, $offset, 1 );
+	private function ordutf8( $value, &$offset ) {
+		$character = substr( $value, $offset, 1 );
 
 		// If substr returned false, we are past the end of line so no need to process it.
 		if ( false === $character ) {
@@ -215,7 +245,7 @@ class GP_Format_Properties extends GP_Format {
 		$code        = ord( $character );
 		$bytesnumber = 1;
 
-		if ( $code >= 128 ) {  // Otherwise 0xxxxxxx
+		if ( $code >= 128 ) {  // Otherwise 0xxxxxxx.
 			$codetemp = $code - 192;
 
 			if ( $code < 224 ) {
@@ -230,7 +260,7 @@ class GP_Format_Properties extends GP_Format {
 
 			for ( $i = 2; $i <= $bytesnumber; $i++ ) {
 				++$offset;
-				$code2    = ord( substr( $string, $offset, 1 ) ) - 128;  // 10xxxxxx
+				$code2    = ord( substr( $value, $offset, 1 ) ) - 128;  // 10xxxxxx
 				$codetemp = ( $codetemp * 64 ) + $code2;
 			}
 
@@ -239,7 +269,7 @@ class GP_Format_Properties extends GP_Format {
 
 		$offset += 1;
 
-		if ( $offset >= strlen( $string ) ) {
+		if ( $offset >= strlen( $value ) ) {
 			$offset = -1;
 		}
 
@@ -330,7 +360,7 @@ class GP_Format_Properties extends GP_Format {
 
 		foreach ( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file
-			// so we need to swap singular and translation
+			// so we need to swap singular and translation.
 			$entry->translations = array( $entry->singular );
 			$entry->singular     = null;
 
@@ -403,7 +433,7 @@ class GP_Format_Properties extends GP_Format {
 					$comment = null;
 				}
 			} elseif ( false === $inline && $this->split_properties_line( $line, $key, $value ) ) {
-				// Check to see if this line continues on to the next
+				// Check to see if this line continues on to the next.
 				if ( gp_endswith( $line, '\\' ) ) {
 					$inline = true;
 					$value  = trim( $value, '\\' );
@@ -492,12 +522,12 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $string The string to unescape.
+	 * @param string $value The string to unescape.
 	 *
 	 * @return string
 	 */
-	private function unescape( $string ) {
-		return stripcslashes( $string );
+	private function unescape( $value ) {
+		return stripcslashes( $value );
 	}
 
 	/**
@@ -505,12 +535,12 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $string The string to escape.
+	 * @param string $value The string to escape.
 	 *
 	 * @return string
 	 */
-	private function escape( $string ) {
-		return addcslashes( $string, '"\\/' );
+	private function escape( $value ) {
+		return addcslashes( $value, '"\\/' );
 	}
 
 	/**
@@ -518,12 +548,12 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $string The string to escape.
+	 * @param string $value The string to escape.
 	 *
 	 * @return string
 	 */
-	private function escape_key( $string ) {
-		return addcslashes( $string, '=: ' );
+	private function escape_key( $value ) {
+		return addcslashes( $value, '=: ' );
 	}
 }
 

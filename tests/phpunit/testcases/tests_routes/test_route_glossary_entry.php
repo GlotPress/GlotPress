@@ -276,4 +276,32 @@ class GP_Test_Route_Glossary_Entry extends GP_UnitTestCase_Route {
 
 		$this->assertCount( 1, GP::$glossary_entry->by_glossary_id( $parent_glossary->id ), 'A parent validator can add to the parent glossary.' );
 	}
+
+	/**
+	 * A delete request without a usable `glossary_entry` payload must be rejected
+	 * instead of fatally erroring on `array_shift()`.
+	 *
+	 * @dataProvider data_malformed_glossary_entry_payloads
+	 */
+	function test_delete_entry_rejects_a_malformed_payload( $payload ) {
+		if ( null !== $payload ) {
+			$_POST['glossary_entry'] = $payload;
+		}
+
+		$this->do_route_request(
+			function () {
+				$this->route->glossary_entry_delete_post( '/locale', 'af', 'default' );
+			}
+		);
+
+		$this->assertSame( 404, $this->route->http_status );
+	}
+
+	function data_malformed_glossary_entry_payloads() {
+		return array(
+			'missing'          => array( null ),
+			'string'           => array( 'x' ),
+			'entry without id' => array( array( array( 'term' => 'x' ) ) ),
+		);
+	}
 }

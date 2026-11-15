@@ -22,10 +22,10 @@
 	--gp-color-secondary-900: #252525;
 	--gp-color-black: #0b0c0c;
 	--gp-color-white: #ffffff;
-	--gp-color-yellow: #ffd566;
+	--gp-color-yellow: #ffe3a0;
 	--gp-color-dark-orange: #C05621;
-	--gp-color-red: #a62626;
-	--gp-color-green: #266430;
+	--gp-color-red: #b6303e;
+	--gp-color-green: #218041;
 
 	/* Components */
 	--gp-color-fg-default: var( --gp-color-black );
@@ -91,12 +91,12 @@
 	--gp-color-bubble-inactive-project-text: var( --gp-color-dark-orange );
 	--gp-color-bubble-inactive-project-border: var( --gp-color-dark-orange );
 
-	--gp-color-status-fuzzy-subtle: #fc6;
-	--gp-color-status-current-subtle: #e9ffd8;
-	--gp-color-status-old-subtle: #fee4f8;
-	--gp-color-status-waiting-subtle: #ffffc2;
-	--gp-color-status-rejected-subtle: #ff8e8e;
-	--gp-color-status-changesrequested-subtle: #87ceeb;
+	--gp-color-status-fuzzy-subtle: #ffd3ab;
+	--gp-color-status-current-subtle: #c8f6d0;
+	--gp-color-status-old-subtle: #e7d5ff;
+	--gp-color-status-waiting-subtle: #ffefb7;
+	--gp-color-status-rejected-subtle: #ffb8ba;
+	--gp-color-status-changesrequested-subtle: #b4e5ff;
 
 	--gp-color-tour: var( --gp-color-primary );
 }
@@ -245,6 +245,7 @@ h3 {
 
 .gp-heading {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	gap: 0.2em;
 	margin: 0 0 1rem 0;
@@ -263,11 +264,47 @@ h3 {
 }
 
 .gp-heading div.glossary-links {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 0 0.4em;
 	margin-left: auto;
+	font-size: 0.9375rem;
 }
 
-.gp-heading a.glossary-link {
+.gp-heading .glossary-links .separator {
+	color: var( --gp-color-fg-muted );
+}
+
+.gp-heading a.glossary-link,
+.gp-heading form.glossary-link .button.is-link {
+	font-size: inherit;
 	font-weight: 600;
+	white-space: nowrap;
+}
+
+/* Creating the locale glossary needs a POST, so it's a form, which has to sit in the line like the links next to it. */
+.gp-heading form.glossary-link {
+	display: inline;
+}
+
+.gp-heading form.glossary-link .button.is-link {
+	font-family: inherit;
+	line-height: inherit;
+	vertical-align: baseline;
+	text-decoration: none;
+}
+
+.gp-heading form.glossary-link .button.is-link:hover,
+.gp-heading form.glossary-link .button.is-link:focus {
+	text-decoration: underline;
+}
+
+@media (max-width: 799px) {
+	.gp-heading div.glossary-links {
+		flex-basis: 100%;
+		margin-left: 0;
+	}
 }
 
 /*
@@ -936,7 +973,7 @@ span.morethan90 {
 table.translations td.original,
 table.translations td.translation,
 .editor .original,
-.editor .translation,
+.editor .current-translation-text,
 span.context {
 	word-break: normal;
 	word-wrap: break-word;
@@ -958,13 +995,6 @@ span.context {
 
 .editor .original_raw {
 	display: none;
-}
-
-.editor .translation {
-	white-space: pre-wrap;
-	margin: 0 0 1rem 0;
-	font-size: 0.875rem;
-	font-style: italic;
 }
 
 .editor .strings {
@@ -1042,16 +1072,111 @@ span.context {
  */
 .gp-js-message {
 	position: fixed;
-	top: 0;
-	padding: 1em;
+	inset: 1rem 1rem auto auto;
 	display: none;
+	align-items: flex-start;
+	gap: 0.75rem;
+	box-sizing: border-box;
+	width: max-content;
+	max-width: min(28rem, calc(100vw - 2rem));
+	margin: 0;
+	padding: 0.75rem 1rem;
+	border: 0;
+	border-radius: 6px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	overflow: visible;
 	z-index: 1001;
 }
 
-.gp-js-error .gp-js-message-dismiss,
-.gp-js-error .gp-js-message-dismiss:hover,
-.gp-js-error .gp-js-message-dismiss:focus {
-	color: inherit !important;
+@media screen and (max-width: 500px) {
+	.gp-js-message {
+		inset: 0.5rem 0.5rem auto;
+		width: auto;
+		max-width: none;
+	}
+}
+
+.gp-js-message.is-open {
+	display: flex;
+	animation: gp-js-message-in 0.15s ease-out;
+}
+
+.gp-js-success.is-open {
+	animation: gp-js-message-in 0.15s ease-out, gp-js-message-out 0.4s ease-in 4s forwards;
+}
+
+/* Gives the translator time to read the message while pointing at it or using its controls. Only the exit pauses, so a message replaced while pointed at still appears. */
+.gp-js-success.is-open:hover,
+.gp-js-success.is-open:focus-within {
+	animation-play-state: running, paused;
+}
+
+@keyframes gp-js-message-in {
+	from {
+		opacity: 0;
+		translate: 0 -0.5rem;
+	}
+}
+
+@keyframes gp-js-message-out {
+	to {
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.gp-js-message.is-open {
+		animation: none;
+	}
+
+	.gp-js-success.is-open {
+		animation: gp-js-message-out 0.01s 4s forwards;
+	}
+
+	.gp-js-success.is-open:hover,
+	.gp-js-success.is-open:focus-within {
+		animation-play-state: paused;
+	}
+}
+
+.gp-js-message-content {
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+.gp-js-message-content ul {
+	margin: 0.25rem 0 0;
+	padding-left: 1.25rem;
+}
+
+.gp-js-message-content li + li {
+	margin-top: 0.25rem;
+}
+
+/* Pulled into the padding so it sits in the top right corner, aligned with the first line. */
+.gp-js-message-dismiss {
+	display: flex;
+	flex: none;
+	align-items: center;
+	justify-content: center;
+	margin: -0.125rem -0.5rem 0 0;
+	width: 1.5rem;
+	height: 1.5rem;
+	padding: 0;
+	border: 0;
+	border-radius: 4px;
+	background: transparent;
+	color: inherit;
+	cursor: pointer;
+}
+
+.gp-js-message-dismiss:hover {
+	background: rgba(0, 0, 0, 0.15);
+}
+
+.gp-js-message-dismiss:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 1px;
 }
 
 .gp-js-error, .error {
@@ -1064,25 +1189,28 @@ span.context {
 	background-color: var( --gp-color-attention-emphasis );
 }
 
-.gp-js-success {
+.gp-js-success, .success {
 	color: var( --gp-color-fg-on-emphasis );
 	background-color: var( --gp-color-success-emphasis );
 }
 
-.notice, .error {
+.notice, .error, .success {
 	clear: both;
-	padding: 0.5rem;
 	margin: 1rem 0;
+	padding: 0.75rem 1rem;
+	border-radius: 6px;
+	overflow-wrap: anywhere;
 }
 
 a.button.action.edit {
 	margin: 0 0 0 0.2rem;
 }
 
-span.bubble.inactive {
+span.bubble.inactive,
+span.bubble.has-current {
 	color: var( --gp-color-bubble-inactive-project-text );
 	padding: 0.2em 0.5em;
-	border: 1px solid var( --gp-color-bubble-inactive-project-text );
+	border: 1px solid currentcolor;
 	border-radius: 1em;
 	text-decoration: none;
 	text-align: center;
@@ -1094,6 +1222,25 @@ span.bubble.inactive {
 
 .project-inactive span.bubble.inactive {
 	vertical-align: middle;
+}
+
+span.bubble.has-current {
+	color: var( --gp-color-success-fg );
+	margin-left: 0.5rem;
+	white-space: nowrap;
+}
+
+.editor .current-translation {
+	margin: 0 0 0.5rem;
+	font-size: 0.875rem;
+}
+
+.editor .current-translation-label {
+	color: var( --gp-color-fg-muted );
+}
+
+.editor .current-translation-text {
+	white-space: pre-wrap;
 }
 
 span.locale-entry.bubble {
@@ -1303,6 +1450,37 @@ form.filters-toolbar a.revealing.open {
 
 .notranslate.placeholder {
 	font-family: monospace;
+}
+
+/* Only a hint, unlike the placeholders that can be inserted in the editor. */
+.invisible-spaces {
+	background-color: transparent;
+	border-style: dashed;
+}
+
+/* An inline-block would allow a line break around the space, which a non-breaking space must not. */
+.invisible-spaces.non-breaking-spaces {
+	display: inline;
+}
+
+.editor .original .placeholder-insert {
+	margin: 0;
+	font-size: inherit;
+	color: var( --gp-color-btn-text );
+	background-color: var( --gp-color-btn-bg );
+	border-color: var( --gp-color-btn-border );
+	cursor: pointer;
+}
+
+.editor .original .placeholder-insert:hover {
+	color: var( --gp-color-btn-hover-text );
+	background-color: var( --gp-color-btn-hover-bg );
+	border-color: var( --gp-color-btn-hover-border );
+}
+
+.editor .original .placeholder-insert:focus-visible {
+	outline: 2px solid var( --gp-color-btn-hover-border );
+	outline-offset: 1px;
 }
 
 .ternary {

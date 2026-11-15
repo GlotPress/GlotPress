@@ -1,6 +1,9 @@
 <?php
 /**
- * Template for errors.
+ * Templates: Error
+ *
+ * @package GlotPress
+ * @subpackage Templates
  */
 
 /** @var string $title */

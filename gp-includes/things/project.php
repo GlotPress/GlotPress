@@ -14,19 +14,95 @@
  */
 class GP_Project extends GP_Thing {
 
-	var $table_basename           = 'gp_projects';
-	var $field_names              = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active' );
-	var $int_fields               = array( 'id', 'parent_project_id', 'active' );
+	/**
+	 * Name of the database table.
+	 *
+	 * @var string $table_basename
+	 */
+	var $table_basename = 'gp_projects';
+
+	/**
+	 * List of field names for a project.
+	 *
+	 * @var array $field_names
+	 */
+	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active' );
+
+	/**
+	 * List of field names which have an integer value.
+	 *
+	 * @var array $int_fields
+	 */
+	var $int_fields = array( 'id', 'parent_project_id', 'active' );
+
+	/**
+	 * List of field names which cannot be updated.
+	 *
+	 * @var array $non_updatable_attributes
+	 */
 	var $non_updatable_attributes = array( 'id' );
 
+	/**
+	 * ID of the project.
+	 *
+	 * @var int $id
+	 */
 	public $id;
+
+	/**
+	 * Name of the project.
+	 *
+	 * @var string $name
+	 */
 	public $name;
+
+	/**
+	 * Slug of the project.
+	 *
+	 * @var string $slug
+	 */
 	public $slug;
+
+	/**
+	 * Path of the project.
+	 *
+	 * @var string $path
+	 */
 	public $path;
+
+	/**
+	 * Description of the project.
+	 *
+	 * @var string $description
+	 */
 	public $description;
+
+	/**
+	 * ID of the parent project.
+	 *
+	 * @var int|null $parent_project_id
+	 */
 	public $parent_project_id;
+
+	/**
+	 * Source URL template of the project.
+	 *
+	 * @var string $source_url_template
+	 */
 	public $source_url_template;
+
+	/**
+	 * Whether the project is active.
+	 *
+	 * @var int $active
+	 */
 	public $active;
+
+	/**
+	 * User-specific source URL template override.
+	 *
+	 * @var string $user_source_url_template
+	 */
 	public $user_source_url_template;
 
 	/**
@@ -41,8 +117,14 @@ class GP_Project extends GP_Thing {
 		$rules->slug_should_not_be( 'empty' );
 	}
 
-	// Additional queries
+	// Additional queries.
 
+	/**
+	 * Fetches the project by its path.
+	 *
+	 * @param string $path The project path.
+	 * @return GP_Project|false The project on success or false on failure.
+	 */
 	public function by_path( $path ) {
 		/**
 		 * Filters the prefix for the locale glossary path.
@@ -82,7 +164,7 @@ class GP_Project extends GP_Thing {
 	}
 
 	/**
-	 * Retrieves the sub projects
+	 * Retrieves the sub projects.
 	 *
 	 * @return array Array of GP_Project
 	 */
@@ -102,6 +184,11 @@ class GP_Project extends GP_Thing {
 		return $sub_projects;
 	}
 
+	/**
+	 * Retrieves all top level projects.
+	 *
+	 * @return array Array of GP_Project
+	 */
 	public function top_level() {
 		$projects = $this->many( "SELECT * FROM $this->table WHERE parent_project_id IS NULL OR parent_project_id < 1 ORDER BY name ASC" );
 
@@ -111,7 +198,7 @@ class GP_Project extends GP_Thing {
 		return $projects;
 	}
 
-	// Triggers
+	// Triggers.
 
 	/**
 	 * Executes after creating a project.
@@ -160,7 +247,7 @@ class GP_Project extends GP_Thing {
 		do_action( 'gp_project_saved', $this, $project_before );
 
 		// TODO: pass the update args to after/pre_save?
-		// TODO: only call it if the slug or parent project were changed
+		// TODO: only call it if the slug or parent project were changed.
 		return ! is_null( $this->update_path() );
 	}
 
@@ -225,7 +312,7 @@ class GP_Project extends GP_Thing {
 		return $args;
 	}
 
-	// Helpers
+	// Helpers.
 
 	/**
 	 * Updates this project's and its children's paths, according to its current slug.
@@ -261,10 +348,12 @@ class GP_Project extends GP_Thing {
 	}
 
 	/**
-	 * Regenerate the paths of all projects from its parents slugs
+	 * Regenerate the paths of all projects from its parents slugs.
+	 *
+	 * @param int|null $parent_project_id The parent project ID.
 	 */
 	public function regenerate_paths( $parent_project_id = null ) {
-		// TODO: do it with one query. Use the tree generation code from GP_Route_Main::_options_from_projects()
+		// TODO: do it with one query. Use the tree generation code from GP_Route_Main::_options_from_projects().
 		if ( $parent_project_id ) {
 			$parent_project = $this->get( $parent_project_id );
 			$path           = $parent_project->path;
@@ -280,6 +369,13 @@ class GP_Project extends GP_Thing {
 		}
 	}
 
+	/**
+	 * Generates the source URL for a given file and line number.
+	 *
+	 * @param string $file The referenced file name.
+	 * @param string $line The line number in the referenced file.
+	 * @return string|false The generated source URL or false if no URL is available.
+	 */
 	public function source_url( $file, $line ) {
 		$source_url = false;
 		if ( $source_url_template = $this->source_url_template() ) {
@@ -299,6 +395,11 @@ class GP_Project extends GP_Thing {
 		return apply_filters( 'gp_reference_source_url', $source_url, $this, $file, $line );
 	}
 
+	/**
+	 * Retrieves the source URL template, considering user-specific overrides.
+	 *
+	 * @return string|null The source URL template.
+	 */
 	public function source_url_template() {
 		if ( isset( $this->user_source_url_template ) ) {
 			return $this->user_source_url_template;
@@ -333,6 +434,39 @@ class GP_Project extends GP_Thing {
 		return array_merge( array( &$this ), $path );
 	}
 
+	/**
+	 * Checks whether this project is the given project or one of its ancestors.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param int $project_id The project ID.
+	 * @return bool True if this project is the given project or one of its ancestors, false otherwise.
+	 */
+	public function is_self_or_ancestor_of( $project_id ) {
+		$project_id = (int) $project_id;
+		$visited    = array();
+
+		// The visited list stops at a cycle that is already stored, instead of looping forever.
+		while ( $project_id && ! isset( $visited[ $project_id ] ) ) {
+			if ( (int) $this->id === $project_id ) {
+				return true;
+			}
+
+			$visited[ $project_id ] = true;
+
+			$project    = $this->get( $project_id );
+			$project_id = $project ? (int) $project->parent_project_id : 0;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Computes the difference in translation sets between this project and another project.
+	 *
+	 * @param GP_Project $other_project The other project to compare against.
+	 * @return array An array with 'added' and 'removed' keys containing arrays of GP_Translation_Set objects.
+	 */
 	public function set_difference_from( $other_project ) {
 		$this_sets  = (array) GP::$translation_set->by_project_id( $this->id );
 		$other_sets = (array) GP::$translation_set->by_project_id( $other_project->id );
@@ -357,10 +491,22 @@ class GP_Project extends GP_Thing {
 		);
 	}
 
+	/**
+	 * Comparison function for translation sets.
+	 *
+	 * @param GP_Translation_Set $set      The translation set to compare.
+	 * @param GP_Translation_Set $this_set The translation set to compare against.
+	 * @return bool True if the sets match, false otherwise.
+	 */
 	public function _compare_set_item( $set, $this_set ) {
 		return ( $set->locale === $this_set->locale && $set->slug === $this_set->slug );
 	}
 
+	/**
+	 * Copies translation sets, their translations and their project glossaries from another project to this project.
+	 *
+	 * @param int $source_project_id The source project ID.
+	 */
 	public function copy_sets_and_translations_from( $source_project_id ) {
 		$sets = GP::$translation_set->by_project_id( $source_project_id );
 
@@ -382,10 +528,38 @@ class GP_Project extends GP_Thing {
 			} else {
 				// Duplicate translations.
 				$new_set->copy_translations_from( $to_add->id );
+
+				// Duplicate the project glossary of the translation set, if it has one.
+				$glossary = GP::$glossary->by_set_id( $to_add->id );
+
+				if ( $glossary ) {
+					$new_glossary = GP::$glossary->create(
+						array(
+							'translation_set_id' => $new_set->id,
+							'description'        => $glossary->description,
+						)
+					);
+					if ( ! $new_glossary ) {
+						$this->errors[] = sprintf(
+							/* translators: %s: Translation set. */
+							__( 'Couldn&#8217;t add the glossary of translation set named %s', 'glotpress' ),
+							esc_html( $to_add->name )
+						);
+					} else {
+						// Duplicate glossary entries.
+						$new_glossary->copy_glossary_items_from( $glossary->id );
+					}
+				}
 			}
 		}
 	}
 
+	/**
+	 * Copies originals from another project to this project.
+	 *
+	 * @param int $source_project_id The source project ID.
+	 * @return int|false The number of rows affected, or false on failure.
+	 */
 	public function copy_originals_from( $source_project_id ) {
 		global $wpdb;
 		return $this->query(
@@ -415,10 +589,16 @@ class GP_Project extends GP_Thing {
 		return $sub_projects;
 	}
 
+	/**
+	 * Duplicates the contents of another project into this project,
+	 * including all sub-projects, originals, translation sets, translations and project glossaries.
+	 *
+	 * @param GP_Project $source_project The source project.
+	 */
 	public function duplicate_project_contents_from( $source_project ) {
 		$source_sub_projects = $source_project->inclusive_sub_projects();
 
-		// Duplicate originals, translations sets and translations for the root project.
+		// Duplicate originals, translations sets, translations and glossaries for the root project.
 		$this->copy_originals_from( $source_project->id );
 		$this->copy_sets_and_translations_from( $source_project->id );
 
@@ -426,7 +606,7 @@ class GP_Project extends GP_Thing {
 		$parents                        = array();
 		$parents[ $source_project->id ] = $this->id;
 
-		// Duplicate originals, translations sets and translations for the child projects.
+		// Duplicate originals, translations sets, translations and glossaries for the child projects.
 		foreach ( $source_sub_projects as $sub ) {
 			$copy_project                    = new GP_Project( $sub->fields() );
 			$copy_project->parent_project_id = $parents[ $sub->parent_project_id ];
@@ -442,18 +622,31 @@ class GP_Project extends GP_Thing {
 	}
 
 	/**
-	 * Deletes a project and all of sub projects, translations, translation sets, originals and glossaries.
+	 * Deletes a project and all of sub projects, translations, translation sets, originals, glossaries
+	 * and permissions.
 	 *
 	 * @since 2.0.0
 	 *
 	 * @return bool
 	 */
 	public function delete() {
-		GP::$project->delete_many( array( 'parent_project_id' => $this->id ) );
+		foreach ( GP::$project->find_many( array( 'parent_project_id' => $this->id ) ) as $sub_project ) {
+			$sub_project->delete();
+		}
 
-		GP::$translation_set->delete_many( array( 'project_id' => $this->id ) );
+		foreach ( GP::$translation_set->by_project_id( $this->id ) as $translation_set ) {
+			$translation_set->delete();
+		}
 
 		GP::$original->delete_many( array( 'project_id' => $this->id ) );
+
+		GP::$validator_permission->delete_by_project_id( $this->id );
+		GP::$permission->delete_many(
+			array(
+				'object_type' => 'project',
+				'object_id'   => $this->id,
+			)
+		);
 
 		return parent::delete();
 	}
