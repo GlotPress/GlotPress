@@ -354,11 +354,11 @@ class GP_Original extends GP_Thing {
 			/**
 			 * Filter the data of an original being imported or updated.
 			 *
-			 * This filter is called twice per each entry. First time during determining if the original
-			 * already exists. The second time it is called before a new original is added or a close
-			 * old match is set fuzzy with this new data.
+			 * The filtered data is used to update an existing original, to add a new one, or to update
+			 * a close old match whose translations are set to fuzzy.
 			 *
 			 * @since 1.0.0
+			 * @since 4.2.0 Called once per entry instead of twice for entries without an existing original.
 			 *
 			 * @param array $data {
 			 *     An array that describes a single entry being imported or updated.
@@ -395,6 +395,7 @@ class GP_Original extends GP_Thing {
 					$do_fuzzy = $plural_changed && apply_filters( 'gp_set_translations_for_original_to_fuzzy', true, (object) $data, $original );
 
 					$this->update( $data, array( 'id' => $original->id ) );
+					$this->recheck_translation_warnings( $original, $data );
 
 					if ( $do_fuzzy ) {
 						$this->set_translations_for_original_to_fuzzy( $original->id );
@@ -405,7 +406,7 @@ class GP_Original extends GP_Thing {
 				}
 			} else {
 				// We can't find this in our originals. Let's keep it for later.
-				$possibly_added[] = $entry;
+				$possibly_added[] = array( $entry, $data );
 			}
 		}
 
@@ -419,30 +420,7 @@ class GP_Original extends GP_Thing {
 
 		$prev_suspend_cache = wp_suspend_cache_invalidation( true );
 
-		foreach ( $possibly_added as $entry ) {
-			$data = array(
-				'project_id' => $project->id,
-				'context'    => $entry->context,
-				'singular'   => $entry->singular,
-				'plural'     => $entry->plural,
-				'comment'    => $entry->extracted_comments,
-				'references' => implode( ' ', $entry->references ),
-				'status'     => '+active',
-			);
-
-			// Set the Priority if specified as a flag.
-			if ( $entry->flags ) {
-				foreach ( self::$priorities as $priority => $text ) {
-					if ( in_array( "gp-priority: {$text}", $entry->flags ) ) {
-						$data['priority'] = $priority;
-						break;
-					}
-				}
-			}
-
-			/** This filter is documented in gp-includes/things/original.php */
-			$data = apply_filters( 'gp_import_original_array', $data, $entry );
-
+		foreach ( $possibly_added as list( $entry, $data ) ) {
 			// Search for match in the dropped strings and existing obsolete strings.
 			$close_original = $this->closest_original( $entry->key(), $comparison_array );
 
@@ -466,6 +444,7 @@ class GP_Original extends GP_Thing {
 
 				// We'll update the old original...
 				$this->update( $data, array( 'id' => $original->id ) );
+				$this->recheck_translation_warnings( $original, $data );
 
 				// and set existing translations to fuzzy.
 				if ( $do_fuzzy ) {
@@ -531,6 +510,62 @@ class GP_Original extends GP_Thing {
 		$translations = GP::$translation->find_many( "original_id = '$original_id' AND status = 'current'" );
 		foreach ( $translations as $translation ) {
 			$translation->set_status( 'fuzzy' );
+		}
+	}
+
+	/**
+	 * Checks the warnings of the translations of an original again, after its text changed.
+	 *
+	 * The warnings were found for the text before the change, and approving a translation doesn't check them.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param GP_Original $original The original before the change.
+	 * @param array       $data     The fields of the changed original.
+	 */
+	public function recheck_translation_warnings( $original, $data ) {
+		// Filters may add keys to the imported data that aren't fields of an original.
+		$changed_original = new GP_Original( array_intersect_key( array_merge( (array) $original, $data ), array_flip( $this->field_names ) ) );
+		$singular         = $changed_original->singular;
+		$plural           = $changed_original->plural;
+
+		// Only the text matters, so warnings dismissed for it stay dismissed when the context or references change.
+		if ( $singular === $original->singular && (string) $plural === (string) $original->plural ) {
+			return;
+		}
+
+		$translations = GP::$translation->find_many(
+			array(
+				'original_id' => $original->id,
+				'status'      => array( 'current', 'waiting', 'fuzzy', 'changesrequested' ),
+			)
+		);
+		if ( ! $translations ) {
+			return;
+		}
+
+		// An import rechecks many originals of the same project, so the locales of its sets are only looked up once.
+		static $locales = array();
+
+		$missing_set_ids = array_diff( array_unique( wp_list_pluck( $translations, 'translation_set_id' ) ), array_keys( $locales ) );
+		if ( $missing_set_ids ) {
+			foreach ( GP::$translation_set->find_many( array( 'id' => array_values( $missing_set_ids ) ) ) as $translation_set ) {
+				$locales[ $translation_set->id ] = GP_Locales::by_slug( $translation_set->locale );
+			}
+		}
+
+		foreach ( $translations as $translation ) {
+			$locale = $locales[ $translation->translation_set_id ] ?? null;
+			if ( ! $locale ) {
+				continue;
+			}
+
+			// Forms the original doesn't use any more, like the plural forms of an original that lost its plural, are left out.
+			$forms    = array_slice( $translation->translations(), 0, null === $plural ? 1 : $locale->nplurals );
+			$warnings = GP::$translation_warnings->check( $singular, $plural, $forms, $locale, $changed_original );
+			if ( $warnings != $translation->warnings ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual -- No warnings are stored as null or an empty value.
+				$translation->update( array( 'warnings' => $warnings ) );
+			}
 		}
 	}
 

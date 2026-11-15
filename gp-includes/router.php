@@ -75,22 +75,22 @@ class GP_Router {
 	 * Add a route to the router.
 	 *
 	 * @param string $re       The regular expression to match the route.
-	 * @param mixed  $function The function or class/method array to call when the route is matched.
+	 * @param mixed  $callback The function or class/method array to call when the route is matched.
 	 * @param string $method   Optional. The HTTP method to match. Default 'get'.
 	 */
-	public function add( $re, $function, $method = 'get' ) {
-		$this->urls[ "$method:$re" ] = $function;
+	public function add( $re, $callback, $method = 'get' ) {
+		$this->urls[ "$method:$re" ] = $callback;
 	}
 
 	/**
 	 * Prepend a route to the router.
 	 *
 	 * @param string $re       The regular expression to match the route.
-	 * @param mixed  $function The function or class/method array to call when the route is matched.
+	 * @param mixed  $callback The function or class/method array to call when the route is matched.
 	 * @param string $method   Optional. The HTTP method to match. Default 'get'.
 	 */
-	public function prepend( $re, $function, $method = 'get' ) {
-		$this->urls = array( "$method:$re" => $function ) + $this->urls;
+	public function prepend( $re, $callback, $method = 'get' ) {
+		$this->urls = array( "$method:$re" => $callback ) + $this->urls;
 	}
 
 	/**
