@@ -385,8 +385,10 @@ class GP_Original extends GP_Thing {
 					/*
 					 * The key of an entry is made of its context and singular only, so a string which gained
 					 * a plural form, or whose plural form changed, matches the existing original and is updated
-					 * in place. Its current translations don't have a translation for every plural form of the
-					 * locale any more, so they have to be set to fuzzy, like for any other changed original.
+					 * in place. Its current translations then have to be set to fuzzy, like for any other changed
+					 * original: a translation made without a plural form has no translation for the other plural
+					 * forms of the locale, and one made for another plural text doesn't match the new one, even
+					 * when it has every plural form.
 					 */
 					$plural         = gp_array_get( $data, 'plural' );
 					$plural_changed = ! is_null( $plural ) && '' !== $plural && $original->plural !== $plural;
