@@ -552,43 +552,43 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 			array(
 				// Test %s.
 				'test_string'     => 'Words with %ssimple %sstring%s placeholder%s.',
-				'expected_result' => 'Words with %s' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%s ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%s.',
+				'expected_result' => 'Words with %s' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%s ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%s.',
 			),
 			array(
 				// Test %d.
 				'test_string'     => 'Words with %dsimple %dinteger%d placeholder%d.',
-				'expected_result' => 'Words with %d' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %d' . $this->glossary_match( 'n\u00famero inteiro', 'noun', 'integer' ) . '%d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%d.',
+				'expected_result' => 'Words with %d' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %d' . $this->glossary_match( 'número inteiro', 'noun', 'integer' ) . '%d ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%d.',
 			),
 			array(
 				// Test %l.
 				'test_string'     => 'Words with %lsimple %llist%l placeholder%l.',
-				'expected_result' => 'Words with %l' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %l' . $this->glossary_match( 'lista', 'noun', 'list' ) . '%l ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%l.',
+				'expected_result' => 'Words with %l' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %l' . $this->glossary_match( 'lista', 'noun', 'list' ) . '%l ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%l.',
 			),
 			array(
 				 // Test %1s, %1d and %1l.
 				'test_string'     => 'Words with %1ssimple %1sstring%1d placeholder%1l with minimum width.',
-				'expected_result' => 'Words with %1s' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %1s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%1d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%1l with minimum width.',
+				'expected_result' => 'Words with %1s' . $this->glossary_match( 'simples', 'noun', 'simple' ) . ' %1s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%1d ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%1l with minimum width.',
 			),
 			// Test with numbered placeholders before and after glossary matches.
 			array(
 				// Test %1$s.
 				'test_string'     => 'Words with %1$snumbered %2$sstring%3$s placeholder%4$s.',
-				'expected_result' => 'Words with %1$s' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%3$s ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$s.',
+				'expected_result' => 'Words with %1$s' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%3$s ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%4$s.',
 			),
 			array(
 				// Test %1$d.
 				'test_string'     => 'Words with %1$dnumbered %2$dinteger%3$d placeholder%4$d.',
-				'expected_result' => 'Words with %1$d' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$d' . $this->glossary_match( 'n\u00famero inteiro', 'noun', 'integer' ) . '%3$d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$d.',
+				'expected_result' => 'Words with %1$d' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$d' . $this->glossary_match( 'número inteiro', 'noun', 'integer' ) . '%3$d ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%4$d.',
 			),
 			array(
 				// Test %1$l.
 				'test_string'     => 'Words with %1$lnumbered %2$llist%3$l placeholder%4$l.',
-				'expected_result' => 'Words with %1$l' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$l' . $this->glossary_match( 'lista', 'noun', 'list' ) . '%3$l ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$l.',
+				'expected_result' => 'Words with %1$l' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$l' . $this->glossary_match( 'lista', 'noun', 'list' ) . '%3$l ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%4$l.',
 			),
 			array(
 				// Test %1$1s, %1$1d and %1$1l.
 				'test_string'     => 'Words with %1$1snumbered %2$1sstring%3$1d placeholder%4$1l with minimum width.',
-				'expected_result' => 'Words with %1$1s' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$1s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%3$1d ' . $this->glossary_match( 'vari\u00e1vel', 'noun', 'placeholder' ) . '%4$1l with minimum width.',
+				'expected_result' => 'Words with %1$1s' . $this->glossary_match( 'numerado', 'noun', 'numbered' ) . ' %2$1s' . $this->glossary_match( 'string', 'noun', 'string' ) . '%3$1d ' . $this->glossary_match( 'variável', 'noun', 'placeholder' ) . '%4$1l with minimum width.',
 			),
 		);
 	}
@@ -1005,6 +1005,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1061,6 +1062,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1087,6 +1089,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1097,7 +1100,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$part_of_speech = 'noun';
 
 		$matches = array(
-			'her\u00f3i' => array( // Portuguese.
+			'herói' => array( // Portuguese.
 				'hero',              // Singular.
 				'heroes',            // Plural.
 			),
@@ -1123,6 +1126,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1169,6 +1173,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1205,6 +1210,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1261,6 +1267,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1347,6 +1354,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1373,6 +1381,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1419,6 +1428,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1465,6 +1475,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1536,6 +1547,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1572,6 +1584,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1608,6 +1621,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1654,6 +1668,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1684,7 +1699,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				'dye',           // Infinitive.
 				'dyeing',        // Present.
 			),
-			'andar em pontas dos p\u00e9s' => array( // Portuguese.
+			'andar em pontas dos pés' => array( // Portuguese.
 				'tiptoe',                              // Infinitive.
 				'tiptoeing',                           // Present.
 			),
@@ -1730,6 +1745,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1776,6 +1792,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1812,6 +1829,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -1858,8 +1876,8 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
-
 
 	/**
 	 * Expects matching the Verbs that form Nouns ending with suffix '-tion'.
@@ -1929,7 +1947,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 				'resolve',         // Verb.
 				'resolution',      // Noun.
 			),
-			'comp\u00f4r' => array( // Portuguese.
+			'compôr' => array( // Portuguese.
 				'compose',            // Verb.
 				'composition',        // Noun.
 			),
@@ -2077,6 +2095,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -2245,6 +2264,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		);
 
 		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+		$this->check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries );
 	}
 
 	/**
@@ -2405,7 +2425,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$expected_result = array();
 		foreach ( $matches as $glossary_entry => $originals ) {
 			foreach ( $originals as $original ) {
-				$expected_result[] = '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
+				$expected_result[] = $this->glossary_match( $glossary_entry, $part_of_speech, $original );
 			}
 		}
 
@@ -2430,6 +2450,26 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
+	 * Method to test the map_glossary_entries_to_translation_originals() function by matching from a suffixed term.
+	 *
+	 * @param string $test_string      The string to test.
+	 * @param string $part_of_speech   The part of speech of the string to test.
+	 * @param array  $matches          The matches to expect.
+	 * @param array  $glossary_entries The glossary entries to create.
+	 *
+	 * @return void
+	 */
+	function check_map_glossary_from_suffixed( $test_string, $part_of_speech, $matches, $glossary_entries ) {
+		// Set the suffixed terms as glossary entries.
+		foreach ( $glossary_entries as $key => $glossary_entry ) {
+			$glossary_entries[ $key ]['term'] = $matches[ $glossary_entry['translation'] ][1];
+		}
+
+		// Check map_glossary from suffixed terms, by reverting to base term and matching all glossary suffixes normally.
+		$this->check_map_glossary( $test_string, $part_of_speech, $matches, $glossary_entries );
+	}
+
+	/**
 	 * Method to test the test_map_glossary_entries_to_translation_originals_with_entries_bounded_by_placeholders() function.
 	 *
 	 * @param string $glossary_entry   The translation of the glossary entry.
@@ -2438,7 +2478,7 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	 * @return string                  The formated glossary match output.
 	 */
 	function glossary_match( $glossary_entry, $part_of_speech, $original ) {
-		return '<span class="glossary-word" data-translations="[{&quot;translation&quot;:&quot;' . $glossary_entry . '&quot;,&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
+		return '<span class="glossary-word" data-translations="[{&quot;translation&quot;:' . htmlspecialchars( wp_json_encode( $glossary_entry ), ENT_QUOTES, 'UTF-8' ) . ',&quot;pos&quot;:&quot;' . $part_of_speech . '&quot;,&quot;comment&quot;:null,&quot;locale_entry&quot;:&quot;&quot;}]">' . $original . '</span>';
 	}
 
 	/**
@@ -2483,4 +2523,97 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		return "<span class='invisibles' title='New line'>&crarr;</span>\n";
 	}
 
+	/**
+	 * @dataProvider data_glossary_base_terms
+	 */
+	function test_gp_glossary_get_base_terms( $term, $part_of_speech, $base_term ) {
+		$this->assertContains( $base_term, gp_glossary_get_base_terms( $term, $part_of_speech, gp_glossary_suffixes() ) );
+	}
+
+	function data_glossary_base_terms() {
+		return array(
+			'plural with -es'                       => array( 'heroes', 'noun', 'hero' ),
+			'plural with -ies'                      => array( 'ladies', 'noun', 'lady' ),
+			'plural with -ves'                      => array( 'wives', 'noun', 'wife' ),
+			'third person with -ies'                => array( 'tries', 'verb', 'try' ),
+			'past tense'                            => array( 'added', 'verb', 'add' ),
+			'past tense of a verb ending with -e'   => array( 'deleted', 'verb', 'delete' ),
+			'past tense with a doubled consonant'   => array( 'committed', 'verb', 'commit' ),
+			'present participle'                    => array( 'troubleshooting', 'verb', 'troubleshoot' ),
+			'plural of a noun formed with -tion'    => array( 'corrections', 'noun', 'correction' ),
+		);
+	}
+
+	/**
+	 * Digits, spaces and punctuation don't count as consonants or letters for the suffix rules.
+	 *
+	 * @dataProvider data_glossary_wrong_base_terms
+	 */
+	function test_gp_glossary_get_base_terms_only_reverts_the_suffixes_of_words( $term, $part_of_speech, $wrong_base_term ) {
+		$this->assertNotContains( $wrong_base_term, gp_glossary_get_base_terms( $term, $part_of_speech, gp_glossary_suffixes() ) );
+	}
+
+	function data_glossary_wrong_base_terms() {
+		return array(
+			'number with -s'                => array( '404s', 'noun', '404' ),
+			'digit before -es'              => array( '2es', 'noun', '2' ),
+			'digit before -ies'             => array( '4ies', 'noun', '4y' ),
+			'space before -ed'              => array( 'n ed', 'verb', 'n ' ),
+			'symbol before a doubled -s'    => array( '+sses', 'noun', '+s' ),
+		);
+	}
+
+	function test_gp_glossary_get_base_terms_without_a_suffix() {
+		$suffixes = gp_glossary_suffixes();
+
+		$this->assertSame( array(), gp_glossary_get_base_terms( 'hero', 'noun', $suffixes ) );
+		$this->assertSame( array(), gp_glossary_get_base_terms( 'c++', 'noun', $suffixes ) );
+		$this->assertSame( array(), gp_glossary_get_base_terms( 'apples', 'adjective', $suffixes ), 'Adjectives have no suffix rules.' );
+	}
+
+	/**
+	 * A term with regular expression characters is never used as a pattern.
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_regex_characters_in_suffixed_terms() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		foreach ( array( '[beta]s', 'item(s', 'a.b.cs', 'C++', 'note:' ) as $term ) {
+			GP::$glossary_entry->create_and_select(
+				array(
+					'glossary_id'    => $glossary->id,
+					'term'           => $term,
+					'part_of_speech' => 'noun',
+					'translation'    => 'tradução',
+				)
+			);
+		}
+
+		$entry = new Translation_Entry( array( 'singular' => 'Use C++ and note: the [beta]s.' ) );
+		$orig  = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertStringContainsString( '>C++</span>', $orig->singular_glossary_markup );
+		$this->assertStringContainsString( '>note:</span>', $orig->singular_glossary_markup );
+	}
+
+	/**
+	 * A suffixed term and the base form added for it are the same glossary entry, which is shown once.
+	 */
+	function test_map_glossary_entries_to_translation_originals_shows_a_suffixed_term_once() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+		GP::$glossary_entry->create_and_select(
+			array(
+				'glossary_id'    => $glossary->id,
+				'term'           => 'wives',
+				'part_of_speech' => 'noun',
+				'translation'    => 'esposas',
+			)
+		);
+
+		$entry = new Translation_Entry( array( 'singular' => 'Testing words wife, wives.' ) );
+		$orig  = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertSame( 2, substr_count( $orig->singular_glossary_markup, 'esposas' ), $orig->singular_glossary_markup );
+	}
 }
