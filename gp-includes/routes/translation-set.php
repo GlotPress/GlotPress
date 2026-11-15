@@ -52,7 +52,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 			$this->redirect( gp_url( '/sets/-new', array( 'project_id' => $new_set->project_id ) ) );
 		} else {
 			GP::$project->get( $created_set->project_id );
-			$this->notices[] = __( 'The translation set was created!', 'glotpress' );
+			$this->successes[] = __( 'The translation set was created!', 'glotpress' );
 			$this->redirect( gp_url_project_locale( GP::$project->get( $created_set->project_id ), $created_set->locale, $created_set->slug ) );
 		}
 	}
@@ -135,7 +135,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 
 		$project = GP::$project->get( $new_set->project_id );
 
-		$this->notices[] = __( 'The translation set was updated!', 'glotpress' );
+		$this->successes[] = __( 'The translation set was updated!', 'glotpress' );
 
 		$this->redirect( gp_url_project_locale( $project, $new_set->locale, $new_set->slug ) );
 	}
@@ -168,7 +168,7 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 			return;
 		}
 
-		$this->notices[] = __( 'The translation set was deleted!', 'glotpress' );
+		$this->successes[] = __( 'The translation set was deleted!', 'glotpress' );
 		$this->redirect( gp_url_project( $project ) );
 	}
 

@@ -32,7 +32,7 @@ function prepare_original( $text ) {
 	// Break out & back into notranslate for translatable attributes.
 	$text = preg_replace( '/(title|aria-label)=([\'"])([^\\2]+?)\\2/', '\\1=\\2</span>\\3<span class="notranslate">\\2', $text );
 	// Wrap placeholders with 'notranslate placeholder'.
-	$text = preg_replace( '/(%(?:(?:\d+\$)?(?:\d+)?)?[bcdefglosuxEFGX%@])/', '<span class="notranslate placeholder">\\1</span>', $text );
+	$text = preg_replace( '/(' . gp_get_placeholder_regex_pattern() . ')/', '<span class="notranslate placeholder">\\1</span>', $text );
 
 	// Highlight two or more spaces between words.
 	$text = preg_replace( '/(?!^)  +(?!$)/', '<span class="invisible-spaces">$0</span>', $text );
@@ -42,6 +42,19 @@ function prepare_original( $text ) {
 	$text = preg_replace( "/\n( +)/", "\n<span class=\"invisible-spaces\">$1</span>", $text );
 	// Highlight trailing spaces in multi lines.
 	$text = preg_replace( "/( +)\n/", "<span class=\"invisible-spaces\">$1</span>\n", $text );
+	// Highlight non-breaking spaces anywhere, as they look like normal ones. Matched by their bytes, as the text may not be valid UTF-8.
+	// Keyed by their first byte, which tells the two apart.
+	$non_breaking_space_titles = array(
+		"\xC2" => esc_attr__( 'Non-breaking space', 'glotpress' ),
+		"\xE2" => esc_attr__( 'Narrow no-break space', 'glotpress' ),
+	);
+	$text                      = preg_replace_callback(
+		'/(?:\xC2\xA0)+|(?:\xE2\x80\xAF)+/',
+		function ( $m ) use ( $non_breaking_space_titles ) {
+			return '<span class="invisible-spaces non-breaking-spaces" title="' . $non_breaking_space_titles[ $m[0][0] ] . '">' . $m[0] . '</span>';
+		},
+		$text
+	);
 
 	$text = str_replace( array( "\r", "\n" ), "<span class='invisibles' title='" . esc_attr__( 'New line', 'glotpress' ) . "'>&crarr;</span>\n", $text );
 	$text = str_replace( "\t", "<span class='invisibles' title='" . esc_attr__( 'Tab character', 'glotpress' ) . "'>&rarr;</span>\t", $text );
@@ -562,8 +575,9 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		// `are you sure...?` could never match. A hyphen counts as part of the
 		// word, so `add` is not marked inside `add-on`. Character references
 		// are split off first, so a term like `&` is not marked inside `&#38;`.
-		$placeholders_search = '%(?:(?:\d+\$)?(?:\d+)?)?[bcdefglosuxEFGX%@]';
-		$terms_search        = '(&(?:#[0-9]+|#x[0-9a-f]+|[a-z][a-z0-9]*);)|(?:((?<![\w-])|' . $placeholders_search . ')(';
+		// URLs are split off too, as their hosts and paths aren't text to translate.
+		$placeholders_search = gp_get_placeholder_regex_pattern();
+		$terms_search        = '(' . gp_get_url_regex_pattern() . ')|(&(?:#[0-9]+|#x[0-9a-f]+|[a-z][a-z0-9]*);)|(?:((?<![\w-])|' . $placeholders_search . ')(';
 		foreach ( $regex_group as $suffix => $terms ) {
 			$terms_search .= '(?:' . implode( '|', $terms ) . ')' . $suffix . '|';
 		}
@@ -721,8 +735,11 @@ function textareas( $entry, $permissions, $index = 0 ) {
 		if ( 'changesrequested' == $entry->translation_status && ! apply_filters( 'gp_enable_changesrequested_status', false ) ) { // todo: delete when we merge the gp-translation-helpers in GlotPress
 			$entry->translations = array();
 		}
-		?>
-		<blockquote class="translation"><?php echo prepare_original( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></blockquote>
+		$current_translation = $entry->current_translations[ $index ] ?? '';
+		if ( '' !== $current_translation ) :
+			?>
+			<p class="current-translation"><span class="current-translation-label"><?php _e( 'Current translation:', 'glotpress' ); ?></span> <span class="current-translation-text"><?php echo prepare_original( esc_translation( $current_translation ) ); ?></span></p>
+		<?php endif; ?>
 		<textarea class="foreign-text" name="translation[<?php echo esc_attr( $entry->original_id ); ?>][]" id="translation_<?php echo esc_attr( $entry->original_id ); ?>_<?php echo esc_attr( $entry->id ); ?>_<?php echo esc_attr( $index ); ?>" <?php echo disabled( ! $can_edit ); ?>><?php echo gp_prepare_translation_textarea( esc_translation( gp_array_get( $entry->translations, $index ) ) ); ?></textarea>
 
 		<div>
@@ -827,6 +844,7 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $transl
 		<option value="approve"><?php _ex( 'Approve', 'Action', 'glotpress' ); ?></option>
 		<option value="reject"><?php _ex( 'Reject', 'Action', 'glotpress' ); ?></option>
 		<option value="fuzzy"><?php _ex( 'Fuzzy', 'Action', 'glotpress' ); ?></option>
+		<option value="copy-original"><?php _ex( 'Copy from original', 'Action', 'glotpress' ); ?></option>
 	<?php if ( $can_write ) : ?>
 		<option value="set-priority" class="hide-if-no-js"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
 	<?php endif; ?>

@@ -184,6 +184,23 @@ class GP_Test_Builtin_Translation_Errors extends GP_UnitTestCase {
 		);
 	}
 
+	function test_sprintf_placeholders_with_flags() {
+		$this->assertNoErrors( 'unexpected_sprintf_token', '%-10s items', '%-10s Elemente' );
+		$this->assertNoErrors( 'unexpected_sprintf_token', '%+d points', '%+d Punkte' );
+		$this->assertNoErrors( 'unexpected_sprintf_token', "%'*10s items", "%'*10s Elemente" );
+		$this->assertNoErrors( 'extra_sprintf_placeholders', '%-10s items', '%-10s Elemente' );
+		$this->assertNoErrors( 'unexpected_sprintf_token', 'Get 10%-off today', '10 % Rabatt heute' );
+		$this->assertNoErrors( 'unexpected_sprintf_token', 'Save 10%-20%', 'Spare 10 bis 20 %' );
+
+		$this->assertHasErrorsAndContainsOutput(
+			'extra_sprintf_placeholders',
+			'%s items',
+			'%s Elemente, %+d mehr',
+			null,
+			'The translation contains more placeholders than the original: %+d'
+		);
+	}
+
 	function test_error_extra_sprintf_placeholders_counts_both_plural_forms() {
 		$errors = new GP_Translation_Errors();
 		$this->w->add_all( $errors );

@@ -315,6 +315,7 @@ class GP_Translation_Set extends GP_Thing {
 		$user   = wp_get_current_user();
 
 		$existing_translations = array();
+		$rows_by_original      = null;
 
 		$load_existing_translations = function ( $status ) use ( &$existing_translations ) {
 			if ( ! isset( $existing_translations[ $status ] ) ) {
@@ -374,19 +375,6 @@ class GP_Translation_Set extends GP_Thing {
 			 */
 			$entry->status = apply_filters( 'gp_translation_set_import_status', $is_fuzzy ? 'fuzzy' : $desired_status, $entry, null );
 
-			/**
-			 * Filters the warnings of imported translations of a translation set.
-			 *
-			 * @since 4.2.0
-			 *
-			 * @param array            $warnings The warnings array.
-			 * @param Translation_Entry $entry   The translation entry being imported.
-			 */
-			$entry->warnings = apply_filters( 'gp_translation_set_import_warnings', maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale ) ), $entry );
-			if ( ! empty( $entry->warnings ) && 'current' === $entry->status ) {
-				$entry->status = 'waiting';
-			}
-
 			$entry_original = new GP_Original(
 				array(
 					'project_id' => $this->project_id,
@@ -396,6 +384,19 @@ class GP_Translation_Set extends GP_Thing {
 					'comment'    => $entry->extracted_comments,
 				)
 			);
+
+			/**
+			 * Filters the warnings of imported translations of a translation set.
+			 *
+			 * @since 4.2.0
+			 *
+			 * @param array            $warnings The warnings array.
+			 * @param Translation_Entry $entry   The translation entry being imported.
+			 */
+			$entry->warnings = apply_filters( 'gp_translation_set_import_warnings', maybe_unserialize( GP::$translation_warnings->check( $entry->singular, $entry->plural, $entry->translations, $locale, $entry_original ) ), $entry );
+			if ( ! empty( $entry->warnings ) && 'current' === $entry->status ) {
+				$entry->status = 'waiting';
+			}
 
 			$has_errors = null !== GP::$translation_errors->check( $entry_original, $entry->translations, $locale );
 
@@ -477,6 +478,25 @@ class GP_Translation_Set extends GP_Thing {
 				// A row created as current is not checked again when its status is set.
 				if ( $has_errors && 'current' === $entry->status ) {
 					$entry->status = 'fuzzy';
+				}
+
+				if ( in_array( $entry->status, array( 'waiting', 'fuzzy' ), true ) ) {
+					if ( null === $rows_by_original ) {
+						$rows_by_original = array();
+						$rows             = GP::$translation->find_many(
+							array(
+								'translation_set_id' => $this->id,
+								'status'             => array( 'rejected', 'changesrequested' ),
+							)
+						);
+						foreach ( $rows as $row ) {
+							$rows_by_original[ $row->original_id ][] = $row;
+						}
+					}
+
+					if ( $this->get_blocked_suggestion_reason( $entry->original_id, $entry->translations, $rows_by_original[ $entry->original_id ] ?? array() ) ) {
+						continue;
+					}
 				}
 
 				// Check for errors.
@@ -609,6 +629,87 @@ class GP_Translation_Set extends GP_Thing {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Gets why a suggestion is refused, if it's identical to a rejected or changes-requested translation.
+	 *
+	 * The rule is the same whoever suggests it, as an importer is rarely the author of the rejected translation.
+	 * Translations that become current right away, like the ones of validators, aren't checked.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param int                   $original_id  The ID of the original.
+	 * @param array                 $translations The suggested translations, one per plural form.
+	 * @param GP_Translation[]|null $candidates   Optional. The rejected and changes-requested translations of the original,
+	 *                                            as the import loads them once for all entries. Default null.
+	 * @return string|false The status of the identical translation, 'changesrequested' or 'rejected',
+	 *                      or false if the suggestion is allowed.
+	 */
+	public function get_blocked_suggestion_reason( $original_id, array $translations, $candidates = null ) {
+		$locale = GP_Locales::by_slug( $this->locale );
+		if ( ! $locale ) {
+			return false;
+		}
+
+		if ( null === $candidates ) {
+			$candidates = GP::$translation->find_many(
+				array(
+					'translation_set_id' => $this->id,
+					'original_id'        => $original_id,
+					'status'             => array( 'rejected', 'changesrequested' ),
+				)
+			);
+		}
+
+		$reason = false;
+		if ( $candidates ) {
+			$suggested = self::normalize_plural_forms( $translations, $locale->nplurals );
+			foreach ( $candidates as $candidate ) {
+				// The author may reject their own waiting suggestion, which withdraws it rather than judging the text.
+				if ( 'rejected' === $candidate->status && $candidate->user_id_last_modified && (int) $candidate->user_id_last_modified === (int) $candidate->user_id ) {
+					continue;
+				}
+
+				if ( self::normalize_plural_forms( $candidate->translations(), $locale->nplurals ) === $suggested ) {
+					$reason = $candidate->status;
+					break;
+				}
+			}
+		}
+
+		/**
+		 * Filters why a suggestion identical to a rejected or changes-requested translation is refused.
+		 *
+		 * @since 4.2.0
+		 *
+		 * @param string|false       $reason          'changesrequested', 'rejected', or false to allow the suggestion.
+		 * @param GP_Translation_Set $translation_set The translation set.
+		 * @param int                $original_id     The ID of the original.
+		 * @param array              $translations    The suggested translations.
+		 */
+		return apply_filters( 'gp_translation_block_rejected_or_changesrequested', $reason, $this, $original_id, $translations );
+	}
+
+	/**
+	 * Brings translations into one shape for comparing them: one entry per plural form of the locale.
+	 *
+	 * A request sends an empty plural form as an empty string, a translation stores it as null.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $forms    The translations, keyed by the index of their plural form.
+	 * @param int   $nplurals The number of plural forms of the locale.
+	 * @return array The translations, with null for each empty or missing plural form.
+	 */
+	private static function normalize_plural_forms( array $forms, $nplurals ) {
+		$normalized = array();
+		for ( $index = 0; $index < $nplurals; $index++ ) {
+			$form         = $forms[ $index ] ?? null;
+			$normalized[] = '' === $form ? null : $form;
+		}
+
+		return $normalized;
 	}
 
 	/**
@@ -937,10 +1038,10 @@ class GP_Translation_Set extends GP_Thing {
 		} else {
 			$copied = $this->query(
 				"INSERT INTO $wpdb->gp_translations (
-					original_id,       translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added,       date_modified, warnings
+					original_id,       translation_set_id, translation_0, translation_1, translation_2, translation_3, translation_4, translation_5, user_id, user_id_last_modified, status, date_added,       date_modified, warnings
 				)
 				SELECT
-					original_id, %s AS translation_set_id, translation_0, translation_1, translation_2, user_id, status, date_added, %s AS date_modified, warnings
+					original_id, %s AS translation_set_id, translation_0, translation_1, translation_2, translation_3, translation_4, translation_5, user_id, user_id_last_modified, status, date_added, %s AS date_modified, warnings
 				FROM $wpdb->gp_translations WHERE translation_set_id = %s ORDER BY $wpdb->gp_translations.date_modified, $wpdb->gp_translations.id",
 				$this->id,
 				$current_date,

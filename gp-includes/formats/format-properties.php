@@ -114,16 +114,16 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $string The string to encode.
+	 * @param string $value The string to encode.
 	 *
 	 * @return string
 	 */
-	private function utf8_uni_encode( $string ) {
+	private function utf8_uni_encode( $value ) {
 		$result = '';
 		$offset = 0;
 
 		while ( $offset >= 0 ) {
-			$val = $this->ordutf8( $string, $offset );
+			$val = $this->ordutf8( $value, $offset );
 
 			if ( false === $val ) {
 				break;
@@ -142,22 +142,22 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $string The string to encode.
+	 * @param string $value The string to encode.
 	 *
 	 * @return string
 	 */
-	private function ascii_uni_encode( $string ) {
+	private function ascii_uni_encode( $value ) {
 		$result = '';
 
-		$string_length = strlen( $string );
+		$string_length = strlen( $value );
 
 		for ( $i = 0; $i < $string_length; $i++ ) {
-			$val = ord( $string[ $i ] );
+			$val = ord( $value[ $i ] );
 
 			if ( $val > 127 ) {
 				$result .= sprintf( '\u%04x', $val );
 			} else {
-				$result .= $string[ $i ];
+				$result .= $value[ $i ];
 			}
 		}
 
@@ -167,14 +167,14 @@ class GP_Format_Properties extends GP_Format {
 	/**
 	 * Decodes a unicode escaped string to a PHP string.
 	 *
-	 * @param string $string The string to decode.
+	 * @param string $value The string to decode.
 	 *
 	 * @since 2.0.0
 	 *
 	 * @return string
 	 */
-	private function uni_decode( $string ) {
-		return preg_replace_callback( "/\\\\u([a-fA-F0-9]{4})/", array( $this, 'uni_decode_callback' ), $string );
+	private function uni_decode( $value ) {
+		return preg_replace_callback( "/\\\\u([a-fA-F0-9]{4})/", array( $this, 'uni_decode_callback' ), $value );
 	}
 
 	/**
@@ -227,13 +227,13 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $string The UTF-8 string to process.
+	 * @param string $value  The UTF-8 string to process.
 	 * @param int    $offset The offset of the string to return the character value of.
 	 *
 	 * @return int|bool
 	 */
-	private function ordutf8( $string, &$offset ) {
-		$character = substr( $string, $offset, 1 );
+	private function ordutf8( $value, &$offset ) {
+		$character = substr( $value, $offset, 1 );
 
 		// If substr returned false, we are past the end of line so no need to process it.
 		if ( false === $character ) {
@@ -260,7 +260,7 @@ class GP_Format_Properties extends GP_Format {
 
 			for ( $i = 2; $i <= $bytesnumber; $i++ ) {
 				++$offset;
-				$code2    = ord( substr( $string, $offset, 1 ) ) - 128;  // 10xxxxxx
+				$code2    = ord( substr( $value, $offset, 1 ) ) - 128;  // 10xxxxxx
 				$codetemp = ( $codetemp * 64 ) + $code2;
 			}
 
@@ -269,7 +269,7 @@ class GP_Format_Properties extends GP_Format {
 
 		$offset += 1;
 
-		if ( $offset >= strlen( $string ) ) {
+		if ( $offset >= strlen( $value ) ) {
 			$offset = -1;
 		}
 
@@ -522,12 +522,12 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $string The string to unescape.
+	 * @param string $value The string to unescape.
 	 *
 	 * @return string
 	 */
-	private function unescape( $string ) {
-		return stripcslashes( $string );
+	private function unescape( $value ) {
+		return stripcslashes( $value );
 	}
 
 	/**
@@ -535,12 +535,12 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $string The string to escape.
+	 * @param string $value The string to escape.
 	 *
 	 * @return string
 	 */
-	private function escape( $string ) {
-		return addcslashes( $string, '"\\/' );
+	private function escape( $value ) {
+		return addcslashes( $value, '"\\/' );
 	}
 
 	/**
@@ -548,12 +548,12 @@ class GP_Format_Properties extends GP_Format {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $string The string to escape.
+	 * @param string $value The string to escape.
 	 *
 	 * @return string
 	 */
-	private function escape_key( $string ) {
-		return addcslashes( $string, '=: ' );
+	private function escape_key( $value ) {
+		return addcslashes( $value, '=: ' );
 	}
 }
 
