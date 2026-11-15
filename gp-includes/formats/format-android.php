@@ -181,10 +181,10 @@ class GP_Format_Android extends GP_Format {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param obj    $string_entry The string entry object to use.
+	 * @param object $string_entry The string entry object to use.
 	 * @param string $context      The context string to use.
 	 *
-	 * @return obj A translation entry object.
+	 * @return object A translation entry object.
 	 */
 	private function generate_entry( $string_entry, $context ) {
 		// Check to see if there is an xliff tag in the string.

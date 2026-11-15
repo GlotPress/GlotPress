@@ -64,8 +64,8 @@ function gp_route_nonce_url( $url, $action ) {
  *
  * @param array  $items         The array to get the value from.
  * @param string $key           Name of array value.
- * @param mixed  $default_value Value to return if $array[$key] doesn't exist. Default is ''.
- * @return mixed $array[$key] if exists or $default_value
+ * @param mixed  $default_value Value to return if $items[$key] doesn't exist. Default is ''.
+ * @return mixed $items[$key] if exists or $default_value
  */
 function gp_array_get( $items, $key, $default_value = '' ) {
 	return ( is_scalar( $key ) && isset( $items[ $key ] ) ) ? $items[ $key ] : $default_value;
@@ -102,7 +102,7 @@ function gp_const_set( $name, $value ) {
  *
  * @param object       $obj           The object to get the member from.
  * @param string       $key           Name of member variable.
- * @param string|array $default_value Value to return if $object->$key doesn't exist. Default is ''.
+ * @param string|array $default_value Value to return if $obj->$key doesn't exist. Default is ''.
  * @return string|array $obj->$key if exists or $default_value
  */
 function gp_member_get( $obj, $key, $default_value = '' ) {
@@ -584,23 +584,24 @@ function gp_set_cookie( $name, ...$args ) {
  *
  * @since 1.0.0
  *
- * @param string $string The string representation of the time to convert.
+ * @param string $value The string representation of the time to convert.
  * @return int
  */
-function gp_gmt_strtotime( $string ) {
-	if ( is_numeric( $string ) ) {
-		return $string;
+function gp_gmt_strtotime( $value ) {
+	if ( is_numeric( $value ) ) {
+		return $value;
 	}
-	if ( ! is_string( $string ) ) {
+	if ( ! is_string( $value ) ) {
 		return -1;
 	}
 
-	if ( stristr( $string, 'utc' ) || stristr( $string, 'gmt' ) || stristr( $string, '+0000' ) ) {
-		return strtotime( $string );
+	if ( stristr( $value, 'utc' ) || stristr( $value, 'gmt' ) || stristr( $value, '+0000' ) ) {
+		return strtotime( $value );
 	}
 
-	if ( -1 == $time = strtotime( $string . ' +0000' ) ) {
-		return strtotime( $string );
+	$time = strtotime( $value . ' +0000' );
+	if ( false === $time ) {
+		return strtotime( $value );
 	}
 
 	return $time;
