@@ -65,4 +65,17 @@ class GP_Test_Translation_Warnings extends GP_UnitTestCase {
 			$this->with_equal->check( 'baba', 'babas', array('xxx'), $no_plural_locale ) );
 
 	}
+
+	function test_check_passes_the_original_to_the_callbacks() {
+		$this->w->add(
+			'context',
+			function ( $original_text, $translation, $locale, $plural_form, $original ) {
+				return $original ? $original->context : true;
+			}
+		);
+		$original = new GP_Original( array( 'singular' => 'Save', 'context' => 'button' ) );
+
+		$this->assertSame( array( 0 => array( 'context' => 'button' ) ), $this->w->check( 'Save', null, array( 'Speichern' ), $this->standard_plural_locale, $original ) );
+		$this->assertNull( $this->w->check( 'Save', null, array( 'Speichern' ), $this->standard_plural_locale ) );
+	}
 }
