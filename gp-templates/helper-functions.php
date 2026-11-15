@@ -90,16 +90,14 @@ function gp_prepare_translation_textarea( $text ) {
 	return $text;
 }
 
-
 /**
- * Suffixes for use in map_glossary_entries_to_translation_originals().
+ * Gets the suffix rules used to match glossary terms.
  *
- * @since 4.0.0
+ * @since 4.2.0
  *
- * @return array The suffixed entries.
+ * @return array The suffix rules for each part of speech.
  */
 function gp_glossary_suffixes() {
-
 	$suffixes = array(
 
 		/**
@@ -152,7 +150,7 @@ function gp_glossary_suffixes() {
 
 			// Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
 			array(
-				'preceded' => '[^aeiou]', // Preceded by any consonant.
+				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
 				'endings'  => array(
 					'y' => 'i',  // Change to 'i-es'. Lady and ladi-es.
 					'o' => '%s', // Add 'es'.         Hero and hero-es, tomato and tomato-es.
@@ -175,7 +173,7 @@ function gp_glossary_suffixes() {
 			array(
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
-					'(?<!z|x|sh|ch|s|y|fe)' => '%s', // Add 's'. None of the above except 'f' because of words like 'Chief' which plural is '-s'.
+					'\w(?<!z|x|sh|ch|s|y|fe)' => '%s', // Add 's'. None of the above except 'f' because of words like 'Chief' which plural is '-s'.
 				),
 				'add'      => 's', // Add 's'.
 			),
@@ -215,7 +213,7 @@ function gp_glossary_suffixes() {
 
 			// Ending with '-o' and '-y' preceded by consonant. Suffix: '-es'.
 			array(
-				'preceded' => '[^aeiou]', // Preceded by any consonant.
+				'preceded' => '[b-df-hj-np-tv-xz]', // Preceded by any consonant.
 				'endings'  => array(
 					'y' => 'i',  // Change to 'i-es'. Try and tri-es.
 					'o' => '%s', // Add 'es'.         Go and go-es, do and do-es.
@@ -227,7 +225,7 @@ function gp_glossary_suffixes() {
 			array(
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
-					'(?<!z|x|sh|ch|s|y|o)' => '%s', // Add 's'. None of the above. Format and format-s, make and make-s, pull and pull-s.
+					'\w(?<!z|x|sh|ch|s|y|o)' => '%s', // Add 's'. None of the above. Format and format-s, make and make-s, pull and pull-s.
 				),
 				'add'      => 's',  // Add 's'.
 			),
@@ -241,7 +239,7 @@ function gp_glossary_suffixes() {
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
 					// Not ending with '-e'.
-					'[^e]'     => '%s', // Add 'ed'.       Fix and fix-ed, push and push-ed.
+					'\w(?<!e)' => '%s', // Add 'ed'.       Fix and fix-ed, push and push-ed.
 					// Ending with '-e'.
 					'e'        => '',   // Change to 'ed'. Contribute and contribut-ed, delete and delet-ed.
 				),
@@ -252,7 +250,7 @@ function gp_glossary_suffixes() {
 			array(
 				'preceded' => '[aeiou]', // Preceded by any vowel.
 				'endings'  => array(
-					'[^aeiou]' => '%s', // Add 'ed'. Visit and visit-ed, develop and develop-ed.
+					'[b-df-hj-np-tv-xz]' => '%s', // Add 'ed'. Visit and visit-ed, develop and develop-ed.
 				),
 				'add'      => 'ed', // Add 'ed'.
 			),
@@ -261,7 +259,7 @@ function gp_glossary_suffixes() {
 			array(
 				'preceded' => '[aeiou]', // Preceded by any vowel.
 				'endings'  => array(
-					'[^aeiou]' => '%1$s%1$s', // Double ending consonant and add 'ed'. Commit and committ-ed, prefer and preferr-ed, travel and travell-ed.
+					'[b-df-hj-np-tv-xz]' => '%1$s%1$s', // Double ending consonant and add 'ed'. Commit and committ-ed, prefer and preferr-ed, travel and travell-ed.
 				),
 				'add'      => 'ed', // Add 'ed'.
 			),
@@ -275,7 +273,7 @@ function gp_glossary_suffixes() {
 				'preceded' => '[a-z]', // Preceded by any letter.
 				'endings'  => array(
 					// Not ending with '-e'.
-					'[^e]'     => '%s', // Add 'ing'.        Fix and fix-ing, push and push-ing.
+					'\w(?<!e)' => '%s', // Add 'ing'.        Fix and fix-ing, push and push-ing.
 					// Ending with '-ee', '-ye' or '-oe'.
 					'ee'       => '%s', // Add 'ing'.        Agree and agree-ing, see and see-ing.
 					'ye'       => '%s', // Add 'ing'.        Dye and dye-ing.
@@ -290,7 +288,7 @@ function gp_glossary_suffixes() {
 			array(
 				'preceded' => '[aeiou]', // Preceded by any vowel.
 				'endings'  => array(
-					'[^aeiou]' => '%s', // Add 'ing'. Visit and visit-ing, develop and develop-ing.
+					'[b-df-hj-np-tv-xz]' => '%s', // Add 'ing'. Visit and visit-ing, develop and develop-ing.
 				),
 				'add'      => 'ing', // Add 'ing'.
 			),
@@ -299,7 +297,7 @@ function gp_glossary_suffixes() {
 			array(
 				'preceded' => '[aeiou]', // Preceded by any vowel.
 				'endings'  => array(
-					'[^aeiou]' => '%1$s%1$s', // Double ending consonant and add 'ing'. Commit and committ-ing, prefer and preferr-ing, travelling and travell-ing.
+					'[b-df-hj-np-tv-xz]' => '%1$s%1$s', // Double ending consonant and add 'ing'. Commit and committ-ing, prefer and preferr-ing, travelling and travell-ing.
 				),
 				'add'      => 'ing', // Add 'ing'.
 			),
@@ -397,30 +395,32 @@ function gp_glossary_suffixes() {
 	/**
 	 * Filter the list of Suffixes to match glossary terms for each Part of Speech.
 	 *
-	 * @param array $suffixes   Array of suffix rules per part_of_speech.
-	 *
 	 * @since 4.0.0
+	 *
+	 * @param array $suffixes The suffix rules for each part of speech.
 	 */
-	$suffixes = apply_filters( 'gp_glossary_match_suffixes', $suffixes );
-
-	return $suffixes;
+	return apply_filters( 'gp_glossary_match_suffixes', $suffixes );
 }
-
 
 /**
  * Adds suffixes for use in map_glossary_entries_to_translation_originals().
  *
- * @param array $glossary_entries An array of glossary entries to sort.
+ * @since 4.2.0 Added the `$suffixes` parameter.
+ *
+ * @param array      $glossary_entries An array of glossary entries to sort.
+ * @param array|null $suffixes         Optional. The suffix rules for each part of speech. Default: the rules from
+ *                                     gp_glossary_suffixes().
  *
  * @return array The suffixed entries.
  */
-function gp_glossary_add_suffixes( $glossary_entries ) {
+function gp_glossary_add_suffixes( $glossary_entries, $suffixes = null ) {
 	if ( empty( $glossary_entries ) ) {
 		return;
 	}
 
-	// Get suffixes for glossary matching.
-	$suffixes = gp_glossary_suffixes();
+	if ( null === $suffixes ) {
+		$suffixes = gp_glossary_suffixes();
+	}
 
 	$glossary_entries_suffixes = array();
 
@@ -450,7 +450,7 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 				// Loop through rule endings.
 				foreach ( $rule['endings'] as $ending_pattern => $new_ending ) {
 
-					// Check if term ends with known suffix.
+					// Check if noun ends with known suffix.
 					if ( preg_match( '/' . $rule['preceded'] . $ending_pattern . '\b/i', $term, $match ) ) {
 						$matched_rule = true;
 
@@ -517,67 +517,120 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 	return $glossary_entries_suffixes;
 }
 
-
 /**
- * Revert suffixed terms for use in map_glossary_entries_to_translation_originals().
+ * Adds the base forms of the glossary terms entered in a suffixed form.
  *
- * @param array $glossary_entries   An array of glossary entries.
+ * The suffix rules add suffixes to a base form, so a term entered in the plural or in the past tense, like `wives`
+ * or `added`, only matches itself. Each base form the rules turn into the term is added as another entry for the
+ * same glossary entry, so that all the forms of the base form are matched too.
  *
- * @return array The suffixed entries.
+ * @since 4.2.0
+ *
+ * @param GP_Glossary_Entry[] $glossary_entries The glossary entries.
+ * @return GP_Glossary_Entry[] The glossary entries, followed by an entry for each base form found.
  */
 function gp_glossary_add_reverted_suffixes( $glossary_entries ) {
 	if ( empty( $glossary_entries ) ) {
 		return array();
 	}
 
-	// Get suffixes for glossary matching.
 	$suffixes = gp_glossary_suffixes();
 
-	foreach ( $glossary_entries as $key => $value ) {
+	foreach ( $glossary_entries as $glossary_entry ) {
+		$term = strtolower( $glossary_entry->term );
+		$type = $glossary_entry->part_of_speech;
 
-		$term = strtolower( $value->term );
-		$type = $value->part_of_speech;
+		// Terms with multiple words don't get suffixes.
+		if ( empty( $suffixes[ $type ] ) || preg_match( '/\s/', $term ) ) {
+			continue;
+		}
 
-		// Check existent suffixes for part_of_speech with rules.
-		if ( ! empty( $suffixes[ $type ] ) ) {
-
-			// Loop through rules.
-			foreach ( $suffixes[ $type ] as $rule ) {
-
-				// Loop through rule endings.
-				foreach ( $rule['endings'] as $ending_pattern => $current_ending ) {
-
-					// Pattern of already suffixed terms.
-					$already_suffixed_pattern = '/' . $rule['preceded'] . sprintf( $current_ending, $ending_pattern ) . $rule['add'] . '\b/i';
-
-					// Check if suffix is already applied, to revert to base term.
-					if ( preg_match( $already_suffixed_pattern, $term/*, $match*/ ) ) {
-
-						$term_begining = preg_replace( '/' . $rule['add'] . '\b/', '', $term );
-
-						$term_pattern = preg_replace( '/' . sprintf( $current_ending, $ending_pattern ) . $rule['add'] . '\b/', $ending_pattern, $term );
-
-						if ( preg_match( '/' . $term_pattern . '/', $term_begining, $match ) ) {
-
-							// Add new base term.
-							$value = clone $value;
-
-							$value->term = $match[0];
-
-							// Add base term.
-							$glossary_entries[] = $value;
-
-							break 2;
-						}
-					}
-				}
-			}
+		foreach ( gp_glossary_get_base_terms( $term, $type, $suffixes ) as $base_term ) {
+			$base_entry         = clone $glossary_entry;
+			$base_entry->term   = $base_term;
+			$glossary_entries[] = $base_entry;
 		}
 	}
 
 	return $glossary_entries;
 }
 
+/**
+ * Finds the base forms that the suffix rules turn into a term.
+ *
+ * Each rule is undone to get a candidate base form, and only the candidates that the rules turn back into the term
+ * are kept, so a candidate always follows the rules, including the letters that must precede an ending. The rules
+ * can't tell some base forms apart, like `commit` and `committ` for `committed`, so all of them are kept.
+ *
+ * @since 4.2.0
+ *
+ * @param string $term     The lowercase term.
+ * @param string $type     The part of speech of the term.
+ * @param array  $suffixes The suffix rules for each part of speech.
+ * @return string[] The base forms, without the term itself.
+ */
+function gp_glossary_get_base_terms( $term, $type, $suffixes ) {
+	if ( empty( $suffixes[ $type ] ) ) {
+		return array();
+	}
+
+	$candidates = array();
+	foreach ( $suffixes[ $type ] as $rule ) {
+		$add = $rule['add'];
+		if ( '' === $add || strlen( $term ) <= strlen( $add ) || substr( $term, -strlen( $add ) ) !== $add ) {
+			continue;
+		}
+
+		$stem = substr( $term, 0, -strlen( $add ) );
+
+		foreach ( $rule['endings'] as $ending => $new_ending ) {
+			if ( '%s' === $new_ending ) {
+				// The ending is kept, like in `kiss-es`.
+				$candidates[] = $stem;
+			} elseif ( '%1$s%1$s' === $new_ending ) {
+				// The last letter is doubled, like in `committ-ed`.
+				if ( strlen( $stem ) > 1 && substr( $stem, -1 ) === substr( $stem, -2, 1 ) ) {
+					$candidates[] = substr( $stem, 0, -1 );
+				}
+			} elseif ( preg_match( '/^[a-z]+$/', $ending ) && false === strpos( $new_ending, '%' ) ) {
+				// The ending is replaced, like in `wiv-es` for `wife`, or removed, like in `delet-ed` for `delete`.
+				if ( '' === $new_ending ) {
+					$candidates[] = $stem . $ending;
+				} elseif ( strlen( $stem ) > strlen( $new_ending ) && substr( $stem, -strlen( $new_ending ) ) === $new_ending ) {
+					$candidates[] = substr( $stem, 0, -strlen( $new_ending ) ) . $ending;
+				}
+			}
+		}
+	}
+
+	$base_terms = array();
+	foreach ( array_unique( $candidates ) as $candidate ) {
+		if ( $candidate === $term ) {
+			continue;
+		}
+
+		$suffixed_terms = gp_glossary_add_suffixes(
+			array(
+				(object) array(
+					'term'           => $candidate,
+					'part_of_speech' => $type,
+				),
+			),
+			$suffixes
+		);
+
+		foreach ( $suffixed_terms as $key => $key_suffixes ) {
+			foreach ( $key_suffixes as $suffix ) {
+				if ( $key . $suffix === $term ) {
+					$base_terms[] = $candidate;
+					break 2;
+				}
+			}
+		}
+	}
+
+	return $base_terms;
+}
 
 /**
  * Add markup to a translation original to identify the glossary terms.
@@ -602,10 +655,9 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			return $translation;
 		}
 
-		// Find already suffixed entries and revert to the base form. Example: Troubleshooting -> Troubleshoot.
+		// Add the base forms of the terms entered in a suffixed form, like `troubleshoot` for `troubleshooting`.
 		$glossary_entries = gp_glossary_add_reverted_suffixes( $glossary_entries );
 
-		// Add suffixes for glossary matching.
 		$glossary_entries_suffixes = gp_glossary_add_suffixes( $glossary_entries );
 
 		$glossary_entries_reference = array();
@@ -654,13 +706,13 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 		// Make the regex more deterministic.
 		ksort( $regex_group );
 
-		// Remove duplicates with the same Glossary Entry ID previously added from the suffix reversion.
-		foreach ( $glossary_entries_reference as $term => $referenced_terms ) {
+		// A glossary entry is referenced once, also when its base form was added as another entry.
+		foreach ( $glossary_entries_reference as $term => $referenced_entries ) {
 			$entries = array();
-			foreach ( $referenced_terms as $key => $entry_id ) {
-				$entries[ $glossary_entries[ $entry_id ]->id ] = $entry_id;
+			foreach ( $referenced_entries as $entry_key ) {
+				$entries[ $glossary_entries[ $entry_key ]->id ] = $entry_key;
 			}
-			$glossary_entries_reference[ $term ] = $entries;
+			$glossary_entries_reference[ $term ] = array_values( $entries );
 		}
 
 		// Build the regular expression.

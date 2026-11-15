@@ -2523,4 +2523,97 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		return "<span class='invisibles' title='New line'>&crarr;</span>\n";
 	}
 
+	/**
+	 * @dataProvider data_glossary_base_terms
+	 */
+	function test_gp_glossary_get_base_terms( $term, $part_of_speech, $base_term ) {
+		$this->assertContains( $base_term, gp_glossary_get_base_terms( $term, $part_of_speech, gp_glossary_suffixes() ) );
+	}
+
+	function data_glossary_base_terms() {
+		return array(
+			'plural with -es'                       => array( 'heroes', 'noun', 'hero' ),
+			'plural with -ies'                      => array( 'ladies', 'noun', 'lady' ),
+			'plural with -ves'                      => array( 'wives', 'noun', 'wife' ),
+			'third person with -ies'                => array( 'tries', 'verb', 'try' ),
+			'past tense'                            => array( 'added', 'verb', 'add' ),
+			'past tense of a verb ending with -e'   => array( 'deleted', 'verb', 'delete' ),
+			'past tense with a doubled consonant'   => array( 'committed', 'verb', 'commit' ),
+			'present participle'                    => array( 'troubleshooting', 'verb', 'troubleshoot' ),
+			'plural of a noun formed with -tion'    => array( 'corrections', 'noun', 'correction' ),
+		);
+	}
+
+	/**
+	 * Digits, spaces and punctuation don't count as consonants or letters for the suffix rules.
+	 *
+	 * @dataProvider data_glossary_wrong_base_terms
+	 */
+	function test_gp_glossary_get_base_terms_only_reverts_the_suffixes_of_words( $term, $part_of_speech, $wrong_base_term ) {
+		$this->assertNotContains( $wrong_base_term, gp_glossary_get_base_terms( $term, $part_of_speech, gp_glossary_suffixes() ) );
+	}
+
+	function data_glossary_wrong_base_terms() {
+		return array(
+			'number with -s'                => array( '404s', 'noun', '404' ),
+			'digit before -es'              => array( '2es', 'noun', '2' ),
+			'digit before -ies'             => array( '4ies', 'noun', '4y' ),
+			'space before -ed'              => array( 'n ed', 'verb', 'n ' ),
+			'symbol before a doubled -s'    => array( '+sses', 'noun', '+s' ),
+		);
+	}
+
+	function test_gp_glossary_get_base_terms_without_a_suffix() {
+		$suffixes = gp_glossary_suffixes();
+
+		$this->assertSame( array(), gp_glossary_get_base_terms( 'hero', 'noun', $suffixes ) );
+		$this->assertSame( array(), gp_glossary_get_base_terms( 'c++', 'noun', $suffixes ) );
+		$this->assertSame( array(), gp_glossary_get_base_terms( 'apples', 'adjective', $suffixes ), 'Adjectives have no suffix rules.' );
+	}
+
+	/**
+	 * A term with regular expression characters is never used as a pattern.
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_regex_characters_in_suffixed_terms() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		foreach ( array( '[beta]s', 'item(s', 'a.b.cs', 'C++', 'note:' ) as $term ) {
+			GP::$glossary_entry->create_and_select(
+				array(
+					'glossary_id'    => $glossary->id,
+					'term'           => $term,
+					'part_of_speech' => 'noun',
+					'translation'    => 'tradução',
+				)
+			);
+		}
+
+		$entry = new Translation_Entry( array( 'singular' => 'Use C++ and note: the [beta]s.' ) );
+		$orig  = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertStringContainsString( '>C++</span>', $orig->singular_glossary_markup );
+		$this->assertStringContainsString( '>note:</span>', $orig->singular_glossary_markup );
+	}
+
+	/**
+	 * A suffixed term and the base form added for it are the same glossary entry, which is shown once.
+	 */
+	function test_map_glossary_entries_to_translation_originals_shows_a_suffixed_term_once() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+		GP::$glossary_entry->create_and_select(
+			array(
+				'glossary_id'    => $glossary->id,
+				'term'           => 'wives',
+				'part_of_speech' => 'noun',
+				'translation'    => 'esposas',
+			)
+		);
+
+		$entry = new Translation_Entry( array( 'singular' => 'Testing words wife, wives.' ) );
+		$orig  = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertSame( 2, substr_count( $orig->singular_glossary_markup, 'esposas' ), $orig->singular_glossary_markup );
+	}
 }
