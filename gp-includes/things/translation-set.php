@@ -467,22 +467,26 @@ class GP_Translation_Set extends GP_Thing {
 				}
 			}
 			if ( $create ) {
-				/*
-				 * Translations of a plural original are only valid if they have a translation for every
-				 * plural form of the locale. Imported translations are created without being validated,
-				 * unlike the ones submitted through the editor, so they are checked here.
-				 */
-				$original_plural = $translated ? $translated->plural : $original->plural;
-
-				if ( ! $this->entry_has_all_translations( $entry, is_null( $original_plural ) ? 1 : $locale->nplurals ) ) {
-					continue;
-				}
-
 				if ( $user ) {
 					$entry->user_id = $user->ID;
 				}
 
 				$entry->translation_set_id = $this->id;
+
+				/*
+				 * An entry without a plural form matches a plural original by its context and singular. It was
+				 * checked as a singular above, so it is checked again with the plural form of the original it
+				 * is imported to, which needs a translation for each plural form of the locale.
+				 */
+				$original_plural = $translated ? $translated->plural : $original->plural;
+				if ( ! $has_errors && null === $entry->plural && null !== $original_plural ) {
+					$entry_original->plural = $original_plural;
+
+					$has_errors = null !== GP::$translation_errors->check( $entry_original, $entry->translations, $locale );
+					if ( $has_errors ) {
+						$entry->status = 'fuzzy';
+					}
+				}
 
 				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry, $translated );
 
@@ -538,25 +542,6 @@ class GP_Translation_Set extends GP_Thing {
 		do_action( 'gp_translations_imported', $this->id, $created_translation_ids, $approved_translation_ids );
 
 		return $translations_added;
-	}
-
-	/**
-	 * Checks whether a translation entry has a non-empty translation for each expected plural form.
-	 *
-	 * @since 4.2.0
-	 *
-	 * @param Translation_Entry $entry    The translation entry to check.
-	 * @param int               $nplurals Number of translations the entry is expected to have.
-	 * @return bool True if the entry has a translation for each plural form, false otherwise.
-	 */
-	private function entry_has_all_translations( $entry, $nplurals ) {
-		for ( $index = 0; $index < $nplurals; $index++ ) {
-			if ( ! isset( $entry->translations[ $index ] ) || '' === $entry->translations[ $index ] ) {
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	/**
