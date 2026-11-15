@@ -104,6 +104,12 @@ $more_links = apply_filters( 'gp_translation_row_template_more_links', $more_lin
 			<dd><?php echo esc_html( gp_format_user_date( $translation->translation_added ) ); ?></dd>
 		</dl>
 	<?php endif; ?>
+	<?php if ( $translation->date_modified && '0000-00-00 00:00:00' !== $translation->date_modified && $translation->date_modified !== $translation->translation_added ) : ?>
+		<dl>
+			<dt><?php _e( 'Last modified:', 'glotpress' ); ?></dt>
+			<dd><?php echo esc_html( gp_format_user_date( $translation->date_modified ) ); ?></dd>
+		</dl>
+	<?php endif; ?>
 	<?php if ( $translation->user ) : ?>
 		<dl>
 			<dt><?php _e( 'Translated by:', 'glotpress' ); ?></dt>
