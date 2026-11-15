@@ -159,12 +159,12 @@ class GP_Thing {
 	/**
 	 * Retrieves a static variable for this class.
 	 *
-	 * @param string $name    Name of the static variable.
-	 * @param mixed  $default Default value to return if the static variable is not set.
+	 * @param string $name          Name of the static variable.
+	 * @param mixed  $default_value Default value to return if the static variable is not set.
 	 * @return mixed Value of the static variable, or default value.
 	 */
-	public function get_static( $name, $default = null ) {
-		return isset( self::$static_by_class[ $this->class ][ $name ] ) ? self::$static_by_class[ $this->class ][ $name ] : $default;
+	public function get_static( $name, $default_value = null ) {
+		return isset( self::$static_by_class[ $this->class ][ $name ] ) ? self::$static_by_class[ $this->class ][ $name ] : $default_value;
 	}
 
 	/**

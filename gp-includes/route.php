@@ -544,14 +544,14 @@ class GP_Route {
 	/**
 	 * Sends a HTTP header.
 	 *
-	 * @param string $string The header string.
+	 * @param string $header_string The header string.
 	 */
-	public function header( $string ) {
+	public function header( $header_string ) {
 		if ( $this->fake_request ) {
-			list( $header, $value )   = explode( ':', $string, 2 );
+			list( $header, $value )   = explode( ':', $header_string, 2 );
 			$this->headers[ $header ] = $value;
 		} else {
-			header( $string );
+			header( $header_string );
 		}
 	}
 
