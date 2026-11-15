@@ -93,6 +93,27 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertArrayHasKey( 'placeholders', $translations[0]->warnings[0] );
 	}
 
+	function test_import_checks_the_warnings_with_the_original() {
+		GP::$translation_warnings->add(
+			'context',
+			function ( $original_text, $translation, $locale, $plural_form = null, $original = null ) {
+				return $original ? $original->context : true;
+			}
+		);
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save', 'context' => 'button' ) );
+
+		$translations_for_import = new Translations;
+		$translations_for_import->add_entry( array( 'singular' => 'Save', 'context' => 'button', 'translations' => array( 'Speichern' ) ) );
+		$set->import( $translations_for_import );
+
+		GP::$translation_warnings->remove( 'context' );
+
+		$translations = GP::$translation->all();
+		$this->assertSame( array( 'context' => 'button' ), $translations[0]->warnings[0] );
+	}
+
 	function test_import_should_not_import_translations_with_warnings_twice() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string with %s' ) );
