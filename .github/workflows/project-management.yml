@@ -1,0 +1,99 @@
+name: Project Management
+
+on:
+  pull_request_target:
+    types: [opened, closed]
+    branches:
+      - develop
+
+permissions: {}
+
+# pull_request_target runs with a write token, so no job may check out or execute PR code.
+jobs:
+  add-milestone:
+    name: Assign current milestone
+    runs-on: ubuntu-latest
+    if: github.repository == 'GlotPress/GlotPress' && github.event.action == 'closed' && github.event.pull_request.merged && !github.event.pull_request.milestone
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Assign the lowest open version milestone
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const { number } = context.payload.pull_request;
+            const milestones = await github.paginate( github.rest.issues.listMilestones, {
+              owner,
+              repo,
+              state: 'open',
+              per_page: 100,
+            } );
+
+            // Only version-like titles count, so planning milestones such as "Future Release" are skipped.
+            const current = milestones
+              .filter( ( milestone ) => /^\d+\.\d+(\.\d+)?$/.test( milestone.title.trim() ) )
+              .sort( ( a, b ) => a.title.localeCompare( b.title, undefined, { numeric: true } ) )[ 0 ];
+
+            if ( ! current ) {
+              core.notice( 'No open version milestone found.' );
+              return;
+            }
+
+            await github.rest.issues.update( {
+              owner,
+              repo,
+              issue_number: number,
+              milestone: current.number,
+            } );
+
+            core.info( `Assigned #${ number } to milestone ${ current.title }.` );
+
+  assign-fixed-issues:
+    name: Assign fixed issues to the PR author
+    runs-on: ubuntu-latest
+    if: github.repository == 'GlotPress/GlotPress' && github.event.action == 'opened'
+    permissions:
+      issues: write
+
+    steps:
+      - name: Assign author and mark issues as in progress
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const { body, user } = context.payload.pull_request;
+            const pattern = new RegExp( `\\b(?:close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved):?\\s*(?:#|${ owner }/${ repo }#|https://github\\.com/${ owner }/${ repo }/issues/)(\\d+)`, 'gi' );
+            const issues = new Set( Array.from( ( body ?? '' ).matchAll( pattern ), ( match ) => Number( match[ 1 ] ) ) );
+
+            for ( const issue_number of issues ) {
+              // A typo or a deleted issue must not stop the remaining references from being processed.
+              try {
+                const { data: issue } = await github.rest.issues.get( { owner, repo, issue_number } );
+
+                if ( issue.pull_request || issue.state === 'closed' ) {
+                  continue;
+                }
+
+                // GitHub silently drops assignees who are not allowed, e.g. external authors who never commented on the issue.
+                await github.rest.issues.addAssignees( {
+                  owner,
+                  repo,
+                  issue_number,
+                  assignees: [ user.login ],
+                } );
+
+                await github.rest.issues.addLabels( {
+                  owner,
+                  repo,
+                  issue_number,
+                  labels: [ '[Status] In Progress' ],
+                } );
+
+                core.info( `Updated issue #${ issue_number }.` );
+              } catch ( error ) {
+                core.warning( `Skipped issue #${ issue_number }: ${ error.message }` );
+              }
+            }

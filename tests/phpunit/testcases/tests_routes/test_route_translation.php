@@ -176,6 +176,69 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $foreign_original->id ) ), 'A translation must not be created for another project\'s original.' );
 	}
 
+	/**
+	 * A validator can save a translation as waiting, so someone else reviews it, and the current translation stays.
+	 */
+	function test_translations_post_saves_as_waiting_for_a_validator_who_asks_for_it() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Hello' ) );
+		$current  = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Hallo', 'status' => 'current' ) );
+
+		$_POST['status'] = 'waiting';
+		$this->submit_translation( $set, $original->id, $original->id, 'Servus' );
+
+		$this->assertSame( 'waiting', GP::$translation->find_one( array( 'original_id' => $original->id, 'translation_0' => 'Servus' ) )->status );
+		$this->assertSame( 'current', GP::$translation->get( $current->id )->status );
+	}
+
+	/**
+	 * Without asking for it, a validator's translation becomes current as before.
+	 */
+	function test_translations_post_approves_a_validators_translation_by_default() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Hello' ) );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Hallo' );
+
+		$this->assertSame( 'current', GP::$translation->find_one( array( 'original_id' => $original->id ) )->status );
+	}
+
+	/**
+	 * The status in the request can't approve the translation of a user who isn't a validator.
+	 */
+	function test_translations_post_ignores_a_status_from_a_user_who_cannot_approve() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->set_normal_user_as_current();
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Hello' ) );
+
+		$_POST['status'] = 'current';
+		$this->submit_translation( $set, $original->id, $original->id, 'Hallo' );
+
+		$this->assertSame( 'waiting', GP::$translation->find_one( array( 'original_id' => $original->id ) )->status );
+	}
+
+	/**
+	 * Saving a fuzzy translation unchanged doesn't copy it under another user's name and set the fuzzy one to old.
+	 */
+	function test_translations_post_refuses_a_translation_identical_to_a_fuzzy_one() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
+		$fuzzy    = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'fuzzy' ) );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern' );
+
+		$this->assertCount( 1, GP::$translation->find_many( array( 'original_id' => $original->id ) ) );
+		$this->assertSame( 'fuzzy', GP::$translation->get( $fuzzy->id )->status );
+		$this->assertStringContainsString( 'Identical fuzzy translation already exists.', $this->route->template_output );
+	}
+
 	private function submit_translation( $set, $nonce_original_id, $submitted_original_id, $text ) {
 		$_POST['original_id']        = $nonce_original_id;
 		$_POST['translation']        = array( $submitted_original_id => array( $text ) );
@@ -299,7 +362,7 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 
 		$this->assertSame( 'current', GP::$translation->get( $translation->id )->status );
 		$this->assertSame( 'waiting', GP::$translation->get( $translation_with_errors->id )->status );
-		$this->assertThereIsANoticeContaining( '1 translation was approved.' );
+		$this->assertThereIsASuccessContaining( '1 translation was approved.' );
 		$this->assertThereIsAnErrorContaining( '1 translation was not approved because it has translation errors.' );
 		$this->assertCount( 1, $this->route->errors );
 	}
@@ -328,7 +391,6 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$this->route->bulk_post( $set->project->path, $set->locale, $set->slug );
 		remove_filter( 'gp_pre_can_set_translation_status', $deny );
 
-		$this->assertCount( 1, $this->route->errors );
 		$this->assertThereIsAnErrorContaining( 'Error with approving 1 translation.' );
 		$this->assertThereIsAnErrorContaining( '1 translation was not approved because it has translation errors.' );
 	}
@@ -355,6 +417,93 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$this->assertEquals( 'fuzzy', GP::$translation->get( $translation->id )->status, 'A legitimate in-project translated row must still be acted on.' );
 	}
 
+	function test_bulk_copy_original_adds_the_original_as_current_translation() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$singular = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Lisbon' ) );
+		$plural   = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%s colour', 'plural' => '%s colours' ) );
+
+		$this->bulk_copy_original( $set, array( $singular->id, $plural->id ) );
+
+		$singular_translation = GP::$translation->find_one( array( 'original_id' => $singular->id, 'translation_set_id' => $set->id ) );
+		$this->assertSame( 'current', $singular_translation->status );
+		$this->assertSame( 'Lisbon', $singular_translation->translation_0 );
+		$this->assertSame( get_current_user_id(), $singular_translation->user_id );
+
+		$plural_translation = GP::$translation->find_one( array( 'original_id' => $plural->id, 'translation_set_id' => $set->id ) );
+		$this->assertSame( 'current', $plural_translation->status );
+		$this->assertSame( array( '%s colour', '%s colours' ), array( $plural_translation->translation_0, $plural_translation->translation_1 ) );
+
+		$this->assertThereIsANoticeContaining( '2 translations were copied from the original.' );
+	}
+
+	function test_bulk_copy_original_skips_originals_that_already_have_a_translation() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$translated = array();
+		foreach ( array( 'current', 'waiting', 'fuzzy', 'changesrequested' ) as $status ) {
+			$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active' ) );
+			$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => $status ) );
+			$translated[ $original->id ] = $status;
+		}
+		$rejected = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Porto' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $rejected->id, 'status' => 'rejected' ) );
+
+		// Rows of untranslated originals carry no translation ID, even when a stale page offers one for an original translated since.
+		$this->bulk_copy_original( $set, array_merge( array_keys( $translated ), array( $rejected->id ) ) );
+
+		foreach ( $translated as $original_id => $status ) {
+			$translations = GP::$translation->find_many( array( 'original_id' => $original_id, 'translation_set_id' => $set->id ) );
+			$this->assertCount( 1, $translations );
+			$this->assertSame( $status, $translations[0]->status );
+		}
+		$this->assertSame( 'Porto', GP::$translation->find_one( array( 'original_id' => $rejected->id, 'status' => 'current' ) )->translation_0 );
+
+		// Notices reach the next page through a single cookie, so both messages share one.
+		$this->assertCount( 1, $this->route->notices );
+		$this->assertThereIsANoticeContaining( '1 translation was copied from the original. 4 strings were skipped because they already have a translation.' );
+	}
+
+	function test_bulk_copy_original_ignores_obsolete_originals() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$obsolete = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '-obsolete' ) );
+
+		$this->bulk_copy_original( $set, array( $obsolete->id ) );
+
+		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $obsolete->id ) ) );
+	}
+
+	function test_bulk_copy_original_keeps_the_copy_as_suggestion_when_it_cannot_be_approved() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Lisbon' ) );
+
+		add_filter( 'gp_pre_can_set_translation_status', '__return_false' );
+		$this->bulk_copy_original( $set, array( $original->id ) );
+		remove_filter( 'gp_pre_can_set_translation_status', '__return_false' );
+
+		$translation = GP::$translation->find_one( array( 'original_id' => $original->id, 'translation_set_id' => $set->id ) );
+		$this->assertSame( 'waiting', $translation->status );
+		$this->assertSame( 'Lisbon', $translation->translation_0 );
+		$this->assertThereIsANoticeContaining( '1 translation was copied from the original as suggestion, as it could not be approved.' );
+	}
+
+	private function bulk_copy_original( $set, $original_ids ) {
+		$_POST['bulk'] = array(
+			'action'      => 'copy-original',
+			'row-ids'     => implode( ',', $original_ids ),
+			'redirect_to' => '/',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'bulk-actions' );
+
+		$this->route->bulk_post( $set->project->path, $set->locale, $set->slug );
+	}
+
 	function test_export_strips_control_characters() {
 		$set      = $this->factory->translation_set->create_with_project_and_locale();
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
@@ -374,5 +523,152 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 
 		$this->assertStringNotContainsString( "\x04", $po );
 		$this->assertStringContainsString( 'Guardaralteracoes', $po );
+	}
+
+	/**
+	 * Tests that translations_post() blocks suggesting an already rejected translation again, whoever suggests it,
+	 * but allows validators to submit it.
+	 */
+	function test_translations_post_blocks_suggesting_a_rejected_translation_again() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Discard' ) );
+
+		$user_1 = $this->set_normal_user_as_current();
+
+		// Rejected translation by user 1.
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $original->id,
+				'user_id'            => $user_1,
+				'status'             => 'rejected',
+				'translation_0'      => 'Verwerfen',
+			)
+		);
+
+		// 1. User 1 tries to submit the identical rejected text again -> blocked.
+		$this->submit_translation( $set, $original->id, $original->id, 'Verwerfen' );
+
+		$this->assertStringContainsString( 'Identical rejected translation already exists.', $this->route->template_output );
+		$waiting_for_user_1 = GP::$translation->find_many( array( 'original_id' => $original->id, 'user_id' => $user_1, 'status' => 'waiting' ) );
+		$this->assertEmpty( $waiting_for_user_1, 'No new waiting translation must be created for the same user.' );
+
+		// 2. User 2 submits the same text -> blocked too.
+		$user_2 = $this->factory->user->create();
+		wp_set_current_user( $user_2 );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Verwerfen' );
+
+		$this->assertStringContainsString( 'Identical rejected translation already exists.', $this->route->template_output );
+		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $original->id, 'user_id' => $user_2 ) ) );
+
+		// 3. Validator submits a rejected text on another original -> allowed and directly approved (current).
+		$original_2 = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Cancel' ) );
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $original_2->id,
+				'user_id'            => $user_1,
+				'status'             => 'rejected',
+				'translation_0'      => 'Abbrechen',
+			)
+		);
+
+		$this->become_validator_for_set( $set );
+
+		$this->submit_translation( $set, $original_2->id, $original_2->id, 'Abbrechen' );
+
+		$current_translation = GP::$translation->find_one( array( 'original_id' => $original_2->id, 'status' => 'current' ) );
+		$this->assertNotFalse( $current_translation, 'A validator can approve/submit a previously rejected string.' );
+	}
+
+	/**
+	 * Tests that translations_post() blocks any user from submitting identical text when changes are requested.
+	 */
+	function test_translations_post_blocks_changesrequested_translation_for_all_users() {
+		add_filter( 'gp_enable_changesrequested_status', '__return_true' );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Pending' ) );
+
+		$user_1 = $this->set_normal_user_as_current();
+
+		// Translation with changes requested.
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $original->id,
+				'user_id'            => $user_1,
+				'status'             => 'changesrequested',
+				'translation_0'      => 'Ausstehend',
+			)
+		);
+
+		// 1. User 1 submits the uncorrected string -> blocked.
+		$this->submit_translation( $set, $original->id, $original->id, 'Ausstehend' );
+		$this->assertStringContainsString( 'Identical translation with changes requested already exists.', $this->route->template_output );
+
+		// 2. User 2 submits the uncorrected string -> also blocked.
+		$user_2 = $this->factory->user->create();
+		wp_set_current_user( $user_2 );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Ausstehend' );
+		$this->assertStringContainsString( 'Identical translation with changes requested already exists.', $this->route->template_output );
+		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $original->id, 'user_id' => $user_2 ) ) );
+
+		remove_filter( 'gp_enable_changesrequested_status', '__return_true' );
+	}
+
+	/**
+	 * Without the changes requested status, such translations are shown as rejected, so the message says so too.
+	 */
+	function test_translations_post_reports_changesrequested_translation_as_rejected_without_the_status() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Pending' ) );
+
+		$this->set_normal_user_as_current();
+
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $original->id,
+				'status'             => 'changesrequested',
+				'translation_0'      => 'Ausstehend',
+			)
+		);
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Ausstehend' );
+
+		$this->assertStringContainsString( 'Identical rejected translation already exists.', $this->route->template_output );
+	}
+
+	/**
+	 * Tests that the gp_translation_block_rejected_or_changesrequested filter can bypass the block.
+	 */
+	function test_translations_post_filter_can_bypass_block() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Retry' ) );
+
+		$user = $this->set_normal_user_as_current();
+
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $original->id,
+				'user_id'            => $user,
+				'status'             => 'rejected',
+				'translation_0'      => 'Wiederholen',
+			)
+		);
+
+		// Filter unblocks the suggestion.
+		add_filter( 'gp_translation_block_rejected_or_changesrequested', '__return_false' );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Wiederholen' );
+
+		remove_filter( 'gp_translation_block_rejected_or_changesrequested', '__return_false' );
+
+		$created = GP::$translation->find_one( array( 'original_id' => $original->id, 'status' => 'waiting' ) );
+		$this->assertNotFalse( $created, 'The filter bypassed the duplicate block and created the suggestion.' );
 	}
 }
