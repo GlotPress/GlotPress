@@ -225,4 +225,27 @@ class GP_Test_Meta extends GP_UnitTestCase {
 		$this->assertNotFalse( $project->delete() );
 		$this->assertFalse( GP::$project->get( $project->id ) );
 	}
+
+	function test_a_failed_delete_keeps_the_meta() {
+		global $wpdb;
+
+		$project = $this->factory->project->create();
+		$this->add_meta( 'project', $project->id );
+
+		// Break the delete of the project row only.
+		$break_delete = function ( $query ) use ( $wpdb ) {
+			return 0 === strpos( $query, "DELETE FROM $wpdb->gp_projects" ) ? 'DELETE FROM not_a_table' : $query;
+		};
+		add_filter( 'query', $break_delete );
+		$suppress = $wpdb->suppress_errors( true );
+
+		$result = GP::$project->delete_many( array( 'id' => $project->id ) );
+
+		$wpdb->suppress_errors( $suppress );
+		remove_filter( 'query', $break_delete );
+
+		$this->assertFalse( $result );
+		$this->assertNotFalse( GP::$project->get( $project->id ) );
+		$this->assertSame( 1, $this->count_meta( 'project', $project->id ) );
+	}
 }
