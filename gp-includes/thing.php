@@ -78,6 +78,15 @@ class GP_Thing {
 	public $table_basename;
 
 	/**
+	 * Object type of the meta of the thing, deleted along with the thing.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string|null $meta_object_type Null if the thing has no meta.
+	 */
+	public $meta_object_type = null;
+
+	/**
 	 * ID of the thing.
 	 *
 	 * @var int $id
@@ -592,9 +601,68 @@ class GP_Thing {
 		if ( $conditions_sql ) {
 			$query .= " WHERE $conditions_sql";
 		}
+
+		$ids_with_meta = $this->meta_object_type ? $this->get_ids_with_meta( $conditions_sql ) : array();
+
 		$result = $this->query( $query );
+
+		// The meta is only deleted once its objects are, so a failed delete doesn't leave an object without its meta.
+		if ( false !== $result && $ids_with_meta ) {
+			$this->delete_meta_of_deleted_ids( $ids_with_meta );
+		}
+
 		$this->after_delete();
 		return $result;
+	}
+
+	/**
+	 * Gets the IDs of the rows matching the conditions which have meta.
+	 *
+	 * Only the objects that have meta are looked up, through the index on the object type and ID of the
+	 * meta table, so a delete without meta costs a single extra query.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $conditions_sql The SQL conditions of the rows, empty for all rows.
+	 * @return int[] The IDs of the rows with meta.
+	 */
+	protected function get_ids_with_meta( $conditions_sql ) {
+		global $wpdb;
+
+		$rows_sql = "SELECT id FROM $this->table" . ( $conditions_sql ? " WHERE $conditions_sql" : '' );
+
+		// The conditions are already escaped and may contain a %, so they aren't passed through prepare().
+		$object_ids = $wpdb->get_col(
+			$wpdb->prepare( "SELECT DISTINCT object_id FROM $wpdb->gp_meta WHERE object_type = %s", $this->meta_object_type ) . " AND object_id IN ( $rows_sql )" // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		);
+
+		return array_map( 'intval', $object_ids );
+	}
+
+	/**
+	 * Deletes the meta of the objects which no longer exist, and clears its cache.
+	 *
+	 * Only the meta of the objects missing from the table is deleted, so the meta of an object that wasn't deleted
+	 * after all is kept.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param int[] $object_ids The IDs of the deleted objects with meta.
+	 */
+	protected function delete_meta_of_deleted_ids( $object_ids ) {
+		global $wpdb;
+
+		foreach ( array_chunk( $object_ids, 1000 ) as $chunk ) {
+			$ids = implode( ',', array_map( 'intval', $chunk ) );
+
+			$wpdb->query(
+				$wpdb->prepare( "DELETE m FROM $wpdb->gp_meta m LEFT JOIN $this->table o ON o.id = m.object_id WHERE m.object_type = %s", $this->meta_object_type ) . " AND m.object_id IN ( $ids ) AND o.id IS NULL" // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The table name and IDs are not user input.
+			);
+
+			foreach ( $chunk as $object_id ) {
+				wp_cache_delete( $object_id, $this->meta_object_type );
+			}
+		}
 	}
 
 	/**
