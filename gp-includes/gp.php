@@ -95,15 +95,6 @@ class GP {
 	public static $glossary_entry;
 
 	/**
-	 * Model for meta.
-	 *
-	 * @since 4.0.2
-	 *
-	 * @var GP_Meta
-	 */
-	public static $meta;
-
-	/**
 	 * Singleton for router.
 	 *
 	 * @since 1.0.0
