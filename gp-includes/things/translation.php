@@ -29,6 +29,15 @@ class GP_Translation extends GP_Thing {
 	public $table_basename = 'gp_translations';
 
 	/**
+	 * Object type of the meta of the translation, deleted along with it.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string $meta_object_type
+	 */
+	public $meta_object_type = 'translation';
+
+	/**
 	 * List of field names for a translation.
 	 *
 	 * @var array $field_names

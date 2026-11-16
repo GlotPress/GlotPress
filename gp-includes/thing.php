@@ -78,6 +78,15 @@ class GP_Thing {
 	public $table_basename;
 
 	/**
+	 * Object type of the meta of the thing, deleted along with the thing.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string|null $meta_object_type Null if the thing has no meta.
+	 */
+	public $meta_object_type = null;
+
+	/**
 	 * ID of the thing.
 	 *
 	 * @var int $id
@@ -592,9 +601,45 @@ class GP_Thing {
 		if ( $conditions_sql ) {
 			$query .= " WHERE $conditions_sql";
 		}
+
+		if ( $this->meta_object_type ) {
+			$this->delete_meta_of_rows( $conditions_sql );
+		}
+
 		$result = $this->query( $query );
 		$this->after_delete();
 		return $result;
+	}
+
+	/**
+	 * Deletes the meta of the rows matching the conditions, before they're deleted.
+	 *
+	 * Only the objects that have meta are looked up, through the index on the object type and ID of the
+	 * meta table, so a delete without meta costs a single query.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $conditions_sql The SQL conditions of the rows to delete, empty for all rows.
+	 */
+	protected function delete_meta_of_rows( $conditions_sql ) {
+		global $wpdb;
+
+		$rows_sql = "SELECT id FROM $this->table" . ( $conditions_sql ? " WHERE $conditions_sql" : '' );
+
+		// The conditions are already escaped and may contain a %, so they aren't passed through prepare().
+		$object_ids = $wpdb->get_col(
+			$wpdb->prepare( "SELECT DISTINCT object_id FROM $wpdb->gp_meta WHERE object_type = %s", $this->meta_object_type ) . " AND object_id IN ( $rows_sql )" // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		);
+
+		foreach ( array_chunk( array_map( 'intval', $object_ids ), 1000 ) as $chunk ) {
+			$wpdb->query(
+				$wpdb->prepare( "DELETE FROM $wpdb->gp_meta WHERE object_type = %s", $this->meta_object_type ) . ' AND object_id IN ( ' . implode( ',', $chunk ) . ' )' // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			);
+
+			foreach ( $chunk as $object_id ) {
+				wp_cache_delete( $object_id, $this->meta_object_type );
+			}
+		}
 	}
 
 	/**
