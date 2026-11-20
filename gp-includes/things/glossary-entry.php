@@ -188,7 +188,8 @@ class GP_Glossary_Entry extends GP_Thing {
 	 * a GP_Glossary_Entry object.
 	 *
 	 * The term is trimmed because the glossary matcher would otherwise
-	 * require the surrounding whitespace literally.
+	 * require the surrounding whitespace literally, and control characters
+	 * are removed as they would never match an original.
 	 *
 	 * @since 4.2.0
 	 *
@@ -197,7 +198,7 @@ class GP_Glossary_Entry extends GP_Thing {
 	 */
 	public function normalize_fields( $args ) {
 		if ( isset( $args['term'] ) && is_string( $args['term'] ) ) {
-			$args['term'] = trim( $args['term'] );
+			$args['term'] = trim( gp_strip_forbidden_control_characters( $args['term'] ) );
 		}
 
 		return parent::normalize_fields( $args );
@@ -212,7 +213,7 @@ class GP_Glossary_Entry extends GP_Thing {
 	 */
 	public function restrict_fields( $rules ) {
 		$rules->term_should_not_be( 'empty' );
-		$rules->term_should_be( 'consisting_only_of_ASCII_characters' );
+		$rules->term_should_be( 'valid_UTF_8' );
 		$rules->part_of_speech_should_not_be( 'empty' );
 		$rules->part_of_speech_should_be( 'one_of', array_keys( $this->parts_of_speech ) );
 		$rules->glossary_id_should_be( 'positive_int' );

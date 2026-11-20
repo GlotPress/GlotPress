@@ -1468,6 +1468,33 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 	}
 
 	/**
+	 * Expects terms with letters outside ASCII to be marked, ignoring case and with plural endings, but not inside longer words.
+	 */
+	function test_map_glossary_entries_to_translation_originals_with_letters_outside_ascii() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		foreach ( array( 'café', 'naïve', 'übersetzung', 'हिन्द' ) as $term ) {
+			GP::$glossary_entry->create_and_select(
+				array(
+					'glossary_id'    => $glossary->id,
+					'term'           => $term,
+					'part_of_speech' => 'noun',
+					'translation'    => 'x',
+				)
+			);
+		}
+
+		$entry = new Translation_Entry( array( 'singular' => 'A naïve café owner reads the Übersetzung in two cafés and a Übersetzungsbüro in हिन्दी.' ) );
+		$orig  = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$this->assertSame(
+			'A ' . $this->glossary_match( 'x', 'noun', 'naïve' ) . ' ' . $this->glossary_match( 'x', 'noun', 'café' ) . ' owner reads the ' . $this->glossary_match( 'x', 'noun', 'Übersetzung' ) . ' in two ' . $this->glossary_match( 'x', 'noun', 'cafés' ) . ' and a Übersetzungsbüro in हिन्दी.',
+			$orig->singular_glossary_markup
+		);
+	}
+
+	/**
 	 * Expects glossary terms inside plain-text URLs not to be marked, while the same terms outside them are.
 	 */
 	function test_map_glossary_entries_to_translation_originals_skips_terms_inside_urls() {
