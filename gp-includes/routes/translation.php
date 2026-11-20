@@ -449,15 +449,38 @@ class GP_Route_Translation extends GP_Route_Main {
 			return;
 		}
 
-		if ( $this->cannot_and_redirect( 'approve', 'translation-set', $translation_set->id ) ) {
+		$bulk            = gp_post( 'bulk' );
+		$bulk_status     = $this->bulk_action_status( (string) gp_array_get( $bulk, 'action' ) );
+		$can_approve_set = $this->can( 'approve', 'translation-set', $translation_set->id );
+
+		// Without approval rights for the set, only status changes the user may also make one by one are allowed.
+		if ( ! $can_approve_set && ! $bulk_status ) {
+			$this->redirect_with_error( __( 'You are not allowed to do that!', 'glotpress' ) );
 			return;
 		}
 
-		$bulk            = gp_post( 'bulk' );
 		$bulk['row-ids'] = array_filter( explode( ',', $bulk['row-ids'] ) );
 
 		// Drop rows outside the authorized project/set before any action runs, so neither the built-in handlers nor custom actions on the hook below can touch another set's data.
 		$bulk['row-ids'] = $this->filter_bulk_row_ids_for_set( $bulk['row-ids'], $project, $translation_set );
+
+		$forbidden = 0;
+		if ( ! $can_approve_set ) {
+			$permitted_row_ids = array();
+			foreach ( $bulk['row-ids'] as $row_id ) {
+				$translation = GP::$translation->get( gp_array_get( explode( '-', $row_id ), 1 ) );
+				if ( ! $translation ) {
+					continue;
+				}
+
+				if ( $this->can_set_translation_status( $translation, $bulk_status ) ) {
+					$permitted_row_ids[] = $row_id;
+				} else {
+					++$forbidden;
+				}
+			}
+			$bulk['row-ids'] = $permitted_row_ids;
+		}
 
 		if ( ! empty( $bulk['row-ids'] ) ) {
 			switch ( $bulk['action'] ) {
@@ -495,12 +518,39 @@ class GP_Route_Translation extends GP_Route_Main {
 			 * }
 			 */
 			do_action( 'gp_translation_set_bulk_action_post', $project, $locale, $translation_set, $bulk );
-		} else {
+		} elseif ( ! $forbidden ) {
 			$this->errors[] = 'No translations were supplied.';
+		}
+
+		if ( $forbidden ) {
+			$this->errors[] = sprintf(
+				/* translators: %d: Translations count. */
+				_n( '%d translation was skipped because you are not allowed to change its status.', '%d translations were skipped because you are not allowed to change their status.', $forbidden, 'glotpress' ),
+				$forbidden
+			);
 		}
 
 		$bulk['redirect_to'] = esc_url_raw( $bulk['redirect_to'] );
 		$this->redirect( $bulk['redirect_to'] );
+	}
+
+	/**
+	 * Maps a bulk action to the translation status it sets.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $action The bulk action.
+	 * @return string|null The translation status, null if the action does not set one.
+	 */
+	private function bulk_action_status( $action ) {
+		$statuses = array(
+			'approve'          => 'current',
+			'reject'           => 'rejected',
+			'changesrequested' => 'changesrequested',
+			'fuzzy'            => 'fuzzy',
+		);
+
+		return gp_array_get( $statuses, $action, null );
 	}
 
 	/**
@@ -1188,19 +1238,32 @@ class GP_Route_Translation extends GP_Route_Main {
 	 * @param GP_Translation $translation The translation to check.
 	 */
 	private function can_approve_translation_or_forbidden( $translation ) {
-		$requested_status  = gp_post( 'status' );
-		$requires_approval = in_array( $requested_status, array( 'current', 'changesrequested' ), true );
+		if ( ! $this->can_set_translation_status( $translation, gp_post( 'status' ) ) ) {
+			$this->die_with_error( __( 'You are not allowed to do that!', 'glotpress' ), 403 );
+		}
+	}
 
-		// The author of a waiting translation may manage it (e.g. reject it or
-		// discard its warnings) without approval rights, but approving it or
-		// requesting changes on it still requires the approve permission.
-		$is_own_waiting_translation = get_current_user_id() === (int) $translation->user_id && 'waiting' === $translation->status;
+	/**
+	 * Checks if the current user can change the status of a translation.
+	 *
+	 * Authors may manage their own waiting translations, but not approve them or request changes.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param GP_Translation $translation      The translation to check.
+	 * @param string|null    $requested_status The status to set, null when the status does not change.
+	 * @return bool Whether the current user can change the translation.
+	 */
+	private function can_set_translation_status( $translation, $requested_status ) {
+		$requires_approval          = in_array( $requested_status, array( 'current', 'changesrequested' ), true );
+		$user_id                    = get_current_user_id();
+		$is_own_waiting_translation = $user_id && $user_id === (int) $translation->user_id && 'waiting' === $translation->status;
 
 		if ( $is_own_waiting_translation && ! $requires_approval ) {
-			return;
+			return true;
 		}
 
-		$this->can_or_forbidden( 'approve', 'translation', $translation->id, null, array( 'translation' => $translation ) );
+		return $this->can( 'approve', 'translation', $translation->id, array( 'translation' => $translation ) );
 	}
 
 	/**
