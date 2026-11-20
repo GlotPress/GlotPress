@@ -514,13 +514,7 @@ class GP_Builtin_Translation_Warnings {
 	/**
 	 * Checks whether a translation only numbers the placeholders of the original.
 	 *
-	 * A locale may need a different word order, so `%s to %s` can become
-	 * `%2$s ba %1$s`. That reads the same arguments as long as each numbered
-	 * placeholder in the translation matches the unnumbered one at that position
-	 * in the original, and each position is used exactly once.
-	 *
-	 * The other direction stays a warning: an unnumbered placeholder reads the
-	 * next argument, so dropping the numbers of `%2$s ba %1$s` would swap them.
+	 * E.g. `%s to %s` translated as `%2$s ba %1$s`.
 	 *
 	 * @since 4.2.0
 	 *
