@@ -388,6 +388,10 @@ class GP_Builtin_Translation_Warnings {
 			return true;
 		}
 
+		if ( $this->numbers_unnumbered_placeholders( $original, $translation, $placeholders_re ) ) {
+			return true;
+		}
+
 		$all_placeholders = array_unique( array_merge( array_keys( $original_counts ), array_keys( $translation_counts ) ) );
 		foreach ( $all_placeholders as $placeholder ) {
 			$original_count    = gp_array_get( $original_counts, $placeholder, 0 );
@@ -505,6 +509,66 @@ class GP_Builtin_Translation_Warnings {
 		}
 
 		return end( $unnumbered ) === $left_out && 1 === count( array_keys( $unnumbered, $left_out, true ) );
+	}
+
+	/**
+	 * Checks whether a translation only numbers the placeholders of the original.
+	 *
+	 * E.g. `%s to %s` translated as `%2$s ba %1$s`.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $original        The source string.
+	 * @param string $translation     The translation.
+	 * @param string $placeholders_re Regular expression to match placeholders.
+	 * @return bool True if the translation numbers each placeholder of the original, false otherwise.
+	 */
+	private function numbers_unnumbered_placeholders( string $original, string $translation, string $placeholders_re ): bool {
+		preg_match_all( "/$placeholders_re/", $original, $original_matches );
+		preg_match_all( "/$placeholders_re/", $translation, $translation_matches );
+
+		$unnumbered = array();
+		$others     = array();
+		foreach ( $original_matches[0] as $placeholder ) {
+			if ( preg_match( '/^%\d+\$/', $placeholder ) ) {
+				return false;
+			}
+
+			// `%%` and any non-sprintf placeholder from the filter take no argument.
+			if ( '%%' === $placeholder || '%' !== substr( $placeholder, 0, 1 ) ) {
+				$others[ $placeholder ] = gp_array_get( $others, $placeholder, 0 ) + 1;
+			} else {
+				$unnumbered[] = $placeholder;
+			}
+		}
+
+		if ( ! $unnumbered ) {
+			return false;
+		}
+
+		$numbered = array();
+		foreach ( $translation_matches[0] as $placeholder ) {
+			if ( preg_match( '/^%([1-9]\d*)\$(.*)$/', $placeholder, $parts ) ) {
+				$position = (int) $parts[1];
+				if ( isset( $numbered[ $position ] ) ) {
+					return false;
+				}
+
+				$numbered[ $position ] = '%' . $parts[2];
+			} elseif ( '%%' === $placeholder || '%' !== substr( $placeholder, 0, 1 ) ) {
+				$others[ $placeholder ] = gp_array_get( $others, $placeholder, 0 ) - 1;
+			} else {
+				return false;
+			}
+		}
+
+		if ( array_filter( $others ) ) {
+			return false;
+		}
+
+		ksort( $numbered );
+
+		return array_combine( range( 1, count( $unnumbered ) ), $unnumbered ) === $numbered;
 	}
 
 	/**
