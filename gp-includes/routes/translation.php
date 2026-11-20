@@ -1246,9 +1246,7 @@ class GP_Route_Translation extends GP_Route_Main {
 	/**
 	 * Checks if the current user can change the status of a translation.
 	 *
-	 * The author of a waiting translation may manage it (e.g. reject it or
-	 * discard its warnings) without approval rights, but approving it or
-	 * requesting changes on it still requires the approve permission.
+	 * Authors may manage their own waiting translations, but not approve them or request changes.
 	 *
 	 * @since 4.2.0
 	 *
