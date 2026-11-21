@@ -453,4 +453,87 @@ class GP_Test_Route_Project extends GP_UnitTestCase_Route {
 
 		$this->assertNotFalse( GP::$permission->get( $permission->id ), 'A nonce issued for another project does not authorize the request.' );
 	}
+
+	private function search_projects( $query ) {
+		$_GET['q'] = $query;
+		ob_start();
+		$this->route->search_get();
+		unset( $_GET['q'] );
+
+		return wp_list_pluck( json_decode( ob_get_clean() ), 'path' );
+	}
+
+	public function test_search_finds_projects_by_the_start_of_their_path() {
+		$parent = $this->factory->project->create( array( 'name' => 'Plugins', 'slug' => 'plugins' ) );
+		foreach ( array( 'akismet-extra', 'jetpack', 'akismet' ) as $slug ) {
+			$this->factory->project->create( array( 'name' => ucfirst( $slug ), 'slug' => $slug, 'parent_project_id' => $parent->id, 'active' => 1 ) );
+		}
+		$this->factory->project->create( array( 'name' => 'Old', 'slug' => 'akismet-old', 'parent_project_id' => $parent->id, 'active' => 0 ) );
+
+		$this->assertSame( array( 'plugins/akismet', 'plugins/akismet-extra' ), $this->search_projects( 'plugins/aki' ) );
+		$this->assertSame( array(), $this->search_projects( 'akismet' ) );
+		$this->assertSame( array(), $this->search_projects( '' ) );
+
+		$this->set_admin_user_as_current();
+		$this->assertSame( array( 'plugins/akismet', 'plugins/akismet-extra', 'plugins/akismet-old' ), $this->search_projects( 'plugins/aki' ) );
+	}
+
+	public function test_a_parent_project_can_be_chosen_by_its_path() {
+		$this->set_admin_user_as_current();
+		$parent  = $this->factory->project->create( array( 'name' => 'Parent', 'slug' => 'parent' ) );
+		$project = $this->factory->project->create( array( 'name' => 'Child', 'slug' => 'child' ) );
+
+		$this->edit_project(
+			$project,
+			array(
+				'name'              => 'Child',
+				'slug'              => 'child',
+				'parent_project_id' => 'parent',
+			)
+		);
+
+		$project->reload();
+		$this->assertSame( 'parent/child', $project->path );
+
+		$_POST['project']            = array(
+			'name'              => 'New',
+			'slug'              => 'new',
+			'description'       => '',
+			'parent_project_id' => 'parent/child',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-project' );
+		$this->route->new_post();
+
+		$this->assertNotFalse( GP::$project->by_path( 'parent/child/new' ) );
+	}
+
+	public function test_an_unknown_parent_project_path_is_refused() {
+		$this->set_admin_user_as_current();
+		$project = $this->factory->project->create( array( 'name' => 'Child', 'slug' => 'child' ) );
+
+		$this->edit_project(
+			$project,
+			array(
+				'name'              => 'Child',
+				'slug'              => 'child',
+				'parent_project_id' => 'missing',
+			)
+		);
+
+		$project->reload();
+		$this->assertSame( 'child', $project->path );
+		$this->assertThereIsAnErrorContaining( 'missing' );
+	}
+
+	public function test_mass_create_takes_the_sets_of_a_project_chosen_by_its_path() {
+		$this->set_admin_user_as_current();
+		$target     = $this->factory->project->create();
+		$source_set = $this->factory->translation_set->create_with_project_and_locale();
+
+		$_POST['project_id']         = $source_set->project->path;
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'mass-create-transation-sets_' . $target->id );
+		$this->route->mass_create_sets_post( $target->path );
+
+		$this->assertCount( 1, GP::$translation_set->by_project_id( $target->id ) );
+	}
 }

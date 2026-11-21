@@ -13,6 +13,7 @@ gp_breadcrumb_project(
 		__( 'Create New Project', 'glotpress' ),
 	)
 );
+gp_enqueue_scripts( 'gp-project-path-field' );
 gp_tmpl_header();
 ?>
 <h2><?php _e( 'Create New Project', 'glotpress' ); ?></h2>

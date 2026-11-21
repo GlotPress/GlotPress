@@ -592,6 +592,7 @@ function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = arra
  * Returns HTML markup for a select element for projects.
  *
  * @since 1.0.0
+ * @deprecated 4.2.0 Use gp_project_path_field(), which also works with many projects.
  *
  * @param string $name_and_id         Name and ID of the select element.
  * @param string $selected_project_id The project id to mark as the currently selected.
@@ -602,6 +603,8 @@ function gp_locales_dropdown( $name_and_id, $selected_slug = null, $attrs = arra
  * @return string HTML markup for a select element.
  */
 function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs = array(), $exclude = array(), $exclude_no_parent = false ) {
+	_deprecated_function( __FUNCTION__, '4.2.0', 'gp_project_path_field()' );
+
 	if ( ! is_array( $exclude ) ) {
 		$exclude = array( $exclude );
 	}
@@ -645,6 +648,31 @@ function gp_projects_dropdown( $name_and_id, $selected_project_id = null, $attrs
 	}
 
 	return gp_select( $name_and_id, $options, $selected_project_id, $attrs );
+}
+
+/**
+ * Generates a text field to choose a project by its path, which suggests projects while typing.
+ *
+ * Installations can have hundreds of thousands of projects, which a dropdown can't list.
+ *
+ * @since 4.2.0
+ *
+ * @param string   $name_and_id Name and ID of the field.
+ * @param int|null $project_id  Optional. ID of the chosen project. Default null.
+ * @return string HTML markup for the field.
+ */
+function gp_project_path_field( $name_and_id, $project_id = null ) {
+	$project = $project_id ? GP::$project->get( $project_id ) : null;
+
+	return sprintf(
+		'<input type="text" name="%1$s" id="%1$s" value="%2$s" list="%3$s" size="50" autocomplete="off" spellcheck="false" placeholder="%4$s" data-gp-project-search="%5$s">' .
+		'<datalist id="%3$s"></datalist>',
+		esc_attr( $name_and_id ),
+		esc_attr( $project && $project->id ? $project->path : '' ),
+		esc_attr( $name_and_id . '-projects' ),
+		__( 'Path of a project, like plugins/hello-dolly', 'glotpress' ),
+		esc_url( gp_url_project( '-search' ) )
+	);
 }
 
 /**

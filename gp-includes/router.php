@@ -178,6 +178,7 @@ class GP_Router {
 
 			"get:/$projects"                                  => array( 'GP_Route_Project', 'index' ),
 			"get:/$projects/-new"                             => array( 'GP_Route_Project', 'new_get' ),
+			"get:/$projects/-search"                          => array( 'GP_Route_Project', 'search_get' ),
 			"post:/$projects/-new"                            => array( 'GP_Route_Project', 'new_post' ),
 
 			"post:/$set/-bulk"                                => array( 'GP_Route_Translation', 'bulk_post' ),

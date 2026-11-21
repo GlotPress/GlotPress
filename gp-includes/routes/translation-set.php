@@ -39,7 +39,13 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 			return;
 		}
 
-		$new_set = new GP_Translation_Set( gp_post( 'set', array() ) );
+		$input = $this->set_input();
+		if ( false === $input ) {
+			$this->redirect( gp_url( '/sets/-new' ) );
+			return;
+		}
+
+		$new_set = new GP_Translation_Set( $input );
 		if ( $this->cannot_edit_set_and_redirect( $new_set ) ) {
 			return;
 		}
@@ -115,7 +121,13 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 			return;
 		}
 
-		$new_set = new GP_Translation_Set( gp_post( 'set', array() ) );
+		$input = $this->set_input();
+		if ( false === $input ) {
+			$this->redirect( gp_url( '/sets/' . $set_id . '/-edit' ) );
+			return;
+		}
+
+		$new_set = new GP_Translation_Set( $input );
 
 		// Moving the set to another project additionally requires write access
 		// to the destination project.
@@ -226,5 +238,25 @@ class GP_Route_Translation_Set extends GP_Route_Main {
 			return;
 		}
 		return array( $set, $project, $locale );
+	}
+
+	/**
+	 * Returns the translation set fields from the request, with the project resolved to its ID.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @return array|false The translation set fields, or false if the project wasn't found.
+	 */
+	private function set_input() {
+		$input = (array) gp_post( 'set', array() );
+
+		if ( array_key_exists( 'project_id', $input ) ) {
+			$input['project_id'] = $this->project_id_from_request( $input['project_id'] );
+			if ( false === $input['project_id'] ) {
+				return false;
+			}
+		}
+
+		return $input;
 	}
 }

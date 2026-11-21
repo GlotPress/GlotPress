@@ -19,6 +19,7 @@ gp_breadcrumb_project(
 		__( 'Edit', 'glotpress' ),
 	)
 );
+gp_enqueue_scripts( 'gp-project-path-field' );
 gp_tmpl_header();
 ?>
 <h2>

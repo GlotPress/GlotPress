@@ -235,4 +235,35 @@ class GP_Test_Route_Translation_Set extends GP_UnitTestCase_Route {
 		$this->assertEquals( (int) $target->id, (int) $set->project_id, 'A user with write on both projects can move the set.' );
 	}
 
+	function test_new_post_takes_the_project_by_its_path() {
+		$this->set_admin_user_as_current();
+		$project = $this->factory->project->create( array( 'slug' => 'chosen' ) );
+
+		$_POST['set']                = array(
+			'name'       => 'German',
+			'slug'       => 'default',
+			'locale'     => 'de',
+			'project_id' => 'chosen',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation-set' );
+		$this->route->new_post();
+
+		$this->assertNotFalse( GP::$translation_set->by_project_id_slug_and_locale( $project->id, 'default', 'de' ) );
+	}
+
+	function test_new_post_refuses_an_unknown_project_path() {
+		$this->set_admin_user_as_current();
+
+		$_POST['set']                = array(
+			'name'       => 'German',
+			'slug'       => 'default',
+			'locale'     => 'de',
+			'project_id' => 'missing',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation-set' );
+		$this->route->new_post();
+
+		$this->assertCount( 1, GP::$translation_set->all() );
+		$this->assertThereIsAnErrorContaining( 'missing' );
+	}
 }

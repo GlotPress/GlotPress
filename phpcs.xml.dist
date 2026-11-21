@@ -42,6 +42,7 @@
 				<element value="gp_radio_buttons"/>
 				<element value="gp_select"/>
 				<element value="gp_projects_dropdown"/>
+				<element value="gp_project_path_field"/>
 				<element value="gp_locales_dropdown"/>
 				<element value="gp_locales_by_project_dropdown"/>
 				<element value="gp_link"/>

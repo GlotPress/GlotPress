@@ -38,7 +38,7 @@ gp_tmpl_header();
 <form action="<?php echo esc_url( gp_url_current() ); ?>" method="post">
 	<dl>
 		<dt><label for="project_id"><?php _e( 'Project to take translation sets from:', 'glotpress' ); ?></label></dt>
-		<dd><?php echo gp_projects_dropdown( 'project_id', null ); ?></dd>
+		<dd><?php echo gp_project_path_field( 'project_id' ); ?></dd>
 	</dl>
 	<div id="preview"></div>
 	<p><input class="button is-primary" type="submit" name="submit" value="<?php esc_attr_e( 'Create Translation Sets', 'glotpress' ); ?>" id="submit" /></p>
