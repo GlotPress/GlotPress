@@ -148,6 +148,52 @@ class GP_Project extends GP_Thing {
 	}
 
 	/**
+	 * Fetches the projects whose path starts with a prefix.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $prefix           The start of the path.
+	 * @param bool   $include_inactive Optional. Whether to include inactive projects. Default false.
+	 * @param int    $limit            Optional. The maximum number of projects. Default 20.
+	 * @return GP_Project[] The projects, sorted by path.
+	 */
+	public function by_path_prefix( $prefix, $include_inactive = false, $limit = 20 ) {
+		global $wpdb;
+
+		$active = $include_inactive ? '' : 'AND active = 1';
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		return $this->many( "SELECT * FROM $this->table WHERE path LIKE %s $active ORDER BY path LIMIT %d", $wpdb->esc_like( $prefix ) . '%', $limit );
+	}
+
+	/**
+	 * Finds the ID of a project chosen in a form, by its path or by its ID.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param mixed $value The path or the ID of a project.
+	 * @return int|null|false The ID of the project, null for no project, or false if no project has the path.
+	 */
+	public function id_by_path_or_id( $value ) {
+		if ( ! is_scalar( $value ) ) {
+			return false;
+		}
+
+		$value = trim( (string) $value );
+		if ( '' === $value || '0' === $value ) {
+			return null;
+		}
+
+		$project = $this->by_path( $value );
+		if ( $project && $project->id ) {
+			return (int) $project->id;
+		}
+
+		// Forms of plugins and older templates still send the ID, which the permission checks then validate.
+		return ctype_digit( $value ) ? (int) $value : false;
+	}
+
+	/**
 	 * Fetches the project by ID or object.
 	 *
 	 * @since 2.3.0

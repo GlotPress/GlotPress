@@ -59,7 +59,8 @@ gp_tmpl_header();
 		</span>
 	</dd>
 	<div id="preview"></div>
-	<input type="hidden" value="<?php echo esc_html( $project->parent_project_id ); ?>" name="project[parent_project_id]" id="project[parent_project_id]" />
+	<?php $gp_parent_project = $project->parent_project_id ? GP::$project->get( $project->parent_project_id ) : null; ?>
+	<input type="hidden" value="<?php echo esc_attr( $gp_parent_project ? $gp_parent_project->path : '' ); ?>" name="project[parent_project_id]" id="project[parent_project_id]" />
 	<p><input class="button is-primary" type="submit" name="submit" value="<?php esc_attr_e( 'Branch project', 'glotpress' ); ?>" id="submit" /></p>
 	<?php gp_route_nonce_field( 'branch-project_' . $project->id ); ?>
 </form>

@@ -22,8 +22,8 @@ if ( $project ) {
 	);
 }
 
-// jQuery is required for the 'translation-set-form' template.
-gp_enqueue_script( 'jquery' );
+// Both are required for the 'translation-set-form' template.
+gp_enqueue_scripts( array( 'jquery', 'gp-project-path-field' ) );
 
 gp_tmpl_header();
 ?>

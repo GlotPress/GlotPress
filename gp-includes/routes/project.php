@@ -231,12 +231,21 @@ class GP_Route_Project extends GP_Route_Main {
 	 * The path is intentionally excluded: it is derived from the slug and the
 	 * parent project in GP_Project::update_path(), never taken from the client.
 	 *
-	 * @return array Whitelisted project input.
+	 * @return array|false Whitelisted project input, or false if the parent project wasn't found.
 	 */
 	private function editable_project_input() {
 		$editable_fields = array( 'name', 'slug', 'description', 'source_url_template', 'active', 'parent_project_id' );
 
-		return array_intersect_key( (array) gp_post( 'project' ), array_flip( $editable_fields ) );
+		$input = array_intersect_key( (array) gp_post( 'project' ), array_flip( $editable_fields ) );
+
+		if ( array_key_exists( 'parent_project_id', $input ) ) {
+			$input['parent_project_id'] = $this->project_id_from_request( $input['parent_project_id'] );
+			if ( false === $input['parent_project_id'] ) {
+				return false;
+			}
+		}
+
+		return $input;
 	}
 
 	/**
@@ -259,7 +268,13 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$updated_project = new GP_Project( $this->editable_project_input() );
+		$input = $this->editable_project_input();
+		if ( false === $input ) {
+			$this->redirect( gp_url_project( $project, '-edit' ) );
+			return;
+		}
+
+		$updated_project = new GP_Project( $input );
 		if ( $this->invalid_and_redirect( $updated_project, gp_url_project( $project, '-edit' ) ) ) {
 			return;
 		}
@@ -343,6 +358,30 @@ class GP_Route_Project extends GP_Route_Main {
 	}
 
 	/**
+	 * Returns the projects whose path starts with the requested text, for the project fields of forms.
+	 *
+	 * @since 4.2.0
+	 */
+	public function search_get() {
+		$query    = gp_get( 'q' );
+		$query    = is_scalar( $query ) ? trim( (string) $query ) : '';
+		$projects = '' === $query ? array() : GP::$project->by_path_prefix( $query, $this->can( 'admin' ) );
+
+		$this->header( 'Content-Type: application/json' );
+		echo wp_json_encode(
+			array_map(
+				static function ( $project ) {
+					return array(
+						'path' => $project->path,
+						'name' => $project->name,
+					);
+				},
+				$projects
+			)
+		);
+	}
+
+	/**
 	 * Displays the new project page.
 	 */
 	public function new_get() {
@@ -369,7 +408,12 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$post              = $this->editable_project_input();
+		$post = $this->editable_project_input();
+		if ( false === $post ) {
+			$this->redirect( gp_url_project( '-new' ) );
+			return;
+		}
+
 		$parent_project_id = gp_array_get( $post, 'parent_project_id', null );
 
 		if ( $this->cannot_and_redirect( 'write', 'project', $parent_project_id ) ) {
@@ -551,7 +595,8 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$other_project = GP::$project->get( gp_post( 'project_id' ) );
+		$other_project_id = GP::$project->id_by_path_or_id( gp_post( 'project_id' ) );
+		$other_project    = $other_project_id ? GP::$project->get( $other_project_id ) : false;
 
 		if ( ! $other_project ) {
 			return $this->die_with_error( esc_html__( 'Project wasn&#8217;t found.', 'glotpress' ), 404, esc_html__( 'Not found', 'glotpress' ), '404' );
@@ -613,7 +658,8 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		$other_project = GP::$project->get( gp_post( 'project_id' ) );
+		$other_project_id = GP::$project->id_by_path_or_id( gp_post( 'project_id' ) );
+		$other_project    = $other_project_id ? GP::$project->get( $other_project_id ) : false;
 
 		if ( ! $other_project ) {
 			return $this->die_with_error( esc_html__( 'Project wasn&#8217;t found.', 'glotpress' ), 404, esc_html__( 'Not found', 'glotpress' ), '404' );
@@ -648,7 +694,6 @@ class GP_Route_Project extends GP_Route_Main {
 	 * @param string $project_path The path of the project.
 	 */
 	public function branch_project_post( $project_path ) {
-		$post    = $this->editable_project_input();
 		$project = GP::$project->by_path( $project_path );
 
 		if ( ! $project ) {
@@ -656,6 +701,12 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		if ( $this->invalid_nonce_and_redirect( 'branch-project_' . $project->id ) ) {
+			return;
+		}
+
+		$post = $this->editable_project_input();
+		if ( false === $post ) {
+			$this->redirect( gp_url_project( $project, '-branch' ) );
 			return;
 		}
 

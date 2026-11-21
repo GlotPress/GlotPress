@@ -38,7 +38,7 @@
 	</dd>
 
 	<dt><label for="project[parent_project_id]"><?php _e( 'Parent Project', 'glotpress' ); ?></label></dt>
-	<dd><?php echo gp_projects_dropdown( 'project[parent_project_id]', $project->parent_project_id, array(), $project->id ); ?></dd>
+	<dd><?php echo gp_project_path_field( 'project[parent_project_id]', $project->parent_project_id ); ?></dd>
 
 	<dt><label for="project[active]"><?php _e( 'Active', 'glotpress' ); ?></label> <input type="checkbox" id="project[active]" name="project[active]" <?php gp_checked( $project->active ); ?> /></dt>
 
