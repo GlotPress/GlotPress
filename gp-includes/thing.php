@@ -659,8 +659,13 @@ class GP_Thing {
 				$wpdb->prepare( "DELETE m FROM $wpdb->gp_meta m LEFT JOIN $this->table o ON o.id = m.object_id WHERE m.object_type = %s", $this->meta_object_type ) . " AND m.object_id IN ( $ids ) AND o.id IS NULL" // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The table name and IDs are not user input.
 			);
 
-			foreach ( $chunk as $object_id ) {
-				wp_cache_delete( $object_id, $this->meta_object_type );
+			// Available since WordPress 6.0, and a single request for object caches that support it.
+			if ( function_exists( 'wp_cache_delete_multiple' ) ) {
+				wp_cache_delete_multiple( $chunk, $this->meta_object_type );
+			} else {
+				foreach ( $chunk as $object_id ) {
+					wp_cache_delete( $object_id, $this->meta_object_type );
+				}
 			}
 		}
 	}
