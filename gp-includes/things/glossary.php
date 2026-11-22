@@ -19,28 +19,37 @@ class GP_Glossary extends GP_Thing {
 	 *
 	 * @var string $table_basename
 	 */
-	var $table_basename = 'gp_glossaries';
+	public $table_basename = 'gp_glossaries';
+
+	/**
+	 * Object type of the meta of the glossary, deleted along with it.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string $meta_object_type
+	 */
+	public $meta_object_type = 'glossary';
 
 	/**
 	 * List of field names for a glossary.
 	 *
 	 * @var array $field_names
 	 */
-	var $field_names = array( 'id', 'translation_set_id', 'description' );
+	public $field_names = array( 'id', 'translation_set_id', 'description' );
 
 	/**
 	 * List of field names which have an integer value.
 	 *
 	 * @var array $int_fields
 	 */
-	var $int_fields = array( 'id', 'translation_set_id' );
+	public $int_fields = array( 'id', 'translation_set_id' );
 
 	/**
 	 * List of field names which cannot be updated.
 	 *
 	 * @var array $non_updatable_attributes
 	 */
-	var $non_updatable_attributes = array( 'id' );
+	public $non_updatable_attributes = array( 'id' );
 
 	/**
 	 * ID of the glossary.
@@ -237,7 +246,9 @@ class GP_Glossary extends GP_Thing {
 			return $this->entries;
 		}
 
-		return $this->entries = GP::$glossary_entry->by_glossary_id( $this->id );
+		$this->entries = GP::$glossary_entry->by_glossary_id( $this->id );
+
+		return $this->entries;
 	}
 
 
@@ -303,7 +314,7 @@ class GP_Glossary extends GP_Thing {
 		return new GP::$project(
 			array(
 				'id'   => 0,
-				'name' => 'Locale Glossary',
+				'name' => __( 'Locale Glossary', 'glotpress' ),
 				'slug' => 0,
 				'path' => $locale_glossary_path_prefix,
 			)

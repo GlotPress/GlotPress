@@ -612,7 +612,7 @@ class GP_Builtin_Translation_Warnings {
 
 		// Check to see if only the scheme (https <=> http) or a trailing slash was changed, discard if so.
 		foreach ( $missing_urls as $key => $missing_url ) {
-			$scheme               = parse_url( $missing_url, PHP_URL_SCHEME );
+			$scheme               = wp_parse_url( $missing_url, PHP_URL_SCHEME );
 			$alternate_scheme     = ( 'http' == $scheme ? 'https' : 'http' );
 			$alternate_scheme_url = preg_replace( "@^$scheme(?=:)@", $alternate_scheme, $missing_url );
 
@@ -637,7 +637,7 @@ class GP_Builtin_Translation_Warnings {
 
 		// Check if just the domain was changed, and if so, if it's to a whitelisted domain.
 		foreach ( $missing_urls as $key => $missing_url ) {
-			$host = parse_url( $missing_url, PHP_URL_HOST );
+			$host = wp_parse_url( $missing_url, PHP_URL_HOST );
 			if ( ! isset( $this->allowed_domain_changes[ $host ] ) ) {
 				continue;
 			}

@@ -235,4 +235,72 @@ class GP_Test_Builtin_Translation_Errors extends GP_UnitTestCase {
 		$this->assertHasErrorsAndContainsOutput( 'control_characters', 'Original', "Escape\x1Bhere", null, 'U+001B' );
 		$this->assertHasErrorsAndContainsOutput( 'control_characters', 'Original', "Delete\x7Fhere", null, 'U+007F' );
 	}
+
+	/**
+	 * Returns a locale with the three plural forms of Russian.
+	 *
+	 * @return GP_Locale The locale.
+	 */
+	private function create_russian_locale() {
+		return $this->factory->locale->create(
+			array(
+				'nplurals'          => 3,
+				'plural_expression' => '(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)',
+			)
+		);
+	}
+
+	function test_check_reports_a_missing_plural_form() {
+		$errors   = new GP_Translation_Errors();
+		$original = $this->factory->original->create( array( 'singular' => '%d item', 'plural' => '%d items' ) );
+
+		$problems = $errors->check( $original, array( '%d элемент', '%d элемента' ), $this->create_russian_locale() );
+
+		$this->assertSame( array( 2 ), array_keys( $problems ), 'Only the third plural form is missing.' );
+		$this->assertSame( array( 'missing_plural_form' => 'The plural form used for numbers like 0, 5, 6 is missing.' ), $problems[2] );
+	}
+
+	function test_check_reports_an_empty_plural_form() {
+		$errors   = new GP_Translation_Errors();
+		$original = $this->factory->original->create( array( 'singular' => '%d item', 'plural' => '%d items' ) );
+
+		$problems = $errors->check( $original, array( '%d элемент', '', '%d элементов' ), $this->create_russian_locale() );
+
+		$this->assertSame( array( 1 ), array_keys( $problems ) );
+		$this->assertArrayHasKey( 'missing_plural_form', $problems[1] );
+	}
+
+	function test_check_reports_missing_plural_forms_next_to_other_errors() {
+		$errors = new GP_Translation_Errors();
+		$this->w->add_all( $errors );
+		$original = $this->factory->original->create( array( 'singular' => '%s item', 'plural' => '%s items' ) );
+
+		$problems = $errors->check( $original, array( '%s Element in %s' ), $this->l );
+
+		$this->assertArrayHasKey( 'extra_sprintf_placeholders', $problems[0] );
+		$this->assertArrayHasKey( 'missing_plural_form', $problems[1] );
+	}
+
+	function test_check_accepts_a_translation_with_every_plural_form() {
+		$errors   = new GP_Translation_Errors();
+		$original = $this->factory->original->create( array( 'singular' => '%d item', 'plural' => '%d items' ) );
+
+		$this->assertNull( $errors->check( $original, array( '%d элемент', '%d элемента', '%d элементов' ), $this->create_russian_locale() ) );
+		$this->assertNull( $errors->check( $original, array( '%d элемент', '%d элемента', '%d элементов', null, null, null ), $this->create_russian_locale() ), 'The forms the locale does not have are ignored.' );
+	}
+
+	function test_check_accepts_a_single_translation_of_a_singular_original() {
+		$errors   = new GP_Translation_Errors();
+		$original = $this->factory->original->create( array( 'singular' => 'An item' ) );
+
+		$this->assertNull( $errors->check( $original, array( 'Элемент' ), $this->create_russian_locale() ) );
+	}
+
+	function test_check_accepts_a_single_translation_of_a_plural_original_for_a_locale_with_one_plural_form() {
+		$errors   = new GP_Translation_Errors();
+		$original = $this->factory->original->create( array( 'singular' => '%d item', 'plural' => '%d items' ) );
+		$japanese = $this->factory->locale->create( array( 'nplurals' => 1, 'plural_expression' => '0' ) );
+
+		$this->assertNull( $errors->check( $original, array( '%d 個' ), $japanese ) );
+	}
 }

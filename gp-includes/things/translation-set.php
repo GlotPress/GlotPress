@@ -19,35 +19,44 @@ class GP_Translation_Set extends GP_Thing {
 	 *
 	 * @var string $table_basename
 	 */
-	var $table_basename = 'gp_translation_sets';
+	public $table_basename = 'gp_translation_sets';
+
+	/**
+	 * Object type of the meta of the translation set, deleted along with it.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string $meta_object_type
+	 */
+	public $meta_object_type = 'translation_set';
 
 	/**
 	 * List of field names for a translation set.
 	 *
 	 * @var array $field_names
 	 */
-	var $field_names = array( 'id', 'name', 'slug', 'project_id', 'locale' );
+	public $field_names = array( 'id', 'name', 'slug', 'project_id', 'locale' );
 
 	/**
 	 * List of non-database field names.
 	 *
 	 * @var array $non_db_field_names
 	 */
-	var $non_db_field_names = array( 'current_count', 'untranslated_count', 'waiting_count', 'fuzzy_count', 'all_count', 'warnings_count', 'percent_translated', 'wp_locale', 'last_modified' );
+	public $non_db_field_names = array( 'current_count', 'untranslated_count', 'waiting_count', 'fuzzy_count', 'all_count', 'warnings_count', 'percent_translated', 'wp_locale', 'last_modified' );
 
 	/**
 	 * List of field names which have an integer value.
 	 *
 	 * @var array $int_fields
 	 */
-	var $int_fields = array( 'id', 'project_id' );
+	public $int_fields = array( 'id', 'project_id' );
 
 	/**
 	 * List of field names which cannot be updated.
 	 *
 	 * @var array $non_updatable_attributes
 	 */
-	var $non_updatable_attributes = array( 'id' );
+	public $non_updatable_attributes = array( 'id' );
 
 	/**
 	 * ID of the translation set.
@@ -194,6 +203,31 @@ class GP_Translation_Set extends GP_Thing {
 		$rules->slug_should_not_be( 'empty' );
 		$rules->locale_should_not_be( 'empty' );
 		$rules->project_id_should_not_be( 'empty' );
+	}
+
+	/**
+	 * Gets the error message for a failed validation rule.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $rule The validation rule that failed.
+	 * @return string|null The error message, or null to use the generic one.
+	 */
+	public function validation_error_message( $rule ) {
+		if ( 'empty' !== $rule['rule'] ) {
+			return null;
+		}
+
+		switch ( $rule['field'] ) {
+			case 'name':
+				return __( 'The translation set name must not be empty.', 'glotpress' );
+			case 'slug':
+				return __( 'The translation set slug must not be empty.', 'glotpress' );
+			case 'locale':
+				return __( 'Select a locale for the translation set.', 'glotpress' );
+		}
+
+		return null;
 	}
 
 	/**
@@ -505,6 +539,21 @@ class GP_Translation_Set extends GP_Thing {
 				}
 
 				$entry->translation_set_id = $this->id;
+
+				/*
+				 * An entry without a plural form matches a plural original by its context and singular. It was
+				 * checked as a singular above, so it is checked again with the plural form of the original it
+				 * is imported to, which needs a translation for each plural form of the locale.
+				 */
+				$original_plural = $translated ? $translated->plural : $original->plural;
+				if ( ! $has_errors && null === $entry->plural && null !== $original_plural ) {
+					$entry_original->plural = $original_plural;
+
+					$has_errors = null !== GP::$translation_errors->check( $entry_original, $entry->translations, $locale );
+					if ( $has_errors ) {
+						$entry->status = 'fuzzy';
+					}
+				}
 
 				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry, $translated );
 

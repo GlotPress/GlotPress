@@ -453,4 +453,121 @@ class GP_Test_Route_Project extends GP_UnitTestCase_Route {
 
 		$this->assertNotFalse( GP::$permission->get( $permission->id ), 'A nonce issued for another project does not authorize the request.' );
 	}
+
+	/**
+	 * Returns the content of the dt element of a project in a projects list.
+	 *
+	 * @param string $output The page output.
+	 * @param string $name   The project name.
+	 * @return string The content of the dt element, without the surrounding whitespace.
+	 */
+	private function project_row( $output, $name ) {
+		$this->assertSame( 1, preg_match( '#<dt class="project-[a-z]+">\s*(.*?' . preg_quote( $name, '#' ) . '</a>.*?)\s*</dt>#s', $output, $matches ), "The row of $name." );
+
+		return $matches[1];
+	}
+
+	public function test_projects_list_separates_the_row_items_with_a_space() {
+		$this->set_admin_user_as_current();
+		$this->factory->project->create( array( 'name' => 'Android', 'active' => 0 ) );
+
+		$this->route->index();
+
+		$row = $this->project_row( $this->route->template_output, 'Android' );
+		$this->assertSame( 1, preg_match( '#^<a [^>]+>Android</a> <a [^>]+>Edit</a> <a [^>]+>Delete</a> <span class=\'inactive bubble\'>Inactive</span>$#', $row ), $row );
+	}
+
+	public function test_projects_list_leaves_out_the_buttons_a_user_cannot_use_without_extra_spaces() {
+		$this->factory->project->create( array( 'name' => 'Android', 'active' => 1 ) );
+
+		$this->route->index();
+
+		$this->assertSame( 1, preg_match( '#^<a [^>]+>Android</a>$#', $this->project_row( $this->route->template_output, 'Android' ) ) );
+	}
+
+	public function test_projects_list_outputs_the_filtered_row_items_as_they_are() {
+		$this->factory->project->create( array( 'name' => 'Android', 'active' => 1 ) );
+
+		add_filter(
+			'gp_projects_template_project_items',
+			function ( $items, $project ) {
+				$items['form'] = '<form class="watch"><input type="hidden" name="project" value="' . esc_attr( $project->id ) . '"></form>';
+				return $items;
+			},
+			10,
+			2
+		);
+
+		$this->route->index();
+
+		$this->assertStringContainsString( 'Android</a> <form class="watch"><input type="hidden" name="project"', $this->project_row( $this->route->template_output, 'Android' ) );
+	}
+
+	public function test_sub_projects_list_separates_the_row_items_with_a_space() {
+		$this->set_admin_user_as_current();
+		$project = $this->factory->project->create( array( 'name' => 'Apps' ) );
+		$this->factory->project->create( array( 'name' => 'Android', 'parent_project_id' => $project->id, 'active' => 0 ) );
+
+		add_filter(
+			'gp_project_template_subproject_items',
+			function ( $items ) {
+				$items['extra'] = '<span class="extra">Extra</span>';
+				return $items;
+			}
+		);
+
+		$this->route->single( $project->path );
+
+		$row = $this->project_row( $this->route->template_output, 'Android' );
+		$this->assertSame( 1, preg_match( '#^<a [^>]+>Android</a> <a [^>]+>Edit</a> <a [^>]+>Delete</a> <span class=\'inactive bubble\'>Inactive</span> <span class="extra">Extra</span>$#', $row ), $row );
+	}
+
+	public function test_translation_sets_columns_can_be_filtered() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		add_filter(
+			'gp_project_template_translation_set_manage_columns',
+			function ( $columns, $project ) use ( $set ) {
+				$this->assertEquals( $set->project_id, $project->id );
+				unset( $columns['gp-column-fuzzy'] );
+				$columns['gp-column-reviewers'] = 'Reviewers';
+				return $columns;
+			},
+			10,
+			2
+		);
+		add_action(
+			'gp_project_template_translation_set_custom_column',
+			function ( $column_name, $translation_set ) {
+				echo esc_html( "$column_name of set {$translation_set->id}" );
+			},
+			10,
+			2
+		);
+
+		$this->route->single( $set->project->path );
+		$output = $this->route->template_output;
+
+		$this->assertStringContainsString( '<th class="gp-column-reviewers">Reviewers</th>', $output );
+		$this->assertStringNotContainsString( 'gp-column-fuzzy', $output );
+		$this->assertStringNotContainsString( 'class="stats fuzzy"', $output );
+		$this->assertMatchesRegularExpression( '#<td class="gp-column-reviewers">\s*gp-column-reviewers of set ' . $set->id . '\s*</td>#', $output );
+	}
+
+	public function test_translation_sets_extra_column_still_works() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+
+		add_action(
+			'gp_project_template_translation_set_extra',
+			function ( $translation_set ) {
+				echo esc_html( "Extra of set {$translation_set->id}" );
+			}
+		);
+
+		$this->route->single( $set->project->path );
+		$output = $this->route->template_output;
+
+		$this->assertStringContainsString( '<th class="gp-column-extra">Extra</th>', $output );
+		$this->assertMatchesRegularExpression( '#<td class="extra">\s*Extra of set ' . $set->id . '\s*</td>#', $output );
+	}
 }
