@@ -22,6 +22,15 @@ class GP_Project extends GP_Thing {
 	var $table_basename = 'gp_projects';
 
 	/**
+	 * Object type of the meta of the project, deleted along with it.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string $meta_object_type
+	 */
+	public $meta_object_type = 'project';
+
+	/**
 	 * List of field names for a project.
 	 *
 	 * @var array $field_names

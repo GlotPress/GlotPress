@@ -22,6 +22,15 @@ class GP_Original extends GP_Thing {
 	var $table_basename = 'gp_originals';
 
 	/**
+	 * Object type of the meta of the original, deleted along with it.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string $meta_object_type
+	 */
+	public $meta_object_type = 'original';
+
+	/**
 	 * List of field names for an original.
 	 *
 	 * @var array $field_names

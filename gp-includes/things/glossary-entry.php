@@ -22,6 +22,15 @@ class GP_Glossary_Entry extends GP_Thing {
 	var $table_basename = 'gp_glossary_entries';
 
 	/**
+	 * Object type of the meta of the glossary entry, deleted along with it.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string $meta_object_type
+	 */
+	public $meta_object_type = 'glossary_entry';
+
+	/**
 	 * List of field names for a glossary entry.
 	 *
 	 * @var array $field_names
