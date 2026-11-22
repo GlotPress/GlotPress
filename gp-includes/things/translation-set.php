@@ -286,6 +286,15 @@ class GP_Translation_Set extends GP_Thing {
 		return implode( '&nbsp;' . $separator . '&nbsp;', $parts );
 	}
 
+	/**
+	 * Retrieves a translation set by project ID, slug and locale.
+	 *
+	 * @param int    $project_id  The project ID.
+	 * @param string $slug        The translation set slug.
+	 * @param string $locale_slug The locale slug.
+	 *
+	 * @return GP_Translation_Set|false The translation set object or false if not found.
+	 */
 	public function by_project_id_slug_and_locale( $project_id, $slug, $locale_slug ) {
 		return $this->one(
 			"SELECT * FROM $this->table
@@ -296,6 +305,13 @@ class GP_Translation_Set extends GP_Thing {
 		);
 	}
 
+	/**
+	 * Retrieves translation sets by locale.
+	 *
+	 * @param string $locale_slug The locale slug.
+	 *
+	 * @return GP_Translation_Set[] An array of translation set objects.
+	 */
 	public function by_locale( $locale_slug ) {
 		return $this->many(
 			"SELECT * FROM $this->table
@@ -304,6 +320,11 @@ class GP_Translation_Set extends GP_Thing {
 		);
 	}
 
+	/**
+	 * Retrieves existing locales of translation sets.
+	 *
+	 * @return string[] An array of existing locales.
+	 */
 	public function existing_locales() {
 		global $wpdb;
 
@@ -311,6 +332,11 @@ class GP_Translation_Set extends GP_Thing {
 		return $wpdb->get_col( "SELECT DISTINCT(locale) FROM $this->table" );
 	}
 
+	/**
+	 * Retrieves existing slugs of translation sets.
+	 *
+	 * @return string[] An array of existing slugs.
+	 */
 	public function existing_slugs() {
 		global $wpdb;
 
@@ -318,6 +344,13 @@ class GP_Translation_Set extends GP_Thing {
 		return $wpdb->get_col( "SELECT DISTINCT(slug) FROM $this->table" );
 	}
 
+	/**
+	 * Retrieves translation sets by project ID.
+	 *
+	 * @param int $project_id The project ID.
+	 *
+	 * @return GP_Translation_Set[] An array of translation set objects.
+	 */
 	public function by_project_id( $project_id ) {
 		return $this->many(
 			"SELECT * FROM $this->table
@@ -1020,6 +1053,8 @@ class GP_Translation_Set extends GP_Thing {
 	 *
 	 * This function doesn't merge then, just copies unconditionally. If a translation already exists, it will be duplicated.
 	 * When copying translations from another project, it will search to find the original first.
+	 *
+	 * @param int $source_translation_set_id The translation set to copy from.
 	 */
 	public function copy_translations_from( $source_translation_set_id ) {
 		global $wpdb;
@@ -1052,7 +1087,11 @@ class GP_Translation_Set extends GP_Thing {
 		}
 	}
 
-
+	/**
+	 * Retrieves the percentage of translated originals in this translation set.
+	 *
+	 * @return float|int The percentage of translated originals, rounded down.
+	 */
 	public function percent_translated() {
 		$original_counts = GP::$original->count_by_project_id( $this->project_id, 'all' );
 

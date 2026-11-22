@@ -709,6 +709,13 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 	return $translation;
 }
 
+/**
+ * Display the translation textareas for a given entry.
+ *
+ * @param GP_Translation $entry       The translation, with the fields of its original.
+ * @param array          $permissions An array containing the edit and approve permissions.
+ * @param int            $index       The index of the translation to display (default is 0).
+ */
 function textareas( $entry, $permissions, $index = 0 ) {
 	list( $can_edit, $can_approve ) = $permissions;
 	?>
@@ -762,6 +769,13 @@ function textareas( $entry, $permissions, $index = 0 ) {
 	<?php
 }
 
+/**
+ * Retrieves the translated label of a translation status.
+ *
+ * @param string $status The status of the translation.
+ *
+ * @return string The translated status label.
+ */
 function display_status( $status ) {
 	if ( ! $status ) {
 		$status = '';
@@ -786,6 +800,12 @@ function display_status( $status ) {
 	return $status ? $status : _x( 'untranslated', 'Single Status', 'glotpress' );
 }
 
+/**
+ * Display the references of a translation string on a translation row.
+ *
+ * @param GP_Project     $project The current project.
+ * @param GP_Translation $entry   The translation, with the fields of its original.
+ */
 function references( $project, $entry ) {
 
 	/**
