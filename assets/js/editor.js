@@ -43,10 +43,12 @@ $gp.editor = (
 				}
 
 				// The responses can arrive in another order than the actions, and an older one has older counts.
-				if ( seq < $gp.editor.filter_counts_applied ) {
-					return;
+				if ( undefined !== seq ) {
+					if ( seq < $gp.editor.filter_counts_applied ) {
+						return;
+					}
+					$gp.editor.filter_counts_applied = seq;
 				}
-				$gp.editor.filter_counts_applied = seq;
 
 				$.each( JSON.parse( counts ), function( filter, count ) {
 					var link = $( '#upper-filters-toolbar a[data-filter="' + filter + '"]' );
