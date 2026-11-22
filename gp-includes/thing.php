@@ -860,7 +860,7 @@ class GP_Thing {
 			return array_map( array( &$this, 'sql_condition_from_php_value' ), $php_value );
 		}
 		$operator = '=';
-		if ( is_integer( $php_value ) || ( null !== $php_value && ctype_digit( $php_value ) ) ) {
+		if ( is_int( $php_value ) || ( null !== $php_value && ctype_digit( $php_value ) ) ) {
 			$sql_value = $php_value;
 		} else {
 			$sql_value = "'" . esc_sql( $php_value ) . "'";
