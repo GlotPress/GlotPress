@@ -19,6 +19,15 @@ class Mouse extends GP_Thing {
 	}
 }
 
+class Named_Mouse extends Mouse {
+	function validation_error_message( $rule ) {
+		if ( 'name' === $rule['field'] && 'empty' === $rule['rule'] ) {
+			return 'Every mouse needs a name.';
+		}
+
+		return null;
+	}
+}
 
 class GP_Test_Validation extends GP_UnitTestCase {
 	function setUp(): void {
@@ -94,5 +103,28 @@ class GP_Test_Validation extends GP_UnitTestCase {
 		$this->expectExceptionMessage( 'Call to undefined method: GP_Validation_Rules::unknown_method().' );
 
 		$rules->unknown_method();
+	}
+
+	function test_error_message_comes_from_the_thing() {
+		$mouse = new Named_Mouse( array( 'id' => 5, 'name' => '', 'rating' => 11, 'cat_id' => 1 ) );
+
+		$this->assertFalse( $mouse->validate() );
+		$this->assertSame( array( 'Every mouse needs a name.' ), $mouse->errors );
+	}
+
+	function test_error_message_falls_back_for_a_rule_the_thing_has_no_message_for() {
+		$mouse = new Named_Mouse( array( 'id' => 5, 'name' => 'Mickey', 'rating' => -1, 'cat_id' => 1 ) );
+
+		$this->assertFalse( $mouse->validate() );
+		$this->assertCount( 1, $mouse->errors );
+		$this->assertStringContainsString( 'rating', $mouse->errors[0] );
+	}
+
+	function test_error_message_falls_back_for_a_thing_without_messages() {
+		$mouse = new Mouse( array( 'id' => 5, 'name' => '', 'rating' => 11, 'cat_id' => 1 ) );
+
+		$this->assertFalse( $mouse->validate() );
+		$this->assertCount( 1, $mouse->errors );
+		$this->assertStringContainsString( 'name', $mouse->errors[0] );
 	}
 }

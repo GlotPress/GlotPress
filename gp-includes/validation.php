@@ -190,9 +190,13 @@ class GP_Validation_Rules {
 				continue;
 			}
 			$value         = $thing->$field_name;
-			$field_verdict = $this->run_on_single_field( $field_name, $value );
+			$field_verdict = $this->run_on_single_field( $field_name, $value, $thing );
 			$verdict       = $verdict && $field_verdict;
 		}
+
+		// Several rules of a field can fail with the same message, like an empty value that is also not one of the allowed ones.
+		$this->errors = array_values( array_unique( $this->errors ) );
+
 		return $verdict;
 	}
 
@@ -203,11 +207,14 @@ class GP_Validation_Rules {
 	 * It retrieves the corresponding validation callbacks and executes them with the specified arguments.
 	 * If any validation fails, it adds an error message to the $errors array and returns false. If all validations pass, it returns true.
 	 *
-	 * @param string $field The name of the field to validate.
-	 * @param mixed  $value The value of the field to validate.
+	 * @since 4.2.0 Added the `$thing` parameter.
+	 *
+	 * @param string      $field The name of the field to validate.
+	 * @param mixed       $value The value of the field to validate.
+	 * @param object|null $thing Optional. The object the field belongs to, which may provide the error messages. Default null.
 	 * @return bool True if all validations for the field pass, false otherwise.
 	 */
-	public function run_on_single_field( $field, $value ) {
+	public function run_on_single_field( $field, $value, $thing = null ) {
 		if ( ! isset( $this->rules[ $field ] ) || ! is_array( $this->rules[ $field ] ) ) {
 			// No rules means always valid.
 			return true;
@@ -232,16 +239,16 @@ class GP_Validation_Rules {
 			array_unshift( $args, $value );
 			if ( 'positive' === $rule['kind'] ) {
 				if ( ! $callback['positive']( ...$args ) ) {
-					$this->errors[] = $this->construct_error_message( $rule );
+					$this->errors[] = $this->construct_error_message( $rule, $thing );
 					$verdict        = false;
 				}
 			} elseif ( null === $callback['negative'] ) {
 				if ( $callback['positive']( ...$args ) ) {
-					$this->errors[] = $this->construct_error_message( $rule );
+					$this->errors[] = $this->construct_error_message( $rule, $thing );
 					$verdict        = false;
 				}
 			} elseif ( ! $callback['negative']( ...$args ) ) {
-				$this->errors[] = $this->construct_error_message( $rule );
+				$this->errors[] = $this->construct_error_message( $rule, $thing );
 				$verdict        = false;
 			}
 		}
@@ -251,29 +258,33 @@ class GP_Validation_Rules {
 	/**
 	 * Constructs an error message for a failed validation rule.
 	 *
-	 * This method generates a user-friendly error message based on the provided validation rule.
-	 * It identifies the type of field ('field' or 'textarea') and formats the message accordingly, including the name of the field and the validation rule that failed.
+	 * Uses the message of the object the field belongs to, if it has one. Otherwise, it names the
+	 * field and the rule, which is good enough for the fields people don't fill in themselves.
 	 *
-	 * @param array $rule The validation rule that failed, containing 'field', 'rule', and 'kind' keys.
+	 * @since 4.2.0 Added the `$thing` parameter.
+	 *
+	 * @param array       $rule  The validation rule that failed, containing 'field', 'rule', and 'kind' keys.
+	 * @param object|null $thing Optional. The object the field belongs to. Default null.
 	 * @return string The constructed error message.
 	 */
-	public function construct_error_message( $rule ) {
-		$type_field = 'field';
+	public function construct_error_message( $rule, $thing = null ) {
+		if ( $thing instanceof GP_Thing ) {
+			$message = $thing->validation_error_message( $rule );
+			if ( null !== $message ) {
+				return $message;
+			}
+		}
+
 		$name_field = $rule['field'];
 		$name_rule  = str_replace( '_', ' ', $rule['rule'] );
 
-		if ( 1 === preg_match( '/translation_[0-9]/', $name_field ) ) {
-			$type_field = 'textarea';
-			$name_field = 'Translation ' . ( intval( substr( $name_field, 12 ) ) + 1 );
+		if ( 'positive' === $rule['kind'] ) {
+			/* translators: 1: Name of a field, 2: Validation rule. */
+			return sprintf( __( 'The field %1$s is invalid and should be %2$s!', 'glotpress' ), $name_field, $name_rule );
 		}
 
-		if ( 'positive' == $rule['kind'] ) {
-			/* translators: 1: type of a validation field, 2: name of a validation field, 3: validation rule */
-			return sprintf( __( 'The %1$s %2$s is invalid and should be %3$s!', 'glotpress' ), $type_field, '<strong>' . $name_field . '</strong>', $name_rule );
-		} else { // if ( 'negative' == $rule['kind'] )
-			/* translators: 1: type of a validation field, 2: name of a validation field, 3: validation rule */
-			return sprintf( __( 'The %1$s %2$s is invalid and should not be %3$s!', 'glotpress' ), $type_field, '<strong>' . $name_field . '</strong>', $name_rule );
-		}
+		/* translators: 1: Name of a field, 2: Validation rule. */
+		return sprintf( __( 'The field %1$s is invalid and should not be %2$s!', 'glotpress' ), $name_field, $name_rule );
 	}
 }
 
