@@ -332,6 +332,11 @@ $gp.editor = (
 					_gp_route_nonce: button.data( 'nonce' ),
 				};
 
+				// An unchanged save approves only this suggestion, not another identical one.
+				if ( editor.translation_id ) {
+					data.translation_id = editor.translation_id;
+				}
+
 				if ( button.data( 'status' ) ) {
 					data.status = button.data( 'status' );
 				}
