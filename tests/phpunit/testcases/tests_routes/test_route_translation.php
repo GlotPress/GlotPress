@@ -769,4 +769,86 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$created = GP::$translation->find_one( array( 'original_id' => $original->id, 'status' => 'waiting' ) );
 		$this->assertNotFalse( $created, 'The filter bypassed the duplicate block and created the suggestion.' );
 	}
+
+	function test_translations_post_does_not_save_a_plural_translation_with_a_missing_form() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item', 'plural' => 'Many items' ) );
+
+		$this->set_normal_user_as_current();
+
+		$_POST['original_id']        = $original->id;
+		$_POST['translation']        = array( $original->id => array( 'Um item' ) );
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation_' . $original->id );
+
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->translations_post( $set->project->path, $set->locale, $set->slug );
+			}
+		);
+
+		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $original->id ) ) );
+		$this->assertStringContainsString( 'The plural form used for numbers like 0, 2, 3 is missing.', $this->route->template_output );
+	}
+
+	function test_translations_post_saves_a_plural_translation_with_all_forms() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item', 'plural' => 'Many items' ) );
+
+		$this->set_normal_user_as_current();
+
+		$_POST['original_id']        = $original->id;
+		$_POST['translation']        = array( $original->id => array( 'Um item', 'Muitos itens' ) );
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation_' . $original->id );
+
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->translations_post( $set->project->path, $set->locale, $set->slug );
+			}
+		);
+
+		$translation = GP::$translation->find_one( array( 'original_id' => $original->id ) );
+		$this->assertNotFalse( $translation );
+		$this->assertEquals( 'Muitos itens', $translation->translation_1 );
+	}
+
+	function test_set_status_reports_a_missing_plural_form() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item', 'plural' => 'Many items' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting', 'translation_0' => 'Um item' ) );
+
+		$_POST['status']             = 'current';
+		$_POST['translation_id']     = $translation->id;
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'update-translation-status-current_' . $translation->id );
+
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->set_status( $set->project->path, $set->locale, $set->slug );
+			}
+		);
+
+		$this->assertSame( 'waiting', GP::$translation->get( $translation->id )->status );
+		$this->assertStringContainsString( 'The plural form used for numbers like 0, 2, 3 is missing.', $this->route->template_output );
+	}
+
+	function test_bulk_approve_reports_a_missing_plural_form_as_a_translation_error() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item', 'plural' => 'Many items' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting', 'translation_0' => 'Um item' ) );
+
+		$_POST['bulk']               = array(
+			'action'      => 'approve',
+			'row-ids'     => $original->id . '-' . $translation->id,
+			'redirect_to' => '/',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'bulk-actions' );
+
+		$this->route->bulk_post( $set->project->path, $set->locale, $set->slug );
+
+		$this->assertSame( 'waiting', GP::$translation->get( $translation->id )->status );
+		$this->assertThereIsAnErrorContaining( '1 translation was not approved because it has translation errors.' );
+	}
 }

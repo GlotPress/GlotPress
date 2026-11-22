@@ -498,6 +498,21 @@ class GP_Translation_Set extends GP_Thing {
 
 				$entry->translation_set_id = $this->id;
 
+				/*
+				 * An entry without a plural form matches a plural original by its context and singular. It was
+				 * checked as a singular above, so it is checked again with the plural form of the original it
+				 * is imported to, which needs a translation for each plural form of the locale.
+				 */
+				$original_plural = $translated ? $translated->plural : $original->plural;
+				if ( ! $has_errors && null === $entry->plural && null !== $original_plural ) {
+					$entry_original->plural = $original_plural;
+
+					$has_errors = null !== GP::$translation_errors->check( $entry_original, $entry->translations, $locale );
+					if ( $has_errors ) {
+						$entry->status = 'fuzzy';
+					}
+				}
+
 				$entry->status = apply_filters( 'gp_translation_set_import_status', $entry->status, $entry, $translated );
 
 				// A row created as current is not checked again when its status is set.
