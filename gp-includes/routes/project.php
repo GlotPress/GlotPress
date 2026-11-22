@@ -110,7 +110,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$source_url_templates[ $project->id ] = gp_post( 'source-url-template' );
 
 		if ( update_user_meta( get_current_user_id(), 'gp_source_url_templates', $source_url_templates ) ) {
-			$this->notices[] = __( 'Source URL template was successfully updated.', 'glotpress' );
+			$this->successes[] = __( 'Source URL template was successfully updated.', 'glotpress' );
 		} else {
 			$this->errors[] = __( 'Error in updating source URL template.', 'glotpress' );
 		}
@@ -196,7 +196,12 @@ class GP_Route_Project extends GP_Route_Main {
 			);
 		}
 
-		$this->notices[] = $notice;
+		// Failed strings and an import without any change aren't worth a success message.
+		if ( $originals_error || ! ( $originals_added || $originals_existing || $originals_fuzzied || $originals_obsoleted ) ) {
+			$this->notices[] = $notice;
+		} else {
+			$this->successes[] = $notice;
+		}
 
 		$this->redirect( gp_url_project( $project ) );
 	}
@@ -267,7 +272,7 @@ class GP_Route_Project extends GP_Route_Main {
 		} elseif ( $new_parent_id !== (int) $project->parent_project_id && ! $this->can( 'write', 'project', $new_parent ) ) {
 			$this->errors[] = __( 'You are not allowed to do that!', 'glotpress' );
 		} elseif ( $project->save( $updated_project ) ) {
-			$this->notices[] = __( 'The project was saved.', 'glotpress' );
+			$this->successes[] = __( 'The project was saved.', 'glotpress' );
 		} else {
 			$this->errors[] = __( 'Error in saving project!', 'glotpress' );
 		}
@@ -304,7 +309,7 @@ class GP_Route_Project extends GP_Route_Main {
 		}
 
 		if ( $project->delete() ) {
-			$this->notices[] = sprintf(
+			$this->successes[] = sprintf(
 				/* translators: %s: Project name. */
 				__( 'The project "%s" was deleted.', 'glotpress' ),
 				$project->name
@@ -384,7 +389,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->errors[] = __( 'Error in creating project!', 'glotpress' );
 			$this->tmpl( 'project-new', get_defined_vars() );
 		} else {
-			$this->notices[] = __( 'The project was created!', 'glotpress' );
+			$this->successes[] = __( 'The project was created!', 'glotpress' );
 			$this->redirect( gp_url_project( $project ) );
 		}
 	}
@@ -469,7 +474,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$permission = GP::$validator_permission->create( $new_permission );
 
 			$permission ?
-				$this->notices[] = __( 'Validator was added.', 'glotpress' ) : $this->errors[] = __( 'Error in adding validator.', 'glotpress' );
+				$this->successes[] = __( 'Validator was added.', 'glotpress' ) : $this->errors[] = __( 'Error in adding validator.', 'glotpress' );
 		}
 		$this->redirect( gp_url_current() );
 	}
@@ -498,7 +503,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$permission = GP::$validator_permission->get( $permission_id );
 		if ( $permission && (int) $permission->project_id === (int) $project->id ) {
 			if ( $permission->delete() ) {
-				$this->notices[] = __( 'Permission was deleted.', 'glotpress' );
+				$this->successes[] = __( 'Permission was deleted.', 'glotpress' );
 			} else {
 				$this->errors[] = __( 'Error in deleting permission!', 'glotpress' );
 			}
@@ -549,7 +554,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$other_project = GP::$project->get( gp_post( 'project_id' ) );
 
 		if ( ! $other_project ) {
-			return $this->die_with_error( esc_html__( 'Project wasn&#8217;t found', 'glotpress' ), 404, esc_html__( 'Not found', 'glotpress' ), '404' );
+			return $this->die_with_error( esc_html__( 'Project wasn&#8217;t found.', 'glotpress' ), 404, esc_html__( 'Not found', 'glotpress' ), '404' );
 		}
 
 		$changes = $project->set_difference_from( $other_project );
@@ -567,7 +572,7 @@ class GP_Route_Project extends GP_Route_Main {
 			) ) {
 				$this->errors[] = sprintf(
 					/* translators: %s: Translation set name. */
-					__( 'Couldn&#8217;t add translation set named %s', 'glotpress' ),
+					__( 'Couldn&#8217;t add translation set named %s.', 'glotpress' ),
 					esc_html( $to_add->name )
 				);
 			}
@@ -577,7 +582,7 @@ class GP_Route_Project extends GP_Route_Main {
 				if ( ! $to_remove->delete() ) {
 					$this->errors[] = sprintf(
 						/* translators: %s: Translation set name. */
-						__( 'Couldn&#8217;t delete translation set named %s', 'glotpress' ),
+						__( 'Couldn&#8217;t delete translation set named %s.', 'glotpress' ),
 						esc_html( $to_remove->name )
 					);
 				}
@@ -586,7 +591,7 @@ class GP_Route_Project extends GP_Route_Main {
 			$this->errors[] = __( 'You are not allowed to remove translation sets.', 'glotpress' );
 		}
 		if ( empty( $this->errors ) ) {
-			$this->notices[] = __( 'Translation sets were added and removed successfully', 'glotpress' );
+			$this->successes[] = __( 'Translation sets were added and removed successfully.', 'glotpress' );
 		}
 
 		$this->redirect( gp_url_project( $project ) );
@@ -611,7 +616,7 @@ class GP_Route_Project extends GP_Route_Main {
 		$other_project = GP::$project->get( gp_post( 'project_id' ) );
 
 		if ( ! $other_project ) {
-			return $this->die_with_error( esc_html__( 'Project wasn&#8217;t found', 'glotpress' ), 404, esc_html__( 'Not found', 'glotpress' ), '404' );
+			return $this->die_with_error( esc_html__( 'Project wasn&#8217;t found.', 'glotpress' ), 404, esc_html__( 'Not found', 'glotpress' ), '404' );
 		}
 
 		header( 'Content-Type: application/json' );

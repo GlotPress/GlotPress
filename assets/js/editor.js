@@ -5,6 +5,8 @@ $gp.editor = (
 		return {
 			current: null,
 			original_translations: null,
+			filter_counts_seq: 0,
+			filter_counts_applied: 0,
 			init: function( table ) {
 				var $previewRows;
 
@@ -24,11 +26,28 @@ $gp.editor = (
 			translation_id_from_row_id: function( row_id ) {
 				return row_id.split( '-' )[ 1 ];
 			},
-			update_filter_counts: function( xhr ) {
+			/*
+			 * Numbers an editor action whose response carries the filter counts, in the order the
+			 * actions are sent.
+			 */
+			next_filter_counts_seq: function() {
+				$gp.editor.filter_counts_seq += 1;
+
+				return $gp.editor.filter_counts_seq;
+			},
+			update_filter_counts: function( xhr, seq ) {
 				var counts = xhr.getResponseHeader( 'X-GlotPress-Filter-Counts' );
 
 				if ( ! counts ) {
 					return;
+				}
+
+				// The responses can arrive in another order than the actions, and an older one has older counts.
+				if ( undefined !== seq ) {
+					if ( seq < $gp.editor.filter_counts_applied ) {
+						return;
+					}
+					$gp.editor.filter_counts_applied = seq;
 				}
 
 				$.each( JSON.parse( counts ), function( filter, count ) {
@@ -78,11 +97,6 @@ $gp.editor = (
 			show: function( element ) {
 				var row_id = element.closest( 'tr' ).attr( 'row' );
 				var editor = $( '#editor-' + row_id );
-				var gmt_date_added = $( '#gmt-date-added-' + row_id );
-				var local_date_added = $( '#local-date-added-' + row_id );
-				var offset = new Date().getTimezoneOffset();
-				var gmt_date = new Date( gmt_date_added.text() );
-				var local_date = new Date( ( gmt_date - ( offset * 60 * 1000 ) ) );
 
 				if ( ! editor.length ) {
 					return;
@@ -101,8 +115,6 @@ $gp.editor = (
 
 				$gp.editor.current = editor;
 				$gp.editor.add_placeholder_buttons( editor );
-
-				local_date_added.text( local_date.toLocaleDateString() + ' ' + local_date.toLocaleTimeString() );
 
 				editor.show();
 				editor.preview.hide();
@@ -255,7 +267,7 @@ $gp.editor = (
 					if ( target.nextAll( 'textarea' ).length ) {
 						target.nextAll( 'textarea' ).eq( 0 ).focus();
 					} else {
-						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok' ) );
+						$gp.editor.save( target.parents( 'tr.editor' ).find( 'button.ok:not([data-status])' ) );
 					}
 				} else if ( ( 13 === e.keyCode && e.ctrlKey ) || ( 66 === e.keyCode && e.shiftKey && e.ctrlKey ) ) { // Ctrl-Enter or Ctrl-Shift-B = Copy original.
 					copy = $( '.editor:visible' ).find( '.copy' );
@@ -304,7 +316,8 @@ $gp.editor = (
 			save: function( button ) {
 				var editor, textareaName,
 					data = [],
-					translations;
+					translations,
+					filterCountsSeq;
 
 				if ( ! $gp.editor.current ) {
 					return;
@@ -312,12 +325,21 @@ $gp.editor = (
 
 				editor = $gp.editor.current;
 				button.prop( 'disabled', true );
-				$gp.notices.notice( wp.i18n.__( 'Saving&hellip;', 'glotpress' ) );
+				$gp.notices.progress( wp.i18n.__( 'Saving&hellip;', 'glotpress' ) );
 
 				data = {
 					original_id: editor.original_id,
 					_gp_route_nonce: button.data( 'nonce' ),
 				};
+
+				// An unchanged save approves only this suggestion, not another identical one.
+				if ( editor.translation_id ) {
+					data.translation_id = editor.translation_id;
+				}
+
+				if ( button.data( 'status' ) ) {
+					data.status = button.data( 'status' );
+				}
 
 				textareaName = 'translation[' + editor.original_id + '][]';
 				translations = $( 'textarea[name="' + textareaName + '"]', editor ).map( function() {
@@ -325,6 +347,8 @@ $gp.editor = (
 				} ).get();
 
 				data[ textareaName ] = translations;
+
+				filterCountsSeq = $gp.editor.next_filter_counts_seq();
 
 				$.ajax( {
 					type: 'POST',
@@ -341,7 +365,7 @@ $gp.editor = (
 							$gp.editor.replace_current( response[ original_id ] );
 						}
 
-						$gp.editor.update_filter_counts( xhr );
+						$gp.editor.update_filter_counts( xhr, filterCountsSeq );
 
 						if ( $gp.editor.current.hasClass( 'no-warnings' ) ) {
 							$gp.editor.next();
@@ -364,7 +388,7 @@ $gp.editor = (
 
 				editor = $gp.editor.current;
 				select.prop( 'disabled', true );
-				$gp.notices.notice( wp.i18n.__( 'Setting priority&hellip;', 'glotpress' ) );
+				$gp.notices.progress( wp.i18n.__( 'Setting priority&hellip;', 'glotpress' ) );
 
 				data = {
 					priority: $( 'option:selected', select ).val(),
@@ -393,7 +417,7 @@ $gp.editor = (
 				} );
 			},
 			set_status: function( button, status ) {
-				var editor, data, status_name,
+				var editor, data, status_name, filterCountsSeq,
 					translationChanged = false;
 
 				if ( ! $gp.editor.current || ! $gp.editor.current.translation_id ) {
@@ -431,13 +455,15 @@ $gp.editor = (
 				}
 
 				/* translators: %s: Status name. */
-				$gp.notices.notice( wp.i18n.sprintf( wp.i18n.__( 'Setting status to &#8220;%s&#8221;&hellip;', 'glotpress' ), status_name ) );
+				$gp.notices.progress( wp.i18n.sprintf( wp.i18n.__( 'Setting status to &#8220;%s&#8221;&hellip;', 'glotpress' ), status_name ) );
 
 				data = {
 					translation_id: editor.translation_id,
 					status: status,
 					_gp_route_nonce: button.data( 'nonce' ),
 				};
+
+				filterCountsSeq = $gp.editor.next_filter_counts_seq();
 
 				$.ajax( {
 					type: 'POST',
@@ -447,7 +473,7 @@ $gp.editor = (
 						button.prop( 'disabled', false );
 						$gp.notices.success( wp.i18n.__( 'Status set!', 'glotpress' ) );
 						$gp.editor.replace_current( response );
-						$gp.editor.update_filter_counts( xhr );
+						$gp.editor.update_filter_counts( xhr, filterCountsSeq );
 						$gp.editor.next();
 					},
 					error: function( xhr, msg ) {
@@ -459,12 +485,12 @@ $gp.editor = (
 				} );
 			},
 			discard_warning: function( link ) {
-				var data;
+				var data, filterCountsSeq;
 				if ( ! $gp.editor.current ) {
 					return;
 				}
 
-				$gp.notices.notice( wp.i18n.__( 'Discarding&hellip;', 'glotpress' ) );
+				$gp.notices.progress( wp.i18n.__( 'Discarding&hellip;', 'glotpress' ) );
 
 				data = {
 					translation_id: $gp.editor.current.translation_id,
@@ -474,14 +500,16 @@ $gp.editor = (
 
 				};
 
+				filterCountsSeq = $gp.editor.next_filter_counts_seq();
+
 				$.ajax( {
 					type: 'POST',
 					url: $gp_editor_options.discard_warning_url,
 					data: data,
 					success: function( response, textStatus, xhr ) {
-						$gp.notices.success( wp.i18n.__( 'Saved!', 'glotpress' ) );
+						$gp.notices.success( wp.i18n.__( 'Warning discarded!', 'glotpress' ) );
 						$gp.editor.replace_current( response );
-						$gp.editor.update_filter_counts( xhr );
+						$gp.editor.update_filter_counts( xhr, filterCountsSeq );
 					},
 					error: function( xhr, msg ) {
 						/* translators: %s: Error message. */

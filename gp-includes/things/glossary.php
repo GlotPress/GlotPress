@@ -237,7 +237,9 @@ class GP_Glossary extends GP_Thing {
 			return $this->entries;
 		}
 
-		return $this->entries = GP::$glossary_entry->by_glossary_id( $this->id );
+		$this->entries = GP::$glossary_entry->by_glossary_id( $this->id );
+
+		return $this->entries;
 	}
 
 

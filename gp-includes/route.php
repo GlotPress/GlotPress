@@ -32,6 +32,15 @@ class GP_Route {
 	public $notices = array();
 
 	/**
+	 * Success messages collected during the request.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var array
+	 */
+	public $successes = array();
+
+	/**
 	 * Whether the request is currently running.
 	 *
 	 * @var bool
@@ -136,6 +145,22 @@ class GP_Route {
 
 		// Make sure that the current URL has a trailing slash.
 		add_action( 'gp_before_request', array( $this, 'check_uri_trailing_slash' ) );
+	}
+
+	/**
+	 * Formats error messages for an error response, as a list only if there is more than one.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string[] $messages The error messages, as HTML.
+	 * @return string The error messages, as HTML.
+	 */
+	protected function error_messages_html( array $messages ): string {
+		if ( 1 === count( $messages ) ) {
+			return reset( $messages );
+		}
+
+		return '<ul><li>' . implode( '</li><li>', $messages ) . '</li></ul>';
 	}
 
 	/**
@@ -436,15 +461,21 @@ class GP_Route {
 			return;
 		}
 
-		foreach ( $this->notices as $notice ) {
-			gp_notice_set( $notice );
+		// Each type reaches the next page through a single cookie, which keeps only the last message.
+		$messages = array(
+			'notice'  => $this->notices,
+			'success' => $this->successes,
+			'error'   => $this->errors,
+		);
+		foreach ( $messages as $key => $texts ) {
+			if ( $texts ) {
+				gp_notice_set( implode( '<br>', $texts ), $key );
+			}
 		}
-		$this->notices = array();
 
-		foreach ( $this->errors as $error ) {
-			gp_notice_set( $error, 'error' );
-		}
-		$this->errors = array();
+		$this->notices   = array();
+		$this->successes = array();
+		$this->errors    = array();
 	}
 
 	/**
@@ -513,14 +544,14 @@ class GP_Route {
 	/**
 	 * Sends a HTTP header.
 	 *
-	 * @param string $string The header string.
+	 * @param string $header_string The header string.
 	 */
-	public function header( $string ) {
+	public function header( $header_string ) {
 		if ( $this->fake_request ) {
-			list( $header, $value )   = explode( ':', $string, 2 );
+			list( $header, $value )   = explode( ':', $header_string, 2 );
 			$this->headers[ $header ] = $value;
 		} else {
-			header( $string );
+			header( $header_string );
 		}
 	}
 
