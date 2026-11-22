@@ -77,6 +77,34 @@ class GP_Test_CLI_Recheck_Errors extends GP_UnitTestCase {
 	}
 
 	/**
+	 * Creates a plural original and a current translation for it.
+	 *
+	 * @param GP_Translation_Set $set          The translation set.
+	 * @param array              $translations The translations, one per plural form.
+	 * @return GP_Translation The translation.
+	 */
+	private function create_plural_translation( $set, $translations ) {
+		$original = $this->factory->original->create(
+			array(
+				'project_id' => $set->project_id,
+				'singular'   => '%d item',
+				'plural'     => '%d items',
+			)
+		);
+
+		$fields = array(
+			'translation_set_id' => $set->id,
+			'original_id'        => $original->id,
+			'status'             => 'current',
+		);
+		foreach ( $translations as $index => $translation ) {
+			$fields[ "translation_$index" ] = $translation;
+		}
+
+		return $this->factory->translation->create( $fields );
+	}
+
+	/**
 	 * Runs the command.
 	 *
 	 * @param array $assoc_args The options.
@@ -203,6 +231,41 @@ class GP_Test_CLI_Recheck_Errors extends GP_UnitTestCase {
 		$this->run_command();
 
 		$this->assertSame( 'fuzzy', $this->status_of( $translation ) );
+	}
+
+	public function test_sets_current_translations_with_a_missing_plural_form_to_fuzzy() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$missing  = $this->create_plural_translation( $set, array( '%d Element' ) );
+		$empty    = $this->create_plural_translation( $set, array( '%d Element', '' ) );
+		$complete = $this->create_plural_translation( $set, array( '%d Element', '%d Elemente' ) );
+
+		$this->run_command( array( 'verbose' => true ) );
+
+		$this->assertSame( 'fuzzy', $this->status_of( $missing ) );
+		$this->assertSame( 'fuzzy', $this->status_of( $empty ) );
+		$this->assertSame( 'current', $this->status_of( $complete ) );
+		$this->assertContains( array( 'log', "Translation #{$missing->id} of original #{$missing->original_id} in set #{$set->id}: missing_plural_form" ), WP_CLI::$messages );
+		$this->assertContains( array( 'success', 'Translation sets checked: 1. Current translations checked: 3. Set to fuzzy: 2.' ), WP_CLI::$messages );
+	}
+
+	public function test_needs_only_the_plural_forms_of_the_locale() {
+		$locale      = $this->factory->locale->create(
+			array(
+				'nplurals'          => 1,
+				'plural_expression' => '0',
+			)
+		);
+		$set         = $this->factory->translation_set->create(
+			array(
+				'project_id' => $this->factory->project->create()->id,
+				'locale'     => $locale->slug,
+			)
+		);
+		$translation = $this->create_plural_translation( $set, array( '%d Element' ) );
+
+		$this->run_command();
+
+		$this->assertSame( 'current', $this->status_of( $translation ) );
 	}
 
 	public function test_leaves_other_statuses_unchanged() {

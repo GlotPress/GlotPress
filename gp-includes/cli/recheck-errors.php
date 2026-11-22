@@ -75,11 +75,12 @@ class GP_CLI_Recheck_Errors extends WP_CLI_Command {
 	/**
 	 * Checks current translations against the translation errors and sets the ones that fail to fuzzy.
 	 *
-	 * Every registered translation error is checked, the same as when a translation
-	 * is approved or imported. Current translations of obsolete originals are
-	 * included, as an originals import that brings the string back reactivates
-	 * the original, and its current translation is used again without being
-	 * checked. Other statuses are not changed.
+	 * Every registered translation error is checked, and so are missing plural
+	 * forms, the same as when a translation is approved or imported. Current
+	 * translations of obsolete originals are included, as an originals import
+	 * that brings the string back reactivates the original, and its current
+	 * translation is used again without being checked. Other statuses are not
+	 * changed.
 	 *
 	 * ## OPTIONS
 	 *
