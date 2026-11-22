@@ -938,6 +938,12 @@ class GP_Route_Translation extends GP_Route_Main {
 			return;
 		}
 
+		$priorities = GP::$original->get_static( 'priorities' );
+		if ( ! is_scalar( $bulk['priority'] ) || ! isset( $priorities[ $bulk['priority'] ] ) ) {
+			$this->errors[] = __( 'Invalid priority value!', 'glotpress' );
+			return;
+		}
+
 		$ok    = 0;
 		$error = 0;
 		foreach ( $bulk['row-ids'] as $row_id ) {
@@ -950,11 +956,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 			$original->priority = $bulk['priority'];
 
-			if ( ! $original->validate() ) {
-				return $this->die_with_error( __( 'Invalid priority value!', 'glotpress' ) );
-			}
-
-			if ( ! $original->save() ) {
+			if ( ! $original->validate() || ! $original->save() ) {
 				++$error;
 			} else {
 				++$ok;
