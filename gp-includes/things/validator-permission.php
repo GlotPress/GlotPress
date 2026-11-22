@@ -100,6 +100,29 @@ class GP_Validator_Permission extends GP_Permission {
 	}
 
 	/**
+	 * Gets the error message for a failed validation rule.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $rule The validation rule that failed.
+	 * @return string|null The error message, or null to use the generic one.
+	 */
+	public function validation_error_message( $rule ) {
+		if ( 'empty' !== $rule['rule'] ) {
+			return null;
+		}
+
+		switch ( $rule['field'] ) {
+			case 'locale_slug':
+				return __( 'Select a locale for the validator.', 'glotpress' );
+			case 'set_slug':
+				return __( 'The translation set slug of the validator must not be empty.', 'glotpress' );
+		}
+
+		return null;
+	}
+
+	/**
 	 * Sets fields of the current GP_Thing object.
 	 *
 	 * @param array $fields Fields for a GP_Thing object.

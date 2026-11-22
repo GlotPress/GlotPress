@@ -524,7 +524,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			 */
 			do_action( 'gp_translation_set_bulk_action_post', $project, $locale, $translation_set, $bulk );
 		} else {
-			$this->errors[] = 'No translations were supplied.';
+			$this->errors[] = __( 'No translations were supplied.', 'glotpress' );
 		}
 
 		$bulk['redirect_to'] = esc_url_raw( $bulk['redirect_to'] );
@@ -1092,7 +1092,7 @@ class GP_Route_Translation extends GP_Route_Main {
 
 			$this->tmpl( 'translation-row', get_defined_vars() );
 		} else {
-			return $this->die_with_error( 'Error in retrieving translation!' );
+			return $this->die_with_error( __( 'Error in retrieving translation!', 'glotpress' ) );
 		}
 	}
 
@@ -1142,7 +1142,7 @@ class GP_Route_Translation extends GP_Route_Main {
 		$res = $translation->save();
 
 		if ( false === $res || null === $res ) {
-			return $this->die_with_error( 'Error in saving the translation!' );
+			return $this->die_with_error( __( 'Error in saving the translation!', 'glotpress' ) );
 		}
 	}
 
