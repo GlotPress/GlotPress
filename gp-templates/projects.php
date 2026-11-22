@@ -22,12 +22,12 @@ gp_tmpl_header();
 					<?php
 
 					/**
-					 * Filter a project row items, like title, action buttons and active bubble in the root projects template.
+					 * Filters the items of a project row in the projects list, like its name, action buttons and status bubble.
 					 *
 					 * @since 4.2.0
 					 *
-					 * @param array $project_row_items   The array of project items to render on the projects list.
-					 * @param GP_Project $project        GP_Project object.
+					 * @param string[]   $items   Rendered HTML of each item, keyed by item name. Empty items are left out.
+					 * @param GP_Project $project The project of the row.
 					 */
 					$project_row_items = apply_filters(
 						'gp_projects_template_project_items',

@@ -292,12 +292,12 @@ $project_class = $sub_projects ? 'with-sub-projects' : '';
 				<?php
 
 				/**
-				 * Filter a subproject row items, like title, action buttons and active bubble in the project template.
+				 * Filters the items of a sub-project row in the project template, like its name, action buttons and status bubble.
 				 *
 				 * @since 4.2.0
 				 *
-				 * @param array $project_row_items   The array of project items to render on the projects list.
-				 * @param GP_Project $project        GP_Project object.
+				 * @param string[]   $items   Rendered HTML of each item, keyed by item name. Empty items are left out.
+				 * @param GP_Project $project The project of the row.
 				 */
 				$project_row_items = apply_filters(
 					'gp_project_template_subproject_items',
