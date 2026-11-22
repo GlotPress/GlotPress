@@ -97,6 +97,29 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$this->assertEquals( 0, (int) GP::$original->get( $other_original->id )->priority );
 	}
 
+	function test_bulk_set_priority_refuses_an_invalid_priority_before_changing_any_original() {
+		$set    = $this->factory->translation_set->create_with_project_and_locale();
+		$first  = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'First', 'priority' => 0 ) );
+		$second = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Second', 'priority' => 0 ) );
+
+		$this->set_admin_user_as_current();
+
+		$_POST['bulk']               = array(
+			'action'      => 'set-priority',
+			'priority'    => 5,
+			'row-ids'     => $first->id . '-0,' . $second->id . '-0',
+			'redirect_to' => '/',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'bulk-actions' );
+
+		$this->route->bulk_post( $set->project->path, $set->locale, $set->slug );
+
+		$this->assertEquals( 0, (int) GP::$original->get( $first->id )->priority );
+		$this->assertEquals( 0, (int) GP::$original->get( $second->id )->priority );
+		$this->assertThereIsAnErrorContaining( 'Invalid priority value!' );
+		$this->assertRedirected();
+	}
+
 	/**
 	 * A bulk row must be a genuine (original, translation) pair: a row pairing an
 	 * original with a translation that belongs to a different original is dropped.
