@@ -19,7 +19,7 @@ class GP_Glossary_Entry extends GP_Thing {
 	 *
 	 * @var string $table_basename
 	 */
-	var $table_basename = 'gp_glossary_entries';
+	public $table_basename = 'gp_glossary_entries';
 
 	/**
 	 * Object type of the meta of the glossary entry, deleted along with it.
@@ -35,21 +35,21 @@ class GP_Glossary_Entry extends GP_Thing {
 	 *
 	 * @var array $field_names
 	 */
-	var $field_names = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
+	public $field_names = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
 
 	/**
 	 * List of field names which have an integer value.
 	 *
 	 * @var array $int_fields
 	 */
-	var $int_fields = array( 'id', 'glossary_id', 'last_edited_by' );
+	public $int_fields = array( 'id', 'glossary_id', 'last_edited_by' );
 
 	/**
 	 * List of field names which cannot be updated.
 	 *
 	 * @var array $non_updatable_attributes
 	 */
-	var $non_updatable_attributes = array( 'id' );
+	public $non_updatable_attributes = array( 'id' );
 
 	/**
 	 * Parts of speech captions.
