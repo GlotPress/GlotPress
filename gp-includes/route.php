@@ -339,7 +339,7 @@ class GP_Route {
 	 */
 	public function logged_in_or_forbidden() {
 		if ( ! is_user_logged_in() ) {
-			$this->die_with_error( 'Forbidden', 403 );
+			$this->die_with_error( __( 'Forbidden', 'glotpress' ), 403 );
 		}
 	}
 
