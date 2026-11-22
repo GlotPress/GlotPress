@@ -19,13 +19,30 @@ gp_tmpl_header();
 				$project_class = $project->active ? 'project-active' : 'project-inactive';
 				?>
 				<dt class="<?php echo esc_attr( $project_class ); ?>">
-					<?php gp_link_project( $project, $project->name ); ?>
-					<?php gp_link_project_edit( $project, null, array( 'class' => 'button is-small' ) ); ?>
-					<?php gp_link_project_delete( $project, null, array( 'class' => 'button is-small' ) ); ?>
 					<?php
-					if ( ! $project->active ) {
-						echo "<span class='inactive bubble'>" . __( 'Inactive', 'glotpress' ) . '</span>';
-					}
+
+					/**
+					 * Filters the items of a project row in the projects list, like its name, action buttons and status bubble.
+					 *
+					 * @since 4.2.0
+					 *
+					 * @param string[]   $items   Rendered HTML of each item, keyed by item name. Empty items are left out.
+					 * @param GP_Project $project The project of the row.
+					 */
+					$project_row_items = apply_filters(
+						'gp_projects_template_project_items',
+						array(
+							'link-name'     => gp_link_project_get( $project, $project->name ),
+							'button-edit'   => gp_link_project_edit_get( $project, null, array( 'class' => 'button is-small' ) ),
+							'button-delete' => gp_link_project_delete_get( $project, null, array( 'class' => 'button is-small' ) ),
+							'bubble-status' => $project->active ? null : "<span class='inactive bubble'>" . __( 'Inactive', 'glotpress' ) . '</span>',
+						),
+						$project
+					);
+
+					// Render the project row items, without the empty ones like the buttons the user can't use.
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The default items are escaped by the link helpers, filtered items come from code.
+					echo implode( ' ', array_filter( $project_row_items ) );
 					?>
 				</dt>
 				<dd class="<?php echo esc_attr( $project_class ); ?>">

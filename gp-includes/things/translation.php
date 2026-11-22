@@ -29,6 +29,15 @@ class GP_Translation extends GP_Thing {
 	public $table_basename = 'gp_translations';
 
 	/**
+	 * Object type of the meta of the translation, deleted along with it.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string $meta_object_type
+	 */
+	public $meta_object_type = 'translation';
+
+	/**
 	 * List of field names for a translation.
 	 *
 	 * @var array $field_names
@@ -301,6 +310,26 @@ class GP_Translation extends GP_Thing {
 	}
 
 	/**
+	 * Gets the error message for a failed validation rule.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $rule The validation rule that failed.
+	 * @return string|null The error message, or null to use the generic one.
+	 */
+	public function validation_error_message( $rule ) {
+		if ( 'empty_string' === $rule['rule'] && preg_match( '/^translation_(\d)$/', $rule['field'], $matches ) ) {
+			return sprintf(
+				/* translators: %d: Number of the plural form, starting at 1. */
+				__( 'Translation %d must not be empty.', 'glotpress' ),
+				(int) $matches[1] + 1
+			);
+		}
+
+		return null;
+	}
+
+	/**
 	 * Sets fields of the current GP_Thing object.
 	 *
 	 * @param array $fields Fields for a GP_Thing object.
@@ -321,7 +350,17 @@ class GP_Translation extends GP_Thing {
 	 * @return Translation_Entry[] The translation entries.
 	 */
 	public function for_export( $project, $translation_set, $filters = null ) {
-		$entries = GP::$translation->for_translation( $project, $translation_set, 'no-limit', $filters ? $filters : array( 'status' => 'current_or_untranslated' ) );
+		// Exported files are often kept in version control, so their order must not depend on who exports them.
+		$entries = GP::$translation->for_translation(
+			$project,
+			$translation_set,
+			'no-limit',
+			$filters ? $filters : array( 'status' => 'current_or_untranslated' ),
+			array(
+				'by'  => 'original_date_added',
+				'how' => 'asc',
+			)
+		);
 
 		// Imported translations skip the blocking errors. Stripping here also covers the WP-CLI export.
 		foreach ( $entries as $entry ) {
@@ -354,13 +393,10 @@ class GP_Translation extends GP_Thing {
 
 		$sort_bys = wp_list_pluck( gp_get_sort_by_fields(), 'sql_sort_by' );
 
-		$default_sort = get_user_option( 'gp_default_sort' );
-		if ( ! is_array( $default_sort ) ) {
-			$default_sort = array(
-				'by'  => 'priority',
-				'how' => 'desc',
-			);
-		}
+		$default_sort = array(
+			'by'  => 'priority',
+			'how' => 'desc',
+		);
 
 		$sort_by   = gp_array_get( $sort_bys, gp_array_get( $sort, 'by' ), gp_array_get( $sort_bys, $default_sort['by'] ) );
 		$sort_hows = array(
@@ -533,7 +569,9 @@ class GP_Translation extends GP_Thing {
 
 		$join = "$join_type JOIN {$wpdb->gp_translations} AS t ON o.id = t.original_id AND t.translation_set_id = " . (int) $translation_set->id;
 
-		$orderby = sprintf( $sort_by, $sort_how );
+		// Many strings share a priority or a date, so their ID keeps the order the same between requests.
+		// It's the last column of the index on originals, which still serves the sort.
+		$orderby = sprintf( $sort_by, $sort_how ) . ", o.id $sort_how";
 
 		$limit = $this->sql_limit_for_paging( $page, $this->per_page );
 
@@ -587,7 +625,8 @@ class GP_Translation extends GP_Thing {
 		$translations     = array();
 
 		foreach ( (array) $rows as $row ) {
-			$row->user = $row->user_last_modified = null;
+			$row->user               = null;
+			$row->user_last_modified = null;
 
 			if ( $row->user_id && 'no-limit' !== $this->per_page ) {
 				$user = get_userdata( $row->user_id );
@@ -640,6 +679,73 @@ class GP_Translation extends GP_Thing {
 		}
 		unset( $rows );
 		return $translations;
+	}
+
+	/**
+	 * Adds what the translation set holds for the original of each translation.
+	 *
+	 * `translations_count` is the number of translations of the original in any status, so the
+	 * editor only links to the history when it holds more than the translation itself.
+	 * `current_translations` holds the plural forms of the current translation for the waiting and
+	 * fuzzy translations, and changesrequested ones when that status is enabled, which would replace
+	 * it, so validators can compare both. It is null for all other translations and for originals
+	 * without a current translation.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param Translation_Entry[] $entries         The translations, as returned by `for_translation()`.
+	 * @param GP_Translation_Set  $translation_set The translation set of the translations.
+	 * @return Translation_Entry[] The translations.
+	 */
+	public function add_related_translations( $entries, $translation_set ) {
+		$original_ids = array();
+		foreach ( $entries as $entry ) {
+			$entry->translations_count   = 0;
+			$entry->current_translations = null;
+			$original_ids[]              = (int) $entry->original_id;
+		}
+
+		if ( ! $original_ids ) {
+			return $entries;
+		}
+
+		$nplurals = GP_Locales::by_slug( $translation_set->locale )->nplurals;
+		$fields   = array();
+		for ( $i = 0; $i < $nplurals; $i++ ) {
+			$fields[] = "MAX( CASE WHEN status = 'current' THEN translation_$i END ) AS translation_$i";
+		}
+
+		$original_ids = array_unique( $original_ids );
+		$rows         = $this->many_no_map(
+			"SELECT original_id, COUNT(*) AS translations_count, MAX( status = 'current' ) AS has_current, " . implode( ', ', $fields ) . " FROM {$this->table} WHERE translation_set_id = %d AND original_id IN (" . implode( ', ', array_fill( 0, count( $original_ids ), '%d' ) ) . ') GROUP BY original_id',
+			$translation_set->id,
+			...$original_ids
+		);
+		$rows         = array_column( $rows, null, 'original_id' );
+
+		// Without the status, GlotPress treats changesrequested translations as rejected.
+		$suggestion_statuses = array( 'waiting', 'fuzzy' );
+		if ( apply_filters( 'gp_enable_changesrequested_status', false ) ) {
+			$suggestion_statuses[] = 'changesrequested';
+		}
+
+		foreach ( $entries as $entry ) {
+			if ( ! isset( $rows[ $entry->original_id ] ) ) {
+				continue;
+			}
+
+			$row                       = $rows[ $entry->original_id ];
+			$entry->translations_count = (int) $row->translations_count;
+
+			if ( $row->has_current && in_array( $entry->translation_status, $suggestion_statuses, true ) ) {
+				$entry->current_translations = array();
+				for ( $i = 0; $i < $nplurals; $i++ ) {
+					$entry->current_translations[] = $row->{"translation_$i"};
+				}
+			}
+		}
+
+		return $entries;
 	}
 
 	/**

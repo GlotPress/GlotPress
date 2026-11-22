@@ -93,6 +93,27 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertArrayHasKey( 'placeholders', $translations[0]->warnings[0] );
 	}
 
+	function test_import_checks_the_warnings_with_the_original() {
+		GP::$translation_warnings->add(
+			'context',
+			function ( $original_text, $translation, $locale, $plural_form = null, $original = null ) {
+				return $original ? $original->context : true;
+			}
+		);
+
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save', 'context' => 'button' ) );
+
+		$translations_for_import = new Translations;
+		$translations_for_import->add_entry( array( 'singular' => 'Save', 'context' => 'button', 'translations' => array( 'Speichern' ) ) );
+		$set->import( $translations_for_import );
+
+		GP::$translation_warnings->remove( 'context' );
+
+		$translations = GP::$translation->all();
+		$this->assertSame( array( 'context' => 'button' ), $translations[0]->warnings[0] );
+	}
+
 	function test_import_should_not_import_translations_with_warnings_twice() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string with %s' ) );
@@ -483,5 +504,168 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 				"Non-DB field '$field' must be a declared property so assigning it does not create a dynamic property."
 			);
 		}
+	}
+
+	/**
+	 * Suggestions identical to a rejected or changes-requested translation are refused, whoever suggests them.
+	 *
+	 * @covers GP_Translation_Set::get_blocked_suggestion_reason
+	 */
+	function test_get_blocked_suggestion_reason() {
+		$set  = $this->factory->translation_set->create_with_project_and_locale();
+		$orig = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Submit' ) );
+
+		$this->assertFalse( $set->get_blocked_suggestion_reason( $orig->id, array( 'Absenden' ) ) );
+
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $orig->id,
+				'user_id'            => $this->factory->user->create(),
+				'status'             => 'rejected',
+				'translation_0'      => 'Absenden',
+			)
+		);
+
+		$this->assertSame( 'rejected', $set->get_blocked_suggestion_reason( $orig->id, array( 'Absenden' ) ) );
+		$this->assertFalse( $set->get_blocked_suggestion_reason( $orig->id, array( 'Einreichen' ) ) );
+
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $orig->id,
+				'status'             => 'changesrequested',
+				'translation_0'      => 'Senden',
+			)
+		);
+
+		$this->assertSame( 'changesrequested', $set->get_blocked_suggestion_reason( $orig->id, array( 'Senden' ) ) );
+	}
+
+	/**
+	 * @covers GP_Translation_Set::get_blocked_suggestion_reason
+	 */
+	function test_get_blocked_suggestion_reason_compares_strictly_and_ignores_empty_plural_forms() {
+		$set  = $this->factory->translation_set->create_with_project_and_locale();
+		$orig = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%s item', 'plural' => '%s items' ) );
+
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $orig->id,
+				'status'             => 'rejected',
+				'translation_0'      => '1',
+			)
+		);
+
+		// The request sends an empty string for an empty plural form, the row stores null.
+		$this->assertSame( 'rejected', $set->get_blocked_suggestion_reason( $orig->id, array( '1', '' ) ) );
+		$this->assertFalse( $set->get_blocked_suggestion_reason( $orig->id, array( '1.0', '' ) ) );
+	}
+
+	/**
+	 * A suggestion its author rejected again is withdrawn, which says nothing about the text.
+	 *
+	 * @covers GP_Translation_Set::get_blocked_suggestion_reason
+	 */
+	function test_get_blocked_suggestion_reason_ignores_a_suggestion_its_author_withdrew() {
+		$set    = $this->factory->translation_set->create_with_project_and_locale();
+		$orig   = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Submit' ) );
+		$author = $this->factory->user->create();
+
+		$this->factory->translation->create(
+			array(
+				'translation_set_id'    => $set->id,
+				'original_id'           => $orig->id,
+				'user_id'               => $author,
+				'user_id_last_modified' => $author,
+				'status'                => 'rejected',
+				'translation_0'         => 'Absenden',
+			)
+		);
+
+		$this->assertFalse( $set->get_blocked_suggestion_reason( $orig->id, array( 'Absenden' ) ) );
+	}
+
+	/**
+	 * @covers GP_Translation_Set::get_blocked_suggestion_reason
+	 */
+	function test_get_blocked_suggestion_reason_compares_plural_forms_by_their_index() {
+		$set  = $this->factory->translation_set->create_with_project_and_locale();
+		$orig = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'File', 'plural' => 'Files' ) );
+
+		$this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $orig->id,
+				'status'             => 'rejected',
+				'translation_0'      => 'Datei',
+				'translation_1'      => 'Dateien',
+			)
+		);
+
+		$this->assertSame( 'rejected', $set->get_blocked_suggestion_reason( $orig->id, array( 1 => 'Dateien', 0 => 'Datei' ) ) );
+		$this->assertFalse( $set->get_blocked_suggestion_reason( $orig->id, array( 'Dateien', 'Datei' ) ) );
+	}
+
+	function test_import_should_import_a_plural_translation_with_all_plural_forms() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%d item', 'plural' => '%d items' ) );
+
+		$translations_for_import = new Translations();
+		$translations_for_import->add_entry( array( 'singular' => '%d item', 'plural' => '%d items', 'translations' => array( '%d elemento', '%d elementos' ) ) );
+
+		$this->assertEquals( 1, $set->import( $translations_for_import ) );
+
+		$translations = GP::$translation->all();
+		$this->assertCount( 1, $translations );
+		$this->assertSame( 'current', $translations[0]->status );
+		$this->assertSame( '%d elementos', $translations[0]->translation_1 );
+	}
+
+	/**
+	 * A translation with an empty plural form has a translation error, so it's imported as fuzzy,
+	 * like any other translation with errors.
+	 */
+	function test_import_should_import_a_plural_translation_with_an_empty_plural_form_as_fuzzy() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%d item', 'plural' => '%d items' ) );
+
+		foreach ( array( 'current', 'waiting' ) as $status ) {
+			$translations_for_import = new Translations();
+			$translations_for_import->add_entry( array( 'singular' => '%d item', 'plural' => '%d items', 'translations' => array( "One $status item", '' ) ) );
+
+			$this->assertEquals( 1, $set->import( $translations_for_import, $status ) );
+
+			$imported = GP::$translation->find_one( array( 'translation_set_id' => $set->id, 'translation_0' => "One $status item" ) );
+			$this->assertSame( 'fuzzy', $imported->status, "Imported as $status." );
+		}
+	}
+
+	/**
+	 * An entry without a plural form matches a plural original by its context and singular, and has a
+	 * single translation for it.
+	 */
+	function test_import_should_import_a_singular_entry_for_a_plural_original_as_fuzzy() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%d item', 'plural' => '%d items' ) );
+		$current  = $this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $original->id,
+				'translation_0'      => 'One item',
+				'translation_1'      => 'Some items',
+				'status'             => 'current',
+			)
+		);
+
+		$translations_for_import = new Translations();
+		$translations_for_import->add_entry( array( 'singular' => '%d item', 'translations' => array( 'Another item' ) ) );
+
+		$this->assertEquals( 1, $set->import( $translations_for_import ) );
+
+		$this->assertSame( 'current', GP::$translation->get( $current->id )->status, 'The complete translation stays current.' );
+		$imported = GP::$translation->find_one( array( 'translation_set_id' => $set->id, 'translation_0' => 'Another item' ) );
+		$this->assertSame( 'fuzzy', $imported->status );
 	}
 }

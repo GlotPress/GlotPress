@@ -66,21 +66,26 @@ class GP_Translation_Warnings {
 	/**
 	 * Checks translations for any issues/warnings.
 	 *
-	 * Each callback gets the original, the translation, the locale and, for an
-	 * original with a plural, the index of the plural form the translation is for.
+	 * Each callback gets the original text, the translation, the locale, for an
+	 * original with a plural the index of the plural form the translation is for,
+	 * and the original, if it was passed.
 	 *
 	 * @since 1.0.0
 	 * @since 4.2.0 Passes the index of the plural form to the callbacks.
+	 * @since 4.2.0 Added the `$original` parameter.
 	 * @access public
 	 *
-	 * @param string    $singular     The singular form of an original string.
-	 * @param string    $plural       The plural form of an original string.
-	 * @param string[]  $translations An array of translations for an original.
-	 * @param GP_Locale $locale       The locale of the translations.
+	 * @param string           $singular     The singular form of an original string.
+	 * @param string           $plural       The plural form of an original string.
+	 * @param string[]         $translations An array of translations for an original.
+	 * @param GP_Locale        $locale       The locale of the translations.
+	 * @param GP_Original|null $original     Optional. The original, to give the callbacks
+	 *                                       access to fields like its context or comment.
+	 *                                       Callbacks have to handle null. Default null.
 	 * @return array|null Null if no issues have been found, otherwise an array
 	 *                    with warnings.
 	 */
-	public function check( $singular, $plural, $translations, $locale ) {
+	public function check( $singular, $plural, $translations, $locale, $original = null ) {
 		$problems = array();
 		foreach ( $translations as $translation_index => $translation ) {
 			if ( ! $translation ) {
@@ -106,13 +111,13 @@ class GP_Translation_Warnings {
 
 			foreach ( $this->callbacks as $callback_id => $callback ) {
 				if ( ! $skip['singular'] ) {
-					$singular_test = $callback( $singular, $translation, $locale, $plural_form );
+					$singular_test = $callback( $singular, $translation, $locale, $plural_form, $original );
 					if ( true !== $singular_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $singular_test;
 					}
 				}
 				if ( null !== $plural && ! $skip['plural'] ) {
-					$plural_test = $callback( $plural, $translation, $locale, $plural_form );
+					$plural_test = $callback( $plural, $translation, $locale, $plural_form, $original );
 					if ( true !== $plural_test ) {
 						$problems[ $translation_index ][ $callback_id ] = $plural_test;
 					}
@@ -348,12 +353,6 @@ class GP_Builtin_Translation_Warnings {
 	/**
 	 * Checks whether PHP placeholders are missing or have been added.
 	 *
-	 * The default regular expression:
-	 * bcdefgosuxEFGX are standard printf placeholders.
-	 * % is included to allow/expect %%.
-	 * l is included for wp_sprintf_l()'s custom %l format.
-	 * @ is included for Swift (as used for iOS mobile app) %@ string format.
-	 *
 	 * A plural form that the locale uses for a single number may write that
 	 * number in words, for example "one" or "two", and leave out its placeholder.
 	 *
@@ -376,7 +375,7 @@ class GP_Builtin_Translation_Warnings {
 		 *
 		 * @param string $placeholders_re Regular expression pattern without leading or trailing slashes.
 		 */
-		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '(?<!%)%(\d+\$(?:\d+)?)?(\.\d+)?[bcdefgosuxEFGX%l@]' );
+		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '(?<!%)' . gp_get_placeholder_regex_pattern() );
 
 		$original_counts    = $this->_placeholders_counts( $original, $placeholders_re );
 		$translation_counts = $this->_placeholders_counts( $translation, $placeholders_re );
@@ -418,13 +417,13 @@ class GP_Builtin_Translation_Warnings {
 	 * @since 1.0.0
 	 * @access private
 	 *
-	 * @param string $string The string to search.
+	 * @param string $text   The text to search.
 	 * @param string $re     Regular expressions to match placeholders.
 	 * @return array An array with counts per placeholder.
 	 */
-	private function _placeholders_counts( $string, $re ) {
+	private function _placeholders_counts( $text, $re ) {
 		$counts = array();
-		preg_match_all( "/$re/", $string, $matches );
+		preg_match_all( "/$re/", $text, $matches );
 		foreach ( $matches[0] as $match ) {
 			$counts[ $match ] = gp_array_get( $counts, $match, 0 ) + 1;
 		}
@@ -613,7 +612,7 @@ class GP_Builtin_Translation_Warnings {
 
 		// Check to see if only the scheme (https <=> http) or a trailing slash was changed, discard if so.
 		foreach ( $missing_urls as $key => $missing_url ) {
-			$scheme               = parse_url( $missing_url, PHP_URL_SCHEME );
+			$scheme               = wp_parse_url( $missing_url, PHP_URL_SCHEME );
 			$alternate_scheme     = ( 'http' == $scheme ? 'https' : 'http' );
 			$alternate_scheme_url = preg_replace( "@^$scheme(?=:)@", $alternate_scheme, $missing_url );
 
@@ -638,7 +637,7 @@ class GP_Builtin_Translation_Warnings {
 
 		// Check if just the domain was changed, and if so, if it's to a whitelisted domain.
 		foreach ( $missing_urls as $key => $missing_url ) {
-			$host = parse_url( $missing_url, PHP_URL_HOST );
+			$host = wp_parse_url( $missing_url, PHP_URL_HOST );
 			if ( ! isset( $this->allowed_domain_changes[ $host ] ) ) {
 				continue;
 			}
@@ -898,7 +897,7 @@ class GP_Builtin_Translation_Warnings {
 	 */
 	private function links_without_url_and_placeholders_are_equal( string $original_links, string $translation_links ) {
 		$urls_regex        = '@(?<![\'"])' . gp_get_url_regex_pattern() . '(?![\'"])@i';
-		$placeholder_regex = '!%((\d+\$(?:\d+)?)?[bcdefgosux])!i';
+		$placeholder_regex = '/' . gp_get_placeholder_regex_pattern( '[bcdefgosux]' ) . '/i';
 
 		// Remove the URLs.
 		preg_match_all( $urls_regex, $original_links, $original_urls );

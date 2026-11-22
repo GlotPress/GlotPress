@@ -204,4 +204,22 @@ class GP_Test_Permissions extends GP_UnitTestCase {
 		$this->assertNotFalse( $admin );
 		$this->assertEquals( $user, $admin->user_id );
 	}
+
+	function test_validator_without_locale_and_set_slug_names_both_fields() {
+		$permission = new GP_Validator_Permission(
+			array(
+				'user_id'     => 1,
+				'action'      => 'approve',
+				'project_id'  => 1,
+				'locale_slug' => '',
+				'set_slug'    => '',
+			)
+		);
+
+		$this->assertFalse( $permission->validate() );
+		$this->assertSame(
+			array( 'Select a locale for the validator.', 'The translation set slug of the validator must not be empty.' ),
+			$permission->errors
+		);
+	}
 }
