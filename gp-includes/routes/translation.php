@@ -357,7 +357,7 @@ class GP_Route_Translation extends GP_Route_Main {
 			$can_approve_set = $this->can( 'approve', 'translation-set', $translation_set->id ) || $can_write;
 			$set_status      = $can_approve_set && 'waiting' !== gp_post( 'status' ) ? 'current' : 'waiting';
 
-			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale );
+			$data['warnings'] = GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale, $original );
 			$errors           = GP::$translation_errors->check( $original, $translations, $locale );
 			if ( $errors ) {
 				return $this->die_with_error( $this->translation_errors_list( gp_array_flatten( $errors ) ), 403 );
@@ -590,7 +590,9 @@ class GP_Route_Translation extends GP_Route_Main {
 
 		$action = $bulk['action'];
 
-		$ok = $error = $refused = 0;
+		$ok      = 0;
+		$error   = 0;
+		$refused = 0;
 		switch ( $action ) {
 			case 'approve':
 				$new_status = 'current';
@@ -739,7 +741,8 @@ class GP_Route_Translation extends GP_Route_Main {
 	 * @param array $bulk The bulk data to process.
 	 */
 	private function _bulk_fuzzy( $bulk ) {
-		$ok = $error = 0;
+		$ok    = 0;
+		$error = 0;
 
 		foreach ( $bulk['row-ids'] as $row_id ) {
 			$translation_id = gp_array_get( explode( '-', $row_id ), 1 );
@@ -861,7 +864,7 @@ class GP_Route_Translation extends GP_Route_Main {
 				'translation_set_id' => $translation_set->id,
 				'user_id'            => get_current_user_id(),
 				'status'             => 'waiting',
-				'warnings'           => GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale ),
+				'warnings'           => GP::$translation_warnings->check( $original->singular, $original->plural, $translations, $locale, $original ),
 			);
 			foreach ( $translations as $index => $form ) {
 				$data[ "translation_$index" ] = $form;
@@ -935,7 +938,8 @@ class GP_Route_Translation extends GP_Route_Main {
 			return;
 		}
 
-		$ok = $error = 0;
+		$ok    = 0;
+		$error = 0;
 		foreach ( $bulk['row-ids'] as $row_id ) {
 			$original_id = gp_array_get( explode( '-', $row_id ), 0 );
 			$original    = GP::$original->get( $original_id );

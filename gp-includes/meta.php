@@ -75,18 +75,19 @@ function gp_get_meta( $object_type, $object_id, $meta_key = null ) {
  * @param string $meta_key   Metadata key.
  * @param mixed  $meta_value The value to store.
  * @param string $type       The object type.
- * @param bool   $global     Overrides the requirement of $object_id to be a number OR not empty.
+ * @param bool   $is_global  Overrides the requirement of $object_id to be a number OR not empty.
  *
  * @return bool|int True if meta updated, false if there is an error and the id of the inserted row otherwise.
  */
-function gp_update_meta( $object_id, $meta_key, $meta_value, $type, $global = false ) {
+function gp_update_meta( $object_id, $meta_key, $meta_value, $type, $is_global = false ) {
 	global $wpdb;
 
-	if ( ( ! is_numeric( $object_id ) || empty( $object_id ) ) && ! $global ) {
+	if ( ( ! is_numeric( $object_id ) || empty( $object_id ) ) && ! $is_global ) {
 		return false;
 	}
 
-	$cache_object_id = $object_id = (int) $object_id;
+	$object_id       = (int) $object_id;
+	$cache_object_id = $object_id;
 	$object_type     = $type;
 	$meta_key        = gp_sanitize_meta_key( $meta_key );
 
@@ -103,8 +104,8 @@ function gp_update_meta( $object_id, $meta_key, $meta_value, $type, $global = fa
 	$meta_tuple = apply_filters( 'gp_update_meta', $meta_tuple );
 	extract( $meta_tuple, EXTR_OVERWRITE );
 
-	$meta_value = $_meta_value = maybe_serialize( $meta_value );
-	$meta_value = maybe_unserialize( $meta_value );
+	$_meta_value = maybe_serialize( $meta_value );
+	$meta_value  = maybe_unserialize( $_meta_value );
 
 	$cur = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `$wpdb->gp_meta` WHERE `object_type` = %s AND `object_id` = %d AND `meta_key` = %s", $object_type, $object_id, $meta_key ) );
 
@@ -161,18 +162,19 @@ function gp_update_meta( $object_id, $meta_key, $meta_value, $type, $global = fa
  * @param string $meta_key   Metadata key.
  * @param mixed  $meta_value The value to store.
  * @param string $type       The object type.
- * @param bool   $global     Overrides the requirement of $object_id to be a number OR not empty.
+ * @param bool   $is_global  Overrides the requirement of $object_id to be a number OR not empty.
  *
  * @return bool
  */
-function gp_delete_meta( $object_id, $meta_key, $meta_value, $type, $global = false ) {
+function gp_delete_meta( $object_id, $meta_key, $meta_value, $type, $is_global = false ) {
 	global $wpdb;
 
-	if ( ( ! is_numeric( $object_id ) || empty( $object_id ) ) && ! $global ) {
+	if ( ( ! is_numeric( $object_id ) || empty( $object_id ) ) && ! $is_global ) {
 		return false;
 	}
 
-	$cache_object_id = $object_id = (int) $object_id;
+	$object_id       = (int) $object_id;
+	$cache_object_id = $object_id;
 	$object_type     = $type;
 	$meta_key        = gp_sanitize_meta_key( $meta_key );
 
@@ -196,7 +198,8 @@ function gp_delete_meta( $object_id, $meta_key, $meta_value, $type, $global = fa
 		$meta_sql = $wpdb->prepare( "SELECT `meta_id` FROM `$wpdb->gp_meta` WHERE `object_type` = %s AND `object_id` = %d AND `meta_key` = %s AND `meta_value` = %s", $object_type, $object_id, $meta_key, $meta_value );
 	}
 
-	if ( ! $meta_id = $wpdb->get_var( $meta_sql ) ) { // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	$meta_id = $wpdb->get_var( $meta_sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	if ( ! $meta_id ) {
 		return false;
 	}
 
