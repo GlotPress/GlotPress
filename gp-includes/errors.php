@@ -65,7 +65,11 @@ class GP_Translation_Errors {
 	/**
 	 * Checks translations for any error.
 	 *
+	 * A translation of a plural original also needs a translation for each plural form of the locale.
+	 * A missing one is reported with the `missing_plural_form` ID, whatever errors are registered.
+	 *
 	 * @since 4.0.0
+	 * @since 4.2.0 Reports the missing plural forms.
 	 * @access public
 	 *
 	 * @param GP_Original $gp_original  The original object.
@@ -79,6 +83,19 @@ class GP_Translation_Errors {
 		$plural   = $gp_original->plural;
 		$comment  = $gp_original->comment;
 		$problems = array();
+
+		if ( null !== $plural ) {
+			for ( $index = 0; $index < $locale->nplurals; $index++ ) {
+				if ( ! isset( $translations[ $index ] ) || '' === $translations[ $index ] ) {
+					$problems[ $index ]['missing_plural_form'] = sprintf(
+						/* translators: %s: Comma-separated list of numbers the plural form is used for. */
+						__( 'The plural form used for numbers like %s is missing.', 'glotpress' ),
+						implode( ', ', $locale->numbers_for_index( $index ) )
+					);
+				}
+			}
+		}
+
 		foreach ( $translations as $translation_index => $translation ) {
 			if ( ! $translation ) {
 				continue;

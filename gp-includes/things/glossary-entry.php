@@ -19,28 +19,37 @@ class GP_Glossary_Entry extends GP_Thing {
 	 *
 	 * @var string $table_basename
 	 */
-	var $table_basename = 'gp_glossary_entries';
+	public $table_basename = 'gp_glossary_entries';
+
+	/**
+	 * Object type of the meta of the glossary entry, deleted along with it.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string $meta_object_type
+	 */
+	public $meta_object_type = 'glossary_entry';
 
 	/**
 	 * List of field names for a glossary entry.
 	 *
 	 * @var array $field_names
 	 */
-	var $field_names = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
+	public $field_names = array( 'id', 'glossary_id', 'term', 'part_of_speech', 'comment', 'translation', 'date_modified', 'last_edited_by' );
 
 	/**
 	 * List of field names which have an integer value.
 	 *
 	 * @var array $int_fields
 	 */
-	var $int_fields = array( 'id', 'glossary_id', 'last_edited_by' );
+	public $int_fields = array( 'id', 'glossary_id', 'last_edited_by' );
 
 	/**
 	 * List of field names which cannot be updated.
 	 *
 	 * @var array $non_updatable_attributes
 	 */
-	var $non_updatable_attributes = array( 'id' );
+	public $non_updatable_attributes = array( 'id' );
 
 	/**
 	 * Parts of speech captions.
@@ -217,6 +226,32 @@ class GP_Glossary_Entry extends GP_Thing {
 		$rules->part_of_speech_should_be( 'one_of', array_keys( $this->parts_of_speech ) );
 		$rules->glossary_id_should_be( 'positive_int' );
 		$rules->last_edited_by_should_be( 'positive_int' );
+	}
+
+	/**
+	 * Gets the error message for a failed validation rule.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $rule The validation rule that failed.
+	 * @return string|null The error message, or null to use the generic one.
+	 */
+	public function validation_error_message( $rule ) {
+		if ( 'part_of_speech' === $rule['field'] && in_array( $rule['rule'], array( 'empty', 'one_of' ), true ) ) {
+			return __( 'Select a part of speech.', 'glotpress' );
+		}
+
+		if ( 'term' === $rule['field'] ) {
+			if ( 'empty' === $rule['rule'] ) {
+				return __( 'The original term must not be empty.', 'glotpress' );
+			}
+
+			if ( 'consisting_only_of_ASCII_characters' === $rule['rule'] ) {
+				return __( 'The original term may only contain letters without accents, numbers, spaces and common punctuation.', 'glotpress' );
+			}
+		}
+
+		return null;
 	}
 
 	/**

@@ -110,9 +110,9 @@ class GP_Route_Project extends GP_Route_Main {
 		$source_url_templates[ $project->id ] = gp_post( 'source-url-template' );
 
 		if ( update_user_meta( get_current_user_id(), 'gp_source_url_templates', $source_url_templates ) ) {
-			$this->successes[] = 'Source URL template was successfully updated.';
+			$this->successes[] = __( 'Source URL template was successfully updated.', 'glotpress' );
 		} else {
-			$this->errors[] = 'Error in updating source URL template.';
+			$this->errors[] = __( 'Error in updating source URL template.', 'glotpress' );
 		}
 		$this->redirect( gp_url_project( $project ) );
 	}
