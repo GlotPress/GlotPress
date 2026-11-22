@@ -297,7 +297,11 @@ class GP_Original extends GP_Thing {
 	public function import_for_project( $project, $translations ) {
 		global $wpdb;
 
-		$originals_added = $originals_existing = $originals_obsoleted = $originals_fuzzied = $originals_error = 0;
+		$originals_added     = 0;
+		$originals_existing  = 0;
+		$originals_obsoleted = 0;
+		$originals_fuzzied   = 0;
+		$originals_error     = 0;
 
 		$all_originals_for_project = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d", $project->id );
 		$originals_by_key          = array();
@@ -320,7 +324,8 @@ class GP_Original extends GP_Thing {
 			}
 		);
 
-		$possibly_added = $possibly_dropped = array();
+		$possibly_added   = array();
+		$possibly_dropped = array();
 
 		foreach ( $translations->entries as $key => $entry ) {
 			$wpdb->queries = array();

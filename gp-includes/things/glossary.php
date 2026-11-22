@@ -237,7 +237,9 @@ class GP_Glossary extends GP_Thing {
 			return $this->entries;
 		}
 
-		return $this->entries = GP::$glossary_entry->by_glossary_id( $this->id );
+		$this->entries = GP::$glossary_entry->by_glossary_id( $this->id );
+
+		return $this->entries;
 	}
 
 
@@ -303,7 +305,7 @@ class GP_Glossary extends GP_Thing {
 		return new GP::$project(
 			array(
 				'id'   => 0,
-				'name' => 'Locale Glossary',
+				'name' => __( 'Locale Glossary', 'glotpress' ),
 				'slug' => 0,
 				'path' => $locale_glossary_path_prefix,
 			)

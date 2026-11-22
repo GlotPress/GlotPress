@@ -301,6 +301,26 @@ class GP_Translation extends GP_Thing {
 	}
 
 	/**
+	 * Gets the error message for a failed validation rule.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $rule The validation rule that failed.
+	 * @return string|null The error message, or null to use the generic one.
+	 */
+	public function validation_error_message( $rule ) {
+		if ( 'empty_string' === $rule['rule'] && preg_match( '/^translation_(\d)$/', $rule['field'], $matches ) ) {
+			return sprintf(
+				/* translators: %d: Number of the plural form, starting at 1. */
+				__( 'Translation %d must not be empty.', 'glotpress' ),
+				(int) $matches[1] + 1
+			);
+		}
+
+		return null;
+	}
+
+	/**
 	 * Sets fields of the current GP_Thing object.
 	 *
 	 * @param array $fields Fields for a GP_Thing object.
@@ -596,7 +616,8 @@ class GP_Translation extends GP_Thing {
 		$translations     = array();
 
 		foreach ( (array) $rows as $row ) {
-			$row->user = $row->user_last_modified = null;
+			$row->user               = null;
+			$row->user_last_modified = null;
 
 			if ( $row->user_id && 'no-limit' !== $this->per_page ) {
 				$user = get_userdata( $row->user_id );

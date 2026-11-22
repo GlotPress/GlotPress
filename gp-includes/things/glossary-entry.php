@@ -220,6 +220,32 @@ class GP_Glossary_Entry extends GP_Thing {
 	}
 
 	/**
+	 * Gets the error message for a failed validation rule.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $rule The validation rule that failed.
+	 * @return string|null The error message, or null to use the generic one.
+	 */
+	public function validation_error_message( $rule ) {
+		if ( 'part_of_speech' === $rule['field'] && in_array( $rule['rule'], array( 'empty', 'one_of' ), true ) ) {
+			return __( 'Select a part of speech.', 'glotpress' );
+		}
+
+		if ( 'term' === $rule['field'] ) {
+			if ( 'empty' === $rule['rule'] ) {
+				return __( 'The original term must not be empty.', 'glotpress' );
+			}
+
+			if ( 'consisting_only_of_ASCII_characters' === $rule['rule'] ) {
+				return __( 'The original term may only contain letters without accents, numbers, spaces and common punctuation.', 'glotpress' );
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Retrieves all entries for a glossary.
 	 *
 	 * @param int $glossary_id The glossary ID.
