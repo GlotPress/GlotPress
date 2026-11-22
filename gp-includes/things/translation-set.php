@@ -1041,7 +1041,7 @@ class GP_Translation_Set extends GP_Thing {
 	/**
 	 * Retrieves the percentage of translated originals in this translation set.
 	 *
-	 * @return int The percentage of translated originals.
+	 * @return float|int The percentage of translated originals, rounded down.
 	 */
 	public function percent_translated() {
 		$original_counts = GP::$original->count_by_project_id( $this->project_id, 'all' );
