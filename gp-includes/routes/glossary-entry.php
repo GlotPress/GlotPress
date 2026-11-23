@@ -103,6 +103,39 @@ class GP_Route_Glossary_Entry extends GP_Route_Main {
 	}
 
 	/**
+	 * Gets the base forms of a glossary term, to suggest one when a term is entered in a suffixed form.
+	 *
+	 * Glossary terms are entered in their base form, which also matches its suffixed forms, like `detail` for
+	 * `details`. The base forms only depend on the term, its part of speech and the suffix rules, so nothing is read
+	 * from the glossary.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $project_path         The path of the project.
+	 * @param string $locale_slug          The slug of the locale.
+	 * @param string $translation_set_slug The slug of the translation set.
+	 */
+	public function glossary_base_terms_get( $project_path, $locale_slug, $translation_set_slug ) {
+		$term           = gp_get( 'term' );
+		$term           = is_string( $term ) ? trim( $term ) : '';
+		$part_of_speech = gp_get( 'part_of_speech' );
+		$part_of_speech = is_string( $part_of_speech ) ? $part_of_speech : '';
+
+		// The suffix rules are in the template helpers, which are only loaded with a template.
+		require_once GP_TMPL_PATH . 'helper-functions.php';
+
+		$base_terms = array();
+
+		// Terms with multiple words don't get suffixes.
+		if ( '' !== $term && ! preg_match( '/\s/', $term ) ) {
+			$base_terms = gp_glossary_get_base_terms( strtolower( $term ), $part_of_speech );
+		}
+
+		$this->header( 'Content-Type: application/json' );
+		$this->exit_( wp_json_encode( array_values( $base_terms ) ) );
+	}
+
+	/**
 	 * Retrieves the entries of a glossary, optionally limited to a term.
 	 *
 	 * @since 4.2.0

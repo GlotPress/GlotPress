@@ -304,4 +304,46 @@ class GP_Test_Route_Glossary_Entry extends GP_UnitTestCase_Route {
 			'entry without id' => array( array( array( 'term' => 'x' ) ) ),
 		);
 	}
+
+	/**
+	 * Gets the base forms the glossary forms suggest for a term.
+	 *
+	 * @param string $term           The term.
+	 * @param string $part_of_speech The part of speech.
+	 * @return array The base forms.
+	 */
+	private function get_base_terms( $term, $part_of_speech ) {
+		$_GET['term']           = $term;
+		$_GET['part_of_speech'] = $part_of_speech;
+
+		$this->do_route_request(
+			function () {
+				$this->route->glossary_base_terms_get( '/languages', 'pt', 'default' );
+			}
+		);
+
+		$this->assertSame( ' application/json', $this->route->headers['Content-Type'] );
+
+		return json_decode( $this->route->exit_message, true );
+	}
+
+	/**
+	 * A term entered in a suffixed form gets its base form, which also matches the suffixed form.
+	 */
+	function test_base_terms_of_a_suffixed_term() {
+		$this->assertSame( array( 'detail' ), $this->get_base_terms( 'details', 'noun' ) );
+		$this->assertContains( 'delete', $this->get_base_terms( 'Deleted', 'verb' ) );
+		$this->assertContains( 'commit', $this->get_base_terms( 'committed', 'verb' ) );
+	}
+
+	/**
+	 * A term in its base form, a term with multiple words, and a part of speech without suffix rules get no base form.
+	 */
+	function test_no_base_terms() {
+		$this->assertSame( array(), $this->get_base_terms( 'detail', 'noun' ) );
+		$this->assertSame( array(), $this->get_base_terms( 'site details', 'noun' ) );
+		$this->assertSame( array(), $this->get_base_terms( 'details', 'adjective' ) );
+		$this->assertSame( array(), $this->get_base_terms( '', 'noun' ) );
+		$this->assertSame( array(), $this->get_base_terms( 'details', 'unknown' ) );
+	}
 }

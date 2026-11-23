@@ -1507,6 +1507,11 @@ form.filters-toolbar a.revealing.open {
 	margin-left: 0.5em;
 }
 
+/* The question about the base form of a glossary term sits next to the field, without moving the fields below. */
+.glossary-base-terms .button {
+	vertical-align: middle;
+}
+
 .glossary-description,
 .project-description {
 	max-width: 60em;

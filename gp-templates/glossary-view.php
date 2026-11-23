@@ -18,7 +18,8 @@ gp_breadcrumb_project(
 
 $ge_delete_ays    = __( 'Are you sure you want to delete this entry?', 'glotpress' );
 $delete_url       = gp_url_join( $url, '-delete' );
-$glossary_options = compact( 'can_edit', 'url', 'delete_url', 'ge_delete_ays' );
+$base_terms_url   = gp_url_join( $url, '-base' );
+$glossary_options = compact( 'can_edit', 'url', 'delete_url', 'base_terms_url', 'ge_delete_ays' );
 
 gp_enqueue_scripts( array( 'gp-glossary', 'tablesorter' ) );
 wp_localize_script( 'gp-glossary', '$gp_glossary_options', $glossary_options );
