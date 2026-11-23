@@ -91,6 +91,9 @@ $i = 0;
 	</div>
 </div>
 
+<?php if ( ! empty( $search_error ) ) : ?>
+	<div class="error"><?php echo esc_html( $search_error ); ?></div>
+<?php endif; ?>
 <div class="filter-toolbar">
 	<form id="upper-filters-toolbar" class="filters-toolbar" action="" method="get" accept-charset="utf-8">
 		<div>
@@ -117,6 +120,7 @@ $i = 0;
 		$additional_filters = array_key_exists( 'term', $filters_and_sort ) ||
 								array_key_exists( 'user_login', $filters_and_sort ) ||
 								array_key_exists( 'with_comment', $filters_and_sort ) ||
+								array_key_exists( 'regex', $filters_and_sort ) ||
 								array_key_exists( 'case_sensitive', $filters_and_sort ) ||
 								array_key_exists( 'with_plural', $filters_and_sort ) ||
 								array_key_exists( 'with_context', $filters_and_sort );
@@ -281,7 +285,8 @@ $i = 0;
 				<fieldset>
 					<legend class="screen-reader-text"><?php _e( 'Search:', 'glotpress' ); ?></legend>
 					<label for="filters[term]" class="filter-title"><?php _e( 'Search Term:', 'glotpress' ); ?></label><br />
-					<input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" /><br />
+					<input type="text" value="<?php echo gp_esc_attr_with_entities( gp_array_get( $filters, 'term' ) ); ?>" name="filters[term]" id="filters[term]" />
+					<input type="checkbox" name="filters[regex]" value="yes" id="filters[regex][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'regex' ) ); ?>>&nbsp;<label for='filters[regex][yes]'><?php _e( 'Regex', 'glotpress' ); ?></label><br />
 					<input type="checkbox" name="filters[case_sensitive]" value="yes" id="filters[case_sensitive][yes]" <?php gp_checked( 'yes' === gp_array_get( $filters, 'case_sensitive' ) ); ?>>&nbsp;<label for='filters[case_sensitive][yes]'><?php _e( 'Case-sensitive search', 'glotpress' ); ?></label>
 				</fieldset>
 
