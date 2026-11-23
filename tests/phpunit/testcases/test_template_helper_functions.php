@@ -2515,4 +2515,51 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		return "<span class='invisibles' title='New line'>&crarr;</span>\n";
 	}
 
+	/**
+	 * @dataProvider data_glossary_base_terms
+	 */
+	function test_gp_glossary_get_base_terms( $term, $part_of_speech, $base_term ) {
+		$this->assertContains( $base_term, gp_glossary_get_base_terms( $term, $part_of_speech, gp_glossary_suffixes() ) );
+	}
+
+	function data_glossary_base_terms() {
+		return array(
+			'plural with -es'                       => array( 'heroes', 'noun', 'hero' ),
+			'plural with -ies'                      => array( 'ladies', 'noun', 'lady' ),
+			'plural with -ves'                      => array( 'wives', 'noun', 'wife' ),
+			'third person with -ies'                => array( 'tries', 'verb', 'try' ),
+			'past tense'                            => array( 'added', 'verb', 'add' ),
+			'past tense of a verb ending with -e'   => array( 'deleted', 'verb', 'delete' ),
+			'past tense with a doubled consonant'   => array( 'committed', 'verb', 'commit' ),
+			'present participle'                    => array( 'troubleshooting', 'verb', 'troubleshoot' ),
+			'plural of a noun formed with -tion'    => array( 'corrections', 'noun', 'correction' ),
+		);
+	}
+
+	/**
+	 * Digits, spaces and punctuation don't count as consonants or letters for the suffix rules.
+	 *
+	 * @dataProvider data_glossary_wrong_base_terms
+	 */
+	function test_gp_glossary_get_base_terms_only_reverts_the_suffixes_of_words( $term, $part_of_speech, $wrong_base_term ) {
+		$this->assertNotContains( $wrong_base_term, gp_glossary_get_base_terms( $term, $part_of_speech, gp_glossary_suffixes() ) );
+	}
+
+	function data_glossary_wrong_base_terms() {
+		return array(
+			'number with -s'                => array( '404s', 'noun', '404' ),
+			'digit before -es'              => array( '2es', 'noun', '2' ),
+			'digit before -ies'             => array( '4ies', 'noun', '4y' ),
+			'space before -ed'              => array( 'n ed', 'verb', 'n ' ),
+			'symbol before a doubled -s'    => array( '+sses', 'noun', '+s' ),
+		);
+	}
+
+	function test_gp_glossary_get_base_terms_without_a_suffix() {
+		$suffixes = gp_glossary_suffixes();
+
+		$this->assertSame( array(), gp_glossary_get_base_terms( 'hero', 'noun', $suffixes ) );
+		$this->assertSame( array(), gp_glossary_get_base_terms( 'c++', 'noun', $suffixes ) );
+		$this->assertSame( array(), gp_glossary_get_base_terms( 'apples', 'adjective', $suffixes ), 'Adjectives have no suffix rules.' );
+	}
 }
