@@ -120,4 +120,132 @@ class GP_Test_Meta extends GP_UnitTestCase {
 		$this->assertCount( 2, $meta );
 		$this->assertEqualSets( array( 'key1', 'key2' ), array_keys( $meta ) );
 	}
+
+	/**
+	 * Adds a meta value to an object.
+	 *
+	 * @param string $object_type The object type.
+	 * @param int    $object_id   The object ID.
+	 */
+	private function add_meta( $object_type, $object_id ) {
+		gp_update_meta( $object_id, 'foo', "bar of $object_type $object_id", $object_type );
+
+		// Put the meta in the cache.
+		$this->assertSame( "bar of $object_type $object_id", gp_get_meta( $object_type, $object_id, 'foo' ) );
+	}
+
+	/**
+	 * Counts the meta rows of an object, bypassing the cache.
+	 *
+	 * @param string $object_type The object type.
+	 * @param int    $object_id   The object ID.
+	 * @return int The number of meta rows.
+	 */
+	private function count_meta( $object_type, $object_id ) {
+		global $wpdb;
+
+		return (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->gp_meta WHERE object_type = %s AND object_id = %d", $object_type, $object_id ) );
+	}
+
+	function test_deleting_a_project_deletes_its_meta_and_the_meta_of_its_objects() {
+		$set         = $this->factory->translation_set->create_with_project_and_locale();
+		$translation = $this->factory->translation->create_with_original_for_translation_set( $set );
+		$glossary    = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+		$entry       = GP::$glossary_entry->create_and_select(
+			array(
+				'glossary_id'    => $glossary->id,
+				'term'           => 'term',
+				'part_of_speech' => 'noun',
+				'translation'    => 'termo',
+			)
+		);
+		$sub_project = $this->factory->project->create( array( 'parent_project_id' => $set->project_id ) );
+
+		$objects = array(
+			'project'         => $set->project_id,
+			'translation_set' => $set->id,
+			'original'        => $translation->original_id,
+			'translation'     => $translation->id,
+			'glossary'        => $glossary->id,
+			'glossary_entry'  => $entry->id,
+		);
+		foreach ( $objects as $object_type => $object_id ) {
+			$this->add_meta( $object_type, $object_id );
+		}
+		$this->add_meta( 'project', $sub_project->id );
+
+		GP::$project->get( $set->project_id )->delete();
+
+		foreach ( $objects as $object_type => $object_id ) {
+			$this->assertSame( 0, $this->count_meta( $object_type, $object_id ), "The meta of the $object_type." );
+			$this->assertSame( array(), gp_get_meta( $object_type, $object_id ), "The cached meta of the $object_type." );
+		}
+		$this->assertSame( 0, $this->count_meta( 'project', $sub_project->id ), 'The meta of the sub-project.' );
+	}
+
+	function test_deleting_an_object_keeps_the_meta_of_other_objects() {
+		$project = $this->factory->project->create();
+		$other   = $this->factory->project->create();
+
+		$this->add_meta( 'project', $project->id );
+		$this->add_meta( 'project', $other->id );
+		// Another object type with the same ID, and a type of a plugin.
+		$this->add_meta( 'original', $project->id );
+		$this->add_meta( 'plugin_object', $project->id );
+		$this->add_meta( 'gp_option', $project->id );
+
+		$project->delete();
+
+		$this->assertSame( 0, $this->count_meta( 'project', $project->id ) );
+		$this->assertSame( 1, $this->count_meta( 'project', $other->id ) );
+		$this->assertSame( 1, $this->count_meta( 'original', $project->id ) );
+		$this->assertSame( 1, $this->count_meta( 'plugin_object', $project->id ) );
+		$this->assertSame( 1, $this->count_meta( 'gp_option', $project->id ) );
+	}
+
+	function test_deleting_many_objects_deletes_their_meta() {
+		$set   = $this->factory->translation_set->create_with_project_and_locale();
+		$first = $this->factory->translation->create_with_original_for_translation_set( $set, array( 'translation_0' => '100% done' ) );
+		$other = $this->factory->translation->create_with_original_for_translation_set( $set, array( 'translation_0' => 'Kept' ) );
+
+		$this->add_meta( 'translation', $first->id );
+		$this->add_meta( 'translation', $other->id );
+
+		// A condition with a % sign, which must not be taken as a placeholder.
+		GP::$translation->delete_many( array( 'translation_0' => '100% done' ) );
+
+		$this->assertSame( 0, $this->count_meta( 'translation', $first->id ) );
+		$this->assertSame( 1, $this->count_meta( 'translation', $other->id ) );
+		$this->assertNotFalse( GP::$translation->get( $other->id ) );
+	}
+
+	function test_deleting_an_object_without_meta() {
+		$project = $this->factory->project->create();
+
+		$this->assertNotFalse( $project->delete() );
+		$this->assertFalse( GP::$project->get( $project->id ) );
+	}
+
+	function test_a_failed_delete_keeps_the_meta() {
+		global $wpdb;
+
+		$project = $this->factory->project->create();
+		$this->add_meta( 'project', $project->id );
+
+		// Break the delete of the project row only.
+		$break_delete = function ( $query ) use ( $wpdb ) {
+			return 0 === strpos( $query, "DELETE FROM $wpdb->gp_projects" ) ? 'DELETE FROM not_a_table' : $query;
+		};
+		add_filter( 'query', $break_delete );
+		$suppress = $wpdb->suppress_errors( true );
+
+		$result = GP::$project->delete_many( array( 'id' => $project->id ) );
+
+		$wpdb->suppress_errors( $suppress );
+		remove_filter( 'query', $break_delete );
+
+		$this->assertFalse( $result );
+		$this->assertNotFalse( GP::$project->get( $project->id ) );
+		$this->assertSame( 1, $this->count_meta( 'project', $project->id ) );
+	}
 }

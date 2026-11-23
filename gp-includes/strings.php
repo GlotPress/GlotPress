@@ -177,7 +177,7 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 function gp_sanitize_slug( $slug ) {
 	$slug = remove_accents( $slug );
 
-	$slug = strip_tags( $slug );
+	$slug = wp_strip_all_tags( $slug );
 
 	// Preserve escaped octets.
 	$slug = preg_replace( '|%([a-fA-F0-9][a-fA-F0-9])|', '---$1---', $slug );
