@@ -91,17 +91,13 @@ function gp_prepare_translation_textarea( $text ) {
 }
 
 /**
- * Adds suffixes for use in map_glossary_entries_to_translation_originals().
+ * Gets the suffix rules used to match glossary terms.
  *
- * @param array $glossary_entries An array of glossary entries to sort.
+ * @since 4.2.0
  *
- * @return array The suffixed entries.
+ * @return array The suffix rules for each part of speech.
  */
-function gp_glossary_add_suffixes( $glossary_entries ) {
-	if ( empty( $glossary_entries ) ) {
-		return;
-	}
-
+function gp_glossary_suffixes() {
 	$suffixes = array(
 
 		/**
@@ -400,8 +396,31 @@ function gp_glossary_add_suffixes( $glossary_entries ) {
 	 * Filter the list of Suffixes to match glossary terms for each Part of Speech.
 	 *
 	 * @since 4.0.0
+	 *
+	 * @param array $suffixes The suffix rules for each part of speech.
 	 */
-	$suffixes = apply_filters( 'gp_glossary_match_suffixes', $suffixes );
+	return apply_filters( 'gp_glossary_match_suffixes', $suffixes );
+}
+
+/**
+ * Adds suffixes for use in map_glossary_entries_to_translation_originals().
+ *
+ * @since 4.2.0 Added the `$suffixes` parameter.
+ *
+ * @param array      $glossary_entries An array of glossary entries to sort.
+ * @param array|null $suffixes         Optional. The suffix rules for each part of speech. Default: the rules from
+ *                                     gp_glossary_suffixes().
+ *
+ * @return array The suffixed entries.
+ */
+function gp_glossary_add_suffixes( $glossary_entries, $suffixes = null ) {
+	if ( empty( $glossary_entries ) ) {
+		return;
+	}
+
+	if ( null === $suffixes ) {
+		$suffixes = gp_glossary_suffixes();
+	}
 
 	$glossary_entries_suffixes = array();
 
@@ -521,17 +540,31 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			return $translation;
 		}
 
-		$glossary_entries_suffixes = gp_glossary_add_suffixes( $glossary_entries );
+		$suffix_rules              = gp_glossary_suffixes();
+		$glossary_entries_suffixes = gp_glossary_add_suffixes( $glossary_entries, $suffix_rules );
 
-		$glossary_entries_reference = array();
+		$term_entries = array();
 		foreach ( $glossary_entries as $id => $value ) {
-			$term = strtolower( $value->term );
-			if ( ! isset( $glossary_entries_reference[ $term ] ) ) {
-				$glossary_entries_reference[ $term ] = array( $id );
-				continue;
-			}
-			$glossary_entries_reference[ $term ][] = $id;
+			$term_entries[ strtolower( $value->term ) ][] = $id;
 		}
+
+		/*
+		 * The forms of each term are generated on their own, as the stems of different terms can be the same,
+		 * like `ed` for `edit` and `edition`. A form refers to all the entries of the term it was generated from,
+		 * unless it's a glossary term itself: `edit` turns into `edition` by the rules too, but `edition` only
+		 * shows its own entry.
+		 */
+		$forms = array();
+		foreach ( $glossary_entries as $value ) {
+			$term = strtolower( $value->term );
+			foreach ( gp_glossary_add_suffixes( array( $value ), $suffix_rules ) as $stem => $suffixes ) {
+				foreach ( $suffixes as $suffix ) {
+					$form           = $stem . $suffix;
+					$forms[ $form ] = array_values( array_unique( array_merge( $forms[ $form ] ?? array(), $term_entries[ $term ] ) ) );
+				}
+			}
+		}
+		$glossary_entries_reference = $term_entries + $forms;
 
 		$regex_group = array();
 		foreach ( $glossary_entries_suffixes as $term => $suffixes ) {
@@ -542,29 +575,6 @@ function map_glossary_entries_to_translation_originals( $translation, $glossary 
 			}
 
 			$regex_group[ $regex_suffix ][] = preg_quote( $term, '/' );
-
-			$referenced_term = $term;
-			if ( ! isset( $glossary_entries_reference[ $referenced_term ] ) ) {
-				foreach ( $suffixes as $suffix ) {
-					if ( isset( $glossary_entries_reference[ $term . $suffix ] ) ) {
-						$referenced_term = $term . $suffix;
-					}
-				}
-				if ( ! isset( $glossary_entries_reference[ $referenced_term ] ) ) {
-					// This should not happen but we don't want to access a non existing item below.
-					continue;
-				}
-			}
-
-			$referenced_term = $glossary_entries_reference[ $referenced_term ];
-			// Add the suffixed terms to the lookup table.
-			foreach ( $suffixes as $suffix ) {
-				if ( isset( $glossary_entries_reference[ $term . $suffix ] ) ) {
-					$glossary_entries_reference[ $term . $suffix ] = array_values( array_unique( array_merge( $glossary_entries_reference[ $term . $suffix ], $referenced_term ) ) );
-				} else {
-					$glossary_entries_reference[ $term . $suffix ] = $referenced_term;
-				}
-			}
 		}
 		// Make the regex more deterministic.
 		ksort( $regex_group );
