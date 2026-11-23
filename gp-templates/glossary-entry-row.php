@@ -19,16 +19,10 @@
 		?>
 	</td>
 	<?php
-	$date_modified           = strtotime( $entry->date_modified );
-	$date_modified_formatted = sprintf(
-		/* translators: 1: Modified date. 2: Modified time. */
-		__( '%1$s at %2$s', 'glotpress' ),
-		wp_date( get_option( 'date_format' ), $date_modified ),
-		wp_date( get_option( 'time_format' ), $date_modified )
-	);
+	$date_modified = strtotime( $entry->date_modified );
 	?>
 	<td class="date-modified" data-text="<?php echo esc_attr( $date_modified ); ?>">
-		<?php echo esc_html( $date_modified_formatted ); ?>
+		<?php echo esc_html( gp_format_user_date( $entry->date_modified, false ) ); ?>
 	</td>
 
 	<?php if ( $can_edit ) : ?>
@@ -41,7 +35,7 @@
 	<td colspan="6">
 		<div class="strings">
 			<dl>
-				<dt><label for="glossary_entry_term_<?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Original term:', 'glossary entry', 'glotpress' ); ?></label></dt>
+				<dt><label for="glossary_entry_term_<?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Original term', 'glossary entry', 'glotpress' ); ?></label></dt>
 				<dd><input type="text" name="glossary_entry[<?php echo esc_attr( $entry->id ); ?>][term]" id="glossary_entry_term_<?php echo esc_attr( $entry->id ); ?>" value="<?php echo esc_attr( $entry->term ); ?>"></dd>
 				<dt><label for="glossary_entry_post_<?php echo esc_attr( $entry->id ); ?>"><?php _ex( 'Part of speech', 'glossary entry', 'glotpress' ); ?></label></dt>
 				<dd><select name="glossary_entry[<?php echo esc_attr( $entry->id ); ?>][part_of_speech]" id="glossary_entry_pos_<?php echo esc_attr( $entry->id ); ?>">
@@ -70,7 +64,7 @@
 			<h3><?php _e( 'Meta', 'glotpress' ); ?></h3>
 			<dl>
 				<dt><?php _e( 'Last Modified:', 'glotpress' ); ?></dt>
-				<dd><?php echo esc_html( $date_modified_formatted ); ?></dd>
+				<dd><?php echo esc_html( gp_format_user_date( $entry->date_modified ) ); ?></dd>
 			</dl>
 			<?php if ( $entry->user_login ) : ?>
 			<dl>

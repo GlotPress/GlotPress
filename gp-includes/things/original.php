@@ -19,28 +19,37 @@ class GP_Original extends GP_Thing {
 	 *
 	 * @var string $table_basename
 	 */
-	var $table_basename = 'gp_originals';
+	public $table_basename = 'gp_originals';
+
+	/**
+	 * Object type of the meta of the original, deleted along with it.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string $meta_object_type
+	 */
+	public $meta_object_type = 'original';
 
 	/**
 	 * List of field names for an original.
 	 *
 	 * @var array $field_names
 	 */
-	var $field_names = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
+	public $field_names = array( 'id', 'project_id', 'context', 'singular', 'plural', 'references', 'comment', 'status', 'priority', 'date_added' );
 
 	/**
 	 * List of field names which have an integer value.
 	 *
 	 * @var array $int_fields
 	 */
-	var $int_fields = array( 'id', 'project_id', 'priority' );
+	public $int_fields = array( 'id', 'project_id', 'priority' );
 
 	/**
 	 * List of field names which cannot be updated.
 	 *
 	 * @var array $non_updatable_attributes
 	 */
-	var $non_updatable_attributes = array( 'id', 'path' );
+	public $non_updatable_attributes = array( 'id', 'path' );
 
 	/**
 	 * ID of the original.
@@ -117,7 +126,7 @@ class GP_Original extends GP_Thing {
 	 *
 	 * @var array $priorities
 	 */
-	static $priorities = array(
+	public static $priorities = array(
 		'-2' => 'hidden',
 		'-1' => 'low',
 		'0'  => 'normal',
@@ -129,7 +138,7 @@ class GP_Original extends GP_Thing {
 	 *
 	 * @var string $count_cache_group
 	 */
-	static $count_cache_group = 'active_originals_count_by_project_id';
+	public static $count_cache_group = 'active_originals_count_by_project_id';
 
 	/**
 	 * Sets restriction rules for fields.
@@ -297,7 +306,11 @@ class GP_Original extends GP_Thing {
 	public function import_for_project( $project, $translations ) {
 		global $wpdb;
 
-		$originals_added = $originals_existing = $originals_obsoleted = $originals_fuzzied = $originals_error = 0;
+		$originals_added     = 0;
+		$originals_existing  = 0;
+		$originals_obsoleted = 0;
+		$originals_fuzzied   = 0;
+		$originals_error     = 0;
 
 		$all_originals_for_project = $this->many_no_map( "SELECT * FROM $this->table WHERE project_id= %d", $project->id );
 		$originals_by_key          = array();
@@ -320,7 +333,8 @@ class GP_Original extends GP_Thing {
 			}
 		);
 
-		$possibly_added = $possibly_dropped = array();
+		$possibly_added   = array();
+		$possibly_dropped = array();
 
 		foreach ( $translations->entries as $key => $entry ) {
 			$wpdb->queries = array();
@@ -382,9 +396,29 @@ class GP_Original extends GP_Thing {
 				$original = $originals_by_key[ $entry->key() ];
 				// But only if it's different, like a changed 'references', 'comment', or 'status' field.
 				if ( GP::$original->is_different_from( $data, $original ) ) {
+					/*
+					 * The key of an entry is made of its context and singular only, so a string which gained
+					 * a plural form, or whose plural form changed, matches the existing original and is updated
+					 * in place. Its current translations then have to be set to fuzzy, like for any other changed
+					 * original: a translation made without a plural form has no translation for the other plural
+					 * forms of the locale, and one made for another plural text doesn't match the new one, even
+					 * when it has every plural form.
+					 */
+					$plural         = gp_array_get( $data, 'plural' );
+					$plural_changed = ! is_null( $plural ) && '' !== $plural && $original->plural !== $plural;
+
+					/** This filter is documented in gp-includes/things/original.php */
+					$do_fuzzy = $plural_changed && apply_filters( 'gp_set_translations_for_original_to_fuzzy', true, (object) $data, $original );
+
 					$this->update( $data, array( 'id' => $original->id ) );
-					$this->recheck_translation_warnings( $original, $data['singular'], $data['plural'] ?? null );
-					++$originals_existing;
+					$this->recheck_translation_warnings( $original, $data );
+
+					if ( $do_fuzzy ) {
+						$this->set_translations_for_original_to_fuzzy( $original->id );
+						++$originals_fuzzied;
+					} else {
+						++$originals_existing;
+					}
 				}
 			} else {
 				// We can't find this in our originals. Let's keep it for later.
@@ -413,7 +447,8 @@ class GP_Original extends GP_Thing {
 				/**
 				 * Filters whether to set existing translations to fuzzy.
 				 *
-				 * This filter is called when a new  string closely match an existing possibly dropped string.
+				 * This filter is called when a new string closely matches an existing possibly dropped string,
+				 * and when an existing original gains a plural form or its plural form changes.
 				 *
 				 * @since 2.3.0
 				 *
@@ -425,7 +460,7 @@ class GP_Original extends GP_Thing {
 
 				// We'll update the old original...
 				$this->update( $data, array( 'id' => $original->id ) );
-				$this->recheck_translation_warnings( $original, $data['singular'], $data['plural'] ?? null );
+				$this->recheck_translation_warnings( $original, $data );
 
 				// and set existing translations to fuzzy.
 				if ( $do_fuzzy ) {
@@ -474,7 +509,7 @@ class GP_Original extends GP_Thing {
 		 * @param int    $originals_added     Number or total originals added.
 		 * @param int    $originals_existing  Number of existing originals updated.
 		 * @param int    $originals_obsoleted Number of originals that were marked as obsolete.
-		 * @param int    $originals_fuzzied   Number of originals that were close matches of old ones and thus marked as fuzzy.
+		 * @param int    $originals_fuzzied   Number of originals that were close matches of old ones, or whose plural form changed, and thus marked as fuzzy.
 		 * @param int    $originals_error     Number of originals that were not imported due to an error.
 		 */
 		do_action( 'gp_originals_imported', $project->id, $originals_added, $originals_existing, $originals_obsoleted, $originals_fuzzied, $originals_error );
@@ -502,10 +537,14 @@ class GP_Original extends GP_Thing {
 	 * @since 4.2.0
 	 *
 	 * @param GP_Original $original The original before the change.
-	 * @param string      $singular The singular of the changed original.
-	 * @param string|null $plural   The plural of the changed original.
+	 * @param array       $data     The fields of the changed original.
 	 */
-	public function recheck_translation_warnings( $original, $singular, $plural ) {
+	public function recheck_translation_warnings( $original, $data ) {
+		// Filters may add keys to the imported data that aren't fields of an original.
+		$changed_original = new GP_Original( array_intersect_key( array_merge( (array) $original, $data ), array_flip( $this->field_names ) ) );
+		$singular         = $changed_original->singular;
+		$plural           = $changed_original->plural;
+
 		// Only the text matters, so warnings dismissed for it stay dismissed when the context or references change.
 		if ( $singular === $original->singular && (string) $plural === (string) $original->plural ) {
 			return;
@@ -539,7 +578,7 @@ class GP_Original extends GP_Thing {
 
 			// Forms the original doesn't use any more, like the plural forms of an original that lost its plural, are left out.
 			$forms    = array_slice( $translation->translations(), 0, null === $plural ? 1 : $locale->nplurals );
-			$warnings = GP::$translation_warnings->check( $singular, $plural, $forms, $locale );
+			$warnings = GP::$translation_warnings->check( $singular, $plural, $forms, $locale, $changed_original );
 			if ( $warnings != $translation->warnings ) { // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual -- No warnings are stored as null or an empty value.
 				$translation->update( array( 'warnings' => $warnings ) );
 			}

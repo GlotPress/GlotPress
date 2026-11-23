@@ -71,18 +71,12 @@ jQuery( function( $ ) {
 		return false;
 	} );
 
-	// Check all checkboxes from WP common.js, synced with [25141]
-	$( 'tbody' ).children().children( '.checkbox' ).find( ':checkbox' ).click( function( e ) {
-		var checks, first, last, checked, sliced;
+	// Delegated, so rows the editor replaces after saving keep working.
+	$( 'table#translations' ).on( 'click', 'tbody > tr > .checkbox :checkbox', function( e ) {
+		var checks, first, last, checked, sliced, unchecked;
 
-		if ( 'undefined' === e.shiftKey ) {
-			return true;
-		}
-		if ( e.shiftKey ) {
-			if ( ! lastClicked ) {
-				return true;
-			}
-			checks = $( lastClicked ).closest( 'table' ).find( ':checkbox' );
+		if ( e.shiftKey && lastClicked ) {
+			checks = $( this ).closest( 'table' ).find( ':checkbox' );
 			first = checks.index( lastClicked );
 			last = checks.index( this );
 			checked = $( this ).prop( 'checked' );
@@ -98,6 +92,10 @@ jQuery( function( $ ) {
 			}
 		}
 		lastClicked = this;
+
+		unchecked = $( this ).closest( 'tbody' ).children().children( '.checkbox' ).find( ':checkbox' ).not( ':checked' ).filter( ':visible' );
+		$( this ).closest( 'table' ).children( 'thead, tfoot' ).find( '.checkbox :checkbox' ).prop( 'checked', 0 === unchecked.length );
+
 		return true;
 	} );
 
