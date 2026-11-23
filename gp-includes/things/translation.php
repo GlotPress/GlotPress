@@ -784,15 +784,26 @@ class GP_Translation extends GP_Thing {
 		foreach ( $fields as $field ) {
 			$assignment = "`$field` = CASE WHEN id = %d THEN ";
 			$args[]     = $this->id;
+
+			// A null value is written as NULL, like wpdb::update() does, as prepare() turns it into an empty string.
 			if ( array_key_exists( $field, $promote ) ) {
-				$assignment .= '%s';
-				$args[]      = $promote[ $field ];
+				if ( null === $promote[ $field ] ) {
+					$assignment .= 'NULL';
+				} else {
+					$assignment .= '%s';
+					$args[]      = $promote[ $field ];
+				}
 			} else {
 				$assignment .= "`$field`";
 			}
 			if ( array_key_exists( $field, $demote ) ) {
-				$assignment .= " WHEN status IN ( 'current', 'waiting', 'fuzzy', 'changesrequested' ) THEN %s";
-				$args[]      = $demote[ $field ];
+				$assignment .= " WHEN status IN ( 'current', 'waiting', 'fuzzy', 'changesrequested' ) THEN ";
+				if ( null === $demote[ $field ] ) {
+					$assignment .= 'NULL';
+				} else {
+					$assignment .= '%s';
+					$args[]      = $demote[ $field ];
+				}
 			}
 			$assignments[] = $assignment . " ELSE `$field` END";
 		}

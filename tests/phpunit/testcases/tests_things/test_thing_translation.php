@@ -911,6 +911,41 @@ class GP_Test_Thing_Translation extends GP_UnitTestCase {
 		$this->assertSame( array( 0 => array( 'test' => 'Superseded.' ) ), GP::$translation->get( $superseded->id )->warnings );
 	}
 
+	/**
+	 * A field the prepare for save filter sets to null is stored as NULL, as with save(), not as an empty string,
+	 * which the "With warnings" filter would list.
+	 */
+	public function test_set_as_current_stores_null_fields_as_null() {
+		global $wpdb;
+
+		$set         = $this->factory->translation_set->create_with_project_and_locale();
+		$original    = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
+		$superseded  = $this->create_translation_with_status( $set, $original->id, 'current' );
+		$translation = $this->create_translation_with_status( $set, $original->id, 'waiting' );
+
+		$warnings = maybe_serialize( array( 0 => array( 'test' => 'Warning.' ) ) );
+		foreach ( array( $superseded, $translation ) as $row ) {
+			$wpdb->update( $wpdb->gp_translations, array( 'warnings' => $warnings ), array( 'id' => $row->id ) );
+		}
+
+		add_filter(
+			'gp_translation_prepare_for_save',
+			function ( $args ) {
+				$args['warnings'] = null;
+				return $args;
+			}
+		);
+
+		$this->assertTrue( $translation->set_as_current() );
+
+		// The "With warnings" filter checks `warnings IS NOT NULL`, and get_var() returns null for an empty string too.
+		foreach ( array( $translation, $superseded ) as $row ) {
+			$this->assertSame( '1', $wpdb->get_var( $wpdb->prepare( "SELECT warnings IS NULL FROM $wpdb->gp_translations WHERE id = %d", $row->id ) ) );
+		}
+		$this->assertSame( 'current', GP::$translation->get( $translation->id )->status );
+		$this->assertSame( 'old', GP::$translation->get( $superseded->id )->status );
+	}
+
 	function test_add_related_translations_adds_the_current_translation_to_open_suggestions() {
 		$set      = $this->factory->translation_set->create_with_project_and_locale();
 		$original = $this->factory->original->create( array( 'project_id' => $set->project_id ) );
