@@ -750,4 +750,65 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertSame( 'rejected', $set->get_blocked_suggestion_reason( $orig->id, array( 1 => 'Dateien', 0 => 'Datei' ) ) );
 		$this->assertFalse( $set->get_blocked_suggestion_reason( $orig->id, array( 'Dateien', 'Datei' ) ) );
 	}
+
+	function test_import_should_import_a_plural_translation_with_all_plural_forms() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%d item', 'plural' => '%d items' ) );
+
+		$translations_for_import = new Translations();
+		$translations_for_import->add_entry( array( 'singular' => '%d item', 'plural' => '%d items', 'translations' => array( '%d elemento', '%d elementos' ) ) );
+
+		$this->assertEquals( 1, $set->import( $translations_for_import ) );
+
+		$translations = GP::$translation->all();
+		$this->assertCount( 1, $translations );
+		$this->assertSame( 'current', $translations[0]->status );
+		$this->assertSame( '%d elementos', $translations[0]->translation_1 );
+	}
+
+	/**
+	 * A translation with an empty plural form has a translation error, so it's imported as fuzzy,
+	 * like any other translation with errors.
+	 */
+	function test_import_should_import_a_plural_translation_with_an_empty_plural_form_as_fuzzy() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%d item', 'plural' => '%d items' ) );
+
+		foreach ( array( 'current', 'waiting' ) as $status ) {
+			$translations_for_import = new Translations();
+			$translations_for_import->add_entry( array( 'singular' => '%d item', 'plural' => '%d items', 'translations' => array( "One $status item", '' ) ) );
+
+			$this->assertEquals( 1, $set->import( $translations_for_import, $status ) );
+
+			$imported = GP::$translation->find_one( array( 'translation_set_id' => $set->id, 'translation_0' => "One $status item" ) );
+			$this->assertSame( 'fuzzy', $imported->status, "Imported as $status." );
+		}
+	}
+
+	/**
+	 * An entry without a plural form matches a plural original by its context and singular, and has a
+	 * single translation for it.
+	 */
+	function test_import_should_import_a_singular_entry_for_a_plural_original_as_fuzzy() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => '%d item', 'plural' => '%d items' ) );
+		$current  = $this->factory->translation->create(
+			array(
+				'translation_set_id' => $set->id,
+				'original_id'        => $original->id,
+				'translation_0'      => 'One item',
+				'translation_1'      => 'Some items',
+				'status'             => 'current',
+			)
+		);
+
+		$translations_for_import = new Translations();
+		$translations_for_import->add_entry( array( 'singular' => '%d item', 'translations' => array( 'Another item' ) ) );
+
+		$this->assertEquals( 1, $set->import( $translations_for_import ) );
+
+		$this->assertSame( 'current', GP::$translation->get( $current->id )->status, 'The complete translation stays current.' );
+		$imported = GP::$translation->find_one( array( 'translation_set_id' => $set->id, 'translation_0' => 'Another item' ) );
+		$this->assertSame( 'fuzzy', $imported->status );
+	}
 }
