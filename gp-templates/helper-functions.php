@@ -830,24 +830,31 @@ function references( $project, $entry ) {
 /**
  * Output the bulk actions toolbar in the translations page.
  *
+ * @since 4.2.0 Added the `$can_approve` parameter.
+ *
  * @param string $bulk_action     The URL to submit the form to.
  * @param string $can_write       Can the current user write translations to the database.
  * @param string $translation_set The current translation set.
  * @param string $location        The location of this toolbar, used to make id's unique for each instance on a page.
+ * @param bool   $can_approve     Optional. Whether the current user can approve the set. Without it, only
+ *                                rejecting and marking as fuzzy are offered. Default true.
  */
-function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, $location = 'top' ) {
+function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, $location = 'top', $can_approve = true ) {
 ?>
 <form id="bulk-actions-toolbar-<?php echo esc_attr( $location ); ?>" class="bulk-actions" action="<?php echo esc_attr( $bulk_action ); ?>" method="post">
 	<div>
 	<select name="bulk[action]" id="bulk-action-<?php echo esc_attr( $location ); ?>" class="bulk-action">
 		<option value="" selected="selected"><?php _e( 'Bulk Actions', 'glotpress' ); ?></option>
+	<?php if ( $can_approve ) : ?>
 		<option value="approve"><?php _ex( 'Approve', 'Action', 'glotpress' ); ?></option>
+	<?php endif; ?>
 		<option value="reject"><?php _ex( 'Reject', 'Action', 'glotpress' ); ?></option>
 		<option value="fuzzy"><?php _ex( 'Fuzzy', 'Action', 'glotpress' ); ?></option>
+	<?php if ( $can_approve ) : ?>
 		<option value="copy-original"><?php _ex( 'Copy from original', 'Action', 'glotpress' ); ?></option>
-	<?php if ( $can_write ) : ?>
+		<?php if ( $can_write ) : ?>
 		<option value="set-priority" class="hide-if-no-js"><?php _e( 'Set Priority', 'glotpress' ); ?></option>
-	<?php endif; ?>
+		<?php endif; ?>
 		<?php
 
 		/**
@@ -857,13 +864,15 @@ function gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $transl
 		 * bulk options drop down menu.
 		 *
 		 * @since 1.0.0
+		 * @since 4.2.0 Only fires for users who can approve the set.
 		 *
 		 * @param GP_Translation_Set $set The translation set.
 		 */
 		do_action( 'gp_translation_set_bulk_action', $translation_set );
 		?>
+	<?php endif; ?>
 	</select>
-	<?php if ( $can_write ) : ?>
+	<?php if ( $can_approve && $can_write ) : ?>
 	<select name="bulk[priority]" id="bulk-priority-<?php echo esc_attr( $location ); ?>" class="bulk-priority hidden">
 	<?php
 	$labels = array(

@@ -9,6 +9,8 @@
 $user            = wp_get_current_user();
 $can_reject_self = ( isset( $translation->user->user_login ) && $user->user_login === $translation->user->user_login && 'waiting' === $translation->translation_status );
 
+$show_bulk_actions = $can_approve || is_user_logged_in();
+
 if ( is_object( $glossary ) ) {
 	$translation = map_glossary_entries_to_translation_originals( $translation, $glossary );
 }

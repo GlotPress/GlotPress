@@ -42,6 +42,9 @@ $editor_options = compact( 'can_approve', 'can_write', 'url', 'discard_warning_u
 wp_localize_script( 'gp-editor', '$gp_editor_options', $editor_options );
 gp_tmpl_header();
 $i = 0;
+
+// Users without approval rights for the set may still bulk change their own waiting translations.
+$show_bulk_actions = $can_approve || is_user_logged_in();
 ?>
 
 <div class="gp-heading">
@@ -441,8 +444,8 @@ $i = 0;
 
 <div class="gp-table-actions top">
 	<?php
-	if ( $can_approve ) {
-		gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'top' );
+	if ( $show_bulk_actions ) {
+		gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'top', $can_approve );
 	}
 
 	echo gp_pagination( $page, $per_page, $total_translations_count );
@@ -464,7 +467,7 @@ do_action( 'gp_before_translation_table', get_defined_vars() );
 	<thead>
 	<tr>
 		<?php
-		if ( $can_approve ) :
+		if ( $show_bulk_actions ) :
 			?>
 			<th class="gp-column-checkbox checkbox" scope="row"><input type="checkbox" /></th>
 			<?php
@@ -489,7 +492,7 @@ foreach ( $translations as $translation ) {
 <?php
 if ( ! $translations ) :
 	?>
-	<tr><td colspan="<?php echo $can_approve ? 5 : 4; ?>"><?php _e( 'No translations were found!', 'glotpress' ); ?></td></tr>
+	<tr><td colspan="<?php echo $show_bulk_actions ? 5 : 4; ?>"><?php _e( 'No translations were found!', 'glotpress' ); ?></td></tr>
 	<?php
 	endif;
 ?>
@@ -507,8 +510,8 @@ do_action( 'gp_after_translation_table', get_defined_vars() );
 
 <div class="gp-table-actions bottom">
 	<?php
-	if ( $can_approve ) {
-		gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'bottom' );
+	if ( $show_bulk_actions ) {
+		gp_translations_bulk_actions_toolbar( $bulk_action, $can_write, $translation_set, 'bottom', $can_approve );
 	}
 	?>
 	<div id="legend">
