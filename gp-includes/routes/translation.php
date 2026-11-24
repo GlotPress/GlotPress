@@ -454,33 +454,29 @@ class GP_Route_Translation extends GP_Route_Main {
 		$can_approve_set = $this->can( 'approve', 'translation-set', $translation_set->id );
 
 		// Without approval rights for the set, only status changes the user may also make one by one are allowed.
-		if ( ! $can_approve_set && ! $bulk_status ) {
+		if ( ! $can_approve_set && ( ! $bulk_status || ! is_user_logged_in() ) ) {
 			$this->redirect_with_error( __( 'You are not allowed to do that!', 'glotpress' ) );
 			return;
 		}
 
 		$bulk['row-ids'] = array_filter( explode( ',', $bulk['row-ids'] ) );
 
-		// Drop rows outside the authorized project/set before any action runs, so neither the built-in handlers nor custom actions on the hook below can touch another set's data.
-		$bulk['row-ids'] = $this->filter_bulk_row_ids_for_set( $bulk['row-ids'], $project, $translation_set );
-
 		$forbidden = 0;
-		if ( ! $can_approve_set ) {
-			$permitted_row_ids = array();
-			foreach ( $bulk['row-ids'] as $row_id ) {
-				$translation = GP::$translation->get( gp_array_get( explode( '-', $row_id ), 1 ) );
-				if ( ! $translation ) {
-					continue;
+
+		// Drop rows outside the authorized project/set before any action runs, so neither the built-in handlers nor custom actions on the hook below can touch another set's data.
+		$bulk['row-ids'] = $this->filter_bulk_row_ids_for_set(
+			$bulk['row-ids'],
+			$project,
+			$translation_set,
+			$can_approve_set ? null : function ( $translation ) use ( $bulk_status, &$forbidden ) {
+				if ( $this->can_set_translation_status( $translation, $bulk_status ) ) {
+					return true;
 				}
 
-				if ( $this->can_set_translation_status( $translation, $bulk_status ) ) {
-					$permitted_row_ids[] = $row_id;
-				} else {
-					++$forbidden;
-				}
+				++$forbidden;
+				return false;
 			}
-			$bulk['row-ids'] = $permitted_row_ids;
-		}
+		);
 
 		if ( ! empty( $bulk['row-ids'] ) ) {
 			switch ( $bulk['action'] ) {
@@ -503,6 +499,8 @@ class GP_Route_Translation extends GP_Route_Main {
 			 * Bulk action for translation set allows handling of custom actions.
 			 *
 			 * @since 1.0.0
+			 * @since 4.2.0 Also fires for users who cannot approve the set, with `row-ids`
+			 *              limited to the translations whose status they may change.
 			 *
 			 * @param GP_Project         $project         The current project.
 			 * @param GP_Locale          $locale          The current locale.
@@ -563,13 +561,15 @@ class GP_Route_Translation extends GP_Route_Main {
 	 * @param string[]           $row_ids         The client-supplied row IDs.
 	 * @param GP_Project         $project         The authorized project.
 	 * @param GP_Translation_Set $translation_set The authorized translation set.
+	 * @param callable|null      $can_change      Optional. Receives each row's translation and returns
+	 *                                            whether the user may change it. Default null.
 	 * @return string[] The row IDs that belong to the project and set.
 	 */
-	private function filter_bulk_row_ids_for_set( $row_ids, $project, $translation_set ) {
+	private function filter_bulk_row_ids_for_set( $row_ids, $project, $translation_set, $can_change = null ) {
 		return array_values(
 			array_filter(
 				$row_ids,
-				function ( $row_id ) use ( $project, $translation_set ) {
+				function ( $row_id ) use ( $project, $translation_set, $can_change ) {
 					$parts          = explode( '-', $row_id );
 					$original_id    = (int) gp_array_get( $parts, 0 );
 					$translation_id = (int) gp_array_get( $parts, 1 );
@@ -581,12 +581,17 @@ class GP_Route_Translation extends GP_Route_Main {
 
 					if ( $translation_id ) {
 						$translation = GP::$translation->get( $translation_id );
-						return $translation
-							&& (int) $translation->translation_set_id === (int) $translation_set->id
-							&& (int) $translation->original_id === $original_id;
+						if ( ! $translation
+							|| (int) $translation->translation_set_id !== (int) $translation_set->id
+							|| (int) $translation->original_id !== $original_id ) {
+							return false;
+						}
+
+						return ! $can_change || $can_change( $translation );
 					}
 
-					return true;
+					// Untranslated rows have no status to change.
+					return ! $can_change;
 				}
 			)
 		);
