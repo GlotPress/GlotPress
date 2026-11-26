@@ -481,10 +481,13 @@ class GP_Translation_Set extends GP_Thing {
 			$existing   = $load_existing_translations( $entry->status )[ $key ] ?? array();
 			$translated = end( $existing );
 			if ( 'current' !== $entry->status ) {
-				// Don't create an entry if it already exists as current.
-				$current    = $existing_translations['current'][ $key ] ?? array();
-				$translated = $translated ? $translated : end( $current );
-				$existing   = array_merge( $existing, $current );
+				// Don't create an entry if it already exists as current, or as waiting for a fuzzy one.
+				$statuses = 'fuzzy' === $entry->status ? array( 'current', 'waiting' ) : array( 'current' );
+				foreach ( $statuses as $status ) {
+					$others     = $load_existing_translations( $status )[ $key ] ?? array();
+					$translated = $translated ? $translated : end( $others );
+					$existing   = array_merge( $existing, $others );
+				}
 			}
 
 			if ( $translated ) {

@@ -212,6 +212,28 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 		$this->assertSame( 1, $set->import( $translations_for_import, 'waiting' ) );
 	}
 
+	function test_import_should_not_import_a_fuzzy_translation_identical_to_a_waiting_translation() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( 'baba' ), 'status' => 'waiting' ) );
+
+		$translations_for_import = new Translations();
+		$translations_for_import->add_entry( array( 'singular' => 'A string', 'translations' => array( 'baba' ) ) );
+
+		$this->assertSame( 0, $set->import( $translations_for_import, 'fuzzy' ) );
+	}
+
+	function test_import_should_import_a_suggestion_identical_to_a_fuzzy_translation() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( 'baba' ), 'status' => 'fuzzy' ) );
+
+		$translations_for_import = new Translations();
+		$translations_for_import->add_entry( array( 'singular' => 'A string', 'translations' => array( 'baba' ) ) );
+
+		$this->assertSame( 1, $set->import( $translations_for_import, 'waiting' ) );
+	}
+
 	function test_import_should_not_compare_with_the_translation_of_another_original_with_the_same_singular() {
 		$set               = $this->factory->translation_set->create_with_project_and_locale();
 		$plural_original   = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'File', 'plural' => 'Files' ) );
