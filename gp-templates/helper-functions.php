@@ -518,6 +518,90 @@ function gp_glossary_add_suffixes( $glossary_entries, $suffixes = null ) {
 }
 
 /**
+ * Finds the base forms that the suffix rules turn into a term.
+ *
+ * Used to suggest the base form when a glossary entry is added or edited in a suffixed form, like `detail` for
+ * `details`, as the base form also matches its suffixed forms. Each rule is undone to get a candidate base form, and
+ * only the candidates that the rules turn back into the term are kept, so a candidate always follows the rules,
+ * including the letters that must precede an ending. The rules can't tell some base forms apart, like `commit` and
+ * `committ` for `committed`, so all of them are kept.
+ *
+ * @since 4.2.0
+ *
+ * @param string     $term     The lowercase term.
+ * @param string     $type     The part of speech of the term.
+ * @param array|null $suffixes Optional. The suffix rules for each part of speech. Default: the rules from
+ *                             gp_glossary_suffixes().
+ * @return string[] The base forms, without the term itself.
+ */
+function gp_glossary_get_base_terms( $term, $type, $suffixes = null ) {
+	if ( null === $suffixes ) {
+		$suffixes = gp_glossary_suffixes();
+	}
+
+	if ( empty( $suffixes[ $type ] ) ) {
+		return array();
+	}
+
+	$candidates = array();
+	foreach ( $suffixes[ $type ] as $rule ) {
+		$add = $rule['add'];
+		if ( '' === $add || strlen( $term ) <= strlen( $add ) || substr( $term, -strlen( $add ) ) !== $add ) {
+			continue;
+		}
+
+		$stem = substr( $term, 0, -strlen( $add ) );
+
+		foreach ( $rule['endings'] as $ending => $new_ending ) {
+			if ( '%s' === $new_ending ) {
+				// The ending is kept, like in `kiss-es`.
+				$candidates[] = $stem;
+			} elseif ( '%1$s%1$s' === $new_ending ) {
+				// The last letter is doubled, like in `committ-ed`.
+				if ( strlen( $stem ) > 1 && substr( $stem, -1 ) === substr( $stem, -2, 1 ) ) {
+					$candidates[] = substr( $stem, 0, -1 );
+				}
+			} elseif ( preg_match( '/^[a-z]+$/', $ending ) && false === strpos( $new_ending, '%' ) ) {
+				// The ending is replaced, like in `wiv-es` for `wife`, or removed, like in `delet-ed` for `delete`.
+				if ( '' === $new_ending ) {
+					$candidates[] = $stem . $ending;
+				} elseif ( strlen( $stem ) > strlen( $new_ending ) && substr( $stem, -strlen( $new_ending ) ) === $new_ending ) {
+					$candidates[] = substr( $stem, 0, -strlen( $new_ending ) ) . $ending;
+				}
+			}
+		}
+	}
+
+	$base_terms = array();
+	foreach ( array_unique( $candidates ) as $candidate ) {
+		if ( $candidate === $term ) {
+			continue;
+		}
+
+		$suffixed_terms = gp_glossary_add_suffixes(
+			array(
+				(object) array(
+					'term'           => $candidate,
+					'part_of_speech' => $type,
+				),
+			),
+			$suffixes
+		);
+
+		foreach ( $suffixed_terms as $key => $key_suffixes ) {
+			foreach ( $key_suffixes as $suffix ) {
+				if ( $key . $suffix === $term ) {
+					$base_terms[] = $candidate;
+					break 2;
+				}
+			}
+		}
+	}
+
+	return $base_terms;
+}
+
+/**
  * Add markup to a translation original to identify the glossary terms.
  *
  * @param GP_Translation $translation            A GP Translation object.
