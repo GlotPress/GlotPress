@@ -390,6 +390,23 @@ class GP_Test_Builtin_Translation_Warnings extends GP_UnitTestCase {
 		$this->assertHasWarningsAndContainsOutput( 'placeholders', "%'*10s items", 'Elemente', "Missing %'*10s placeholder in translation." );
 	}
 
+	/**
+	 * @link https://meta.trac.wordpress.org/ticket/5621
+	 */
+	public function test_placeholders_numbered_in_translation() {
+		$this->assertNoWarnings( 'placeholders', '%s to %s', '%2$s ba %1$s' );
+		$this->assertNoWarnings( 'placeholders', '%d%% of %-10s', '%2$-10s: %1$d%%' );
+
+		// Dropping the numbers of the original stays a warning.
+		$this->assertHasWarningsAndContainsOutput( 'placeholders', '%1$s to %2$s', '%s ba %s', 'Missing %1$s placeholder in translation.' );
+
+		// `%1$d` would print the string argument as a number.
+		$this->assertHasWarningsAndContainsOutput( 'placeholders', '%s has %d items', '%2$s %1$d', 'Missing %s placeholder in translation.' );
+
+		// Each argument has to be printed once.
+		$this->assertHasWarningsAndContainsOutput( 'placeholders', '%s to %s', '%1$s ba %1$s', 'Missing %s placeholder in translation.' );
+	}
+
 	function test_placeholders_using_check() {
 		$w       = new GP_Translation_Warnings();
 		$builtin = new GP_Builtin_Translation_Warnings();

@@ -377,14 +377,21 @@ class GP_Builtin_Translation_Warnings {
 		 */
 		$placeholders_re = apply_filters( 'gp_warning_placeholders_re', '(?<!%)' . gp_get_placeholder_regex_pattern() );
 
-		$original_counts    = $this->_placeholders_counts( $original, $placeholders_re );
-		$translation_counts = $this->_placeholders_counts( $translation, $placeholders_re );
+		$original_placeholders    = $this->match_placeholders( $original, $placeholders_re );
+		$translation_placeholders = $this->match_placeholders( $translation, $placeholders_re );
+
+		$original_counts    = array_count_values( $original_placeholders );
+		$translation_counts = array_count_values( $translation_placeholders );
 
 		if (
 			null !== $plural_form &&
-			$this->leaves_out_only_the_number( $original, $original_counts, $translation_counts, $placeholders_re ) &&
+			$this->leaves_out_only_the_number( $original_placeholders, $original_counts, $translation_counts ) &&
 			1 === count( $locale->numbers_for_index( $plural_form, 2 ) )
 		) {
+			return true;
+		}
+
+		if ( $this->numbers_unnumbered_placeholders( $original_placeholders, $translation_placeholders ) ) {
 			return true;
 		}
 
@@ -412,23 +419,34 @@ class GP_Builtin_Translation_Warnings {
 	}
 
 	/**
-	 * Counts the placeholders in a string.
+	 * Finds the placeholders in a string, in order of appearance.
 	 *
-	 * @since 1.0.0
-	 * @access private
+	 * @since 4.2.0
 	 *
-	 * @param string $text   The text to search.
-	 * @param string $re     Regular expressions to match placeholders.
-	 * @return array An array with counts per placeholder.
+	 * @param string $text The text to search.
+	 * @param string $re   Regular expression to match placeholders.
+	 * @return string[] The placeholders.
 	 */
-	private function _placeholders_counts( $text, $re ) {
-		$counts = array();
+	private function match_placeholders( string $text, string $re ): array {
 		preg_match_all( "/$re/", $text, $matches );
-		foreach ( $matches[0] as $match ) {
-			$counts[ $match ] = gp_array_get( $counts, $match, 0 ) + 1;
-		}
 
-		return $counts;
+		return $matches[0];
+	}
+
+	/**
+	 * Checks whether a placeholder reads the next sprintf() argument.
+	 *
+	 * `%%` and placeholders added through the filter that don't start with `%` take no argument.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $placeholder The placeholder.
+	 * @return bool True if the placeholder reads the next argument, false otherwise.
+	 */
+	private function takes_next_argument( string $placeholder ): bool {
+		return '%%' !== $placeholder
+			&& '%' === substr( $placeholder, 0, 1 )
+			&& ! preg_match( '/^%\d+\$/', $placeholder );
 	}
 
 	/**
@@ -452,13 +470,12 @@ class GP_Builtin_Translation_Warnings {
 	 *
 	 * @since 4.2.0
 	 *
-	 * @param string $original           The source string.
-	 * @param array  $original_counts    Counts per placeholder in the source string.
-	 * @param array  $translation_counts Counts per placeholder in the translation.
-	 * @param string $placeholders_re    Regular expression to match placeholders.
+	 * @param string[] $original_placeholders The placeholders of the source string, in order.
+	 * @param array    $original_counts       Counts per placeholder in the source string.
+	 * @param array    $translation_counts    Counts per placeholder in the translation.
 	 * @return bool True if only the placeholder for a number is left out, false otherwise.
 	 */
-	private function leaves_out_only_the_number( string $original, array $original_counts, array $translation_counts, string $placeholders_re ): bool {
+	private function leaves_out_only_the_number( array $original_placeholders, array $original_counts, array $translation_counts ): bool {
 		foreach ( $translation_counts as $placeholder => $count ) {
 			if ( $count > gp_array_get( $original_counts, $placeholder, 0 ) ) {
 				return false;
@@ -490,21 +507,68 @@ class GP_Builtin_Translation_Warnings {
 			}
 		}
 
-		$numbered_re = '/^%\d+\$/';
-		if ( preg_match( $numbered_re, $left_out ) ) {
+		if ( preg_match( '/^%\d+\$/', $left_out ) ) {
 			return true;
 		}
 
-		// `%%` is a literal percent sign and takes no argument, so it is never the number.
-		preg_match_all( "/$placeholders_re/", $original, $matches );
+		$unnumbered = array_values( array_filter( $original_placeholders, array( $this, 'takes_next_argument' ) ) );
+
+		return end( $unnumbered ) === $left_out && 1 === count( array_keys( $unnumbered, $left_out, true ) );
+	}
+
+	/**
+	 * Checks whether a translation only numbers the placeholders of the original.
+	 *
+	 * E.g. `%s to %s` translated as `%2$s ba %1$s`.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string[] $original_placeholders    The placeholders of the source string, in order.
+	 * @param string[] $translation_placeholders The placeholders of the translation, in order.
+	 * @return bool True if the translation numbers each placeholder of the original, false otherwise.
+	 */
+	private function numbers_unnumbered_placeholders( array $original_placeholders, array $translation_placeholders ): bool {
 		$unnumbered = array();
-		foreach ( $matches[0] as $placeholder ) {
-			if ( '%%' !== $placeholder && ! preg_match( $numbered_re, $placeholder ) ) {
+		$others     = array();
+		foreach ( $original_placeholders as $placeholder ) {
+			if ( $this->takes_next_argument( $placeholder ) ) {
 				$unnumbered[] = $placeholder;
+			} elseif ( '%' === substr( $placeholder, 0, 1 ) && '%%' !== $placeholder ) {
+				return false;
+			} else {
+				$others[ $placeholder ] = gp_array_get( $others, $placeholder, 0 ) + 1;
 			}
 		}
 
-		return end( $unnumbered ) === $left_out && 1 === count( array_keys( $unnumbered, $left_out, true ) );
+		if ( ! $unnumbered ) {
+			return false;
+		}
+
+		$numbered = array();
+		foreach ( $translation_placeholders as $placeholder ) {
+			if ( $this->takes_next_argument( $placeholder ) ) {
+				return false;
+			}
+
+			if ( preg_match( '/^%([1-9]\d*)\$(.*)$/', $placeholder, $parts ) ) {
+				$position = (int) $parts[1];
+				if ( isset( $numbered[ $position ] ) ) {
+					return false;
+				}
+
+				$numbered[ $position ] = '%' . $parts[2];
+			} else {
+				$others[ $placeholder ] = gp_array_get( $others, $placeholder, 0 ) - 1;
+			}
+		}
+
+		if ( array_filter( $others ) ) {
+			return false;
+		}
+
+		ksort( $numbered );
+
+		return array_combine( range( 1, count( $unnumbered ) ), $unnumbered ) === $numbered;
 	}
 
 	/**
