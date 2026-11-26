@@ -97,6 +97,29 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 		$this->assertEquals( 0, (int) GP::$original->get( $other_original->id )->priority );
 	}
 
+	function test_bulk_set_priority_refuses_an_invalid_priority_before_changing_any_original() {
+		$set    = $this->factory->translation_set->create_with_project_and_locale();
+		$first  = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'First', 'priority' => 0 ) );
+		$second = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Second', 'priority' => 0 ) );
+
+		$this->set_admin_user_as_current();
+
+		$_POST['bulk']               = array(
+			'action'      => 'set-priority',
+			'priority'    => 5,
+			'row-ids'     => $first->id . '-0,' . $second->id . '-0',
+			'redirect_to' => '/',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'bulk-actions' );
+
+		$this->route->bulk_post( $set->project->path, $set->locale, $set->slug );
+
+		$this->assertEquals( 0, (int) GP::$original->get( $first->id )->priority );
+		$this->assertEquals( 0, (int) GP::$original->get( $second->id )->priority );
+		$this->assertThereIsAnErrorContaining( 'Invalid priority value!' );
+		$this->assertRedirected();
+	}
+
 	/**
 	 * A bulk row must be a genuine (original, translation) pair: a row pairing an
 	 * original with a translation that belongs to a different original is dropped.
@@ -223,23 +246,121 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 	}
 
 	/**
-	 * Saving a fuzzy translation unchanged doesn't copy it under another user's name and set the fuzzy one to old.
+	 * A validator saving a waiting or fuzzy translation unchanged approves it, and its translator stays its author.
 	 */
-	function test_translations_post_refuses_a_translation_identical_to_a_fuzzy_one() {
+	function test_translations_post_approves_an_identical_waiting_or_fuzzy_translation_for_a_validator() {
+		foreach ( array( 'waiting', 'fuzzy' ) as $status ) {
+			$set        = $this->factory->translation_set->create_with_project_and_locale();
+			$translator = $this->factory->user->create();
+			$this->become_validator_for_set( $set );
+
+			$original   = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
+			$current    = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Speichern', 'status' => 'current' ) );
+			$suggestion = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => $status, 'user_id' => $translator ) );
+
+			$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern', $suggestion->id );
+
+			$suggestion = GP::$translation->get( $suggestion->id );
+			$this->assertSame( 'current', $suggestion->status, $status );
+			$this->assertSame( $translator, (int) $suggestion->user_id, $status );
+			$this->assertSame( 'old', GP::$translation->get( $current->id )->status, $status );
+			$this->assertCount( 2, GP::$translation->find_many( array( 'original_id' => $original->id ) ), $status );
+		}
+	}
+
+	/**
+	 * Saving only approves the suggestion that was opened, so the validator decides whose identical suggestion is credited.
+	 */
+	function test_translations_post_approves_only_the_opened_suggestion() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$this->become_validator_for_set( $set );
 
 		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
-		$fuzzy    = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'fuzzy' ) );
+		$other    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save' ) );
+		$first    = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'waiting' ) );
+		$second   = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'waiting' ) );
+		$foreign  = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $other->id, 'translation_0' => 'Änderungen speichern', 'status' => 'waiting' ) );
 
 		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern' );
+		$this->assertStringContainsString( 'Identical waiting translation already exists.', $this->route->template_output );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern', $foreign->id );
+
+		$this->assertSame( 'waiting', GP::$translation->get( $first->id )->status );
+		$this->assertSame( 'waiting', GP::$translation->get( $second->id )->status );
+		$this->assertSame( 'waiting', GP::$translation->get( $foreign->id )->status );
+		$this->assertStringContainsString( 'Identical waiting translation already exists.', $this->route->template_output );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern', $second->id );
+
+		$this->assertSame( 'current', GP::$translation->get( $second->id )->status );
+		$this->assertSame( 'old', GP::$translation->get( $first->id )->status );
+	}
+
+	/**
+	 * Saving doesn't approve an identical waiting translation the validator may not approve, and doesn't replace an identical current one.
+	 */
+	function test_translations_post_refuses_an_identical_translation_it_cannot_or_need_not_approve() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
+		$waiting  = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'waiting' ) );
+
+		add_filter( 'gp_pre_can_set_translation_status', '__return_false' );
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern', $waiting->id );
+		remove_filter( 'gp_pre_can_set_translation_status', '__return_false' );
+
+		$this->assertSame( 'waiting', GP::$translation->get( $waiting->id )->status );
+		$this->assertStringContainsString( 'Identical waiting translation already exists.', $this->route->template_output );
+
+		$current = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'current' ) );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern', $waiting->id );
+
+		$this->assertSame( 'current', GP::$translation->get( $current->id )->status );
+		$this->assertSame( 'waiting', GP::$translation->get( $waiting->id )->status );
+		$this->assertStringContainsString( 'Identical current translation already exists.', $this->route->template_output );
+	}
+
+	/**
+	 * Saving as waiting doesn't approve an identical waiting translation.
+	 */
+	function test_translations_post_refuses_an_identical_waiting_translation_when_saving_as_waiting() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
+		$waiting  = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'waiting' ) );
+
+		$_POST['status'] = 'waiting';
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern', $waiting->id );
+
+		$this->assertSame( 'waiting', GP::$translation->get( $waiting->id )->status );
+		$this->assertStringContainsString( 'Identical waiting translation already exists.', $this->route->template_output );
+	}
+
+	/**
+	 * Saving a fuzzy translation unchanged without the right to approve doesn't copy it under another user's name.
+	 */
+	function test_translations_post_refuses_a_translation_identical_to_a_fuzzy_one_from_a_user_who_cannot_approve() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->set_normal_user_as_current();
+
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'Save changes' ) );
+		$fuzzy    = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translation_0' => 'Änderungen speichern', 'status' => 'fuzzy' ) );
+
+		$this->submit_translation( $set, $original->id, $original->id, 'Änderungen speichern', $fuzzy->id );
 
 		$this->assertCount( 1, GP::$translation->find_many( array( 'original_id' => $original->id ) ) );
 		$this->assertSame( 'fuzzy', GP::$translation->get( $fuzzy->id )->status );
 		$this->assertStringContainsString( 'Identical fuzzy translation already exists.', $this->route->template_output );
 	}
 
-	private function submit_translation( $set, $nonce_original_id, $submitted_original_id, $text ) {
+	private function submit_translation( $set, $nonce_original_id, $submitted_original_id, $text, $translation_id = null ) {
+		if ( $translation_id ) {
+			$_POST['translation_id'] = $translation_id;
+		}
 		$_POST['original_id']        = $nonce_original_id;
 		$_POST['translation']        = array( $submitted_original_id => array( $text ) );
 		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation_' . $nonce_original_id );
@@ -250,7 +371,7 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 			}
 		);
 
-		unset( $_POST['original_id'], $_POST['translation'], $_REQUEST['_gp_route_nonce'] );
+		unset( $_POST['original_id'], $_POST['translation'], $_POST['translation_id'], $_REQUEST['_gp_route_nonce'] );
 	}
 
 	/**
@@ -670,5 +791,87 @@ class GP_Test_Route_Translation extends GP_UnitTestCase_Route {
 
 		$created = GP::$translation->find_one( array( 'original_id' => $original->id, 'status' => 'waiting' ) );
 		$this->assertNotFalse( $created, 'The filter bypassed the duplicate block and created the suggestion.' );
+	}
+
+	function test_translations_post_does_not_save_a_plural_translation_with_a_missing_form() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item', 'plural' => 'Many items' ) );
+
+		$this->set_normal_user_as_current();
+
+		$_POST['original_id']        = $original->id;
+		$_POST['translation']        = array( $original->id => array( 'Um item' ) );
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation_' . $original->id );
+
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->translations_post( $set->project->path, $set->locale, $set->slug );
+			}
+		);
+
+		$this->assertFalse( GP::$translation->find_one( array( 'original_id' => $original->id ) ) );
+		$this->assertStringContainsString( 'The plural form used for numbers like 0, 2, 3 is missing.', $this->route->template_output );
+	}
+
+	function test_translations_post_saves_a_plural_translation_with_all_forms() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item', 'plural' => 'Many items' ) );
+
+		$this->set_normal_user_as_current();
+
+		$_POST['original_id']        = $original->id;
+		$_POST['translation']        = array( $original->id => array( 'Um item', 'Muitos itens' ) );
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'add-translation_' . $original->id );
+
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->translations_post( $set->project->path, $set->locale, $set->slug );
+			}
+		);
+
+		$translation = GP::$translation->find_one( array( 'original_id' => $original->id ) );
+		$this->assertNotFalse( $translation );
+		$this->assertEquals( 'Muitos itens', $translation->translation_1 );
+	}
+
+	function test_set_status_reports_a_missing_plural_form() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item', 'plural' => 'Many items' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting', 'translation_0' => 'Um item' ) );
+
+		$_POST['status']             = 'current';
+		$_POST['translation_id']     = $translation->id;
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'update-translation-status-current_' . $translation->id );
+
+		$this->do_route_request(
+			function () use ( $set ) {
+				$this->route->set_status( $set->project->path, $set->locale, $set->slug );
+			}
+		);
+
+		$this->assertSame( 'waiting', GP::$translation->get( $translation->id )->status );
+		$this->assertStringContainsString( 'The plural form used for numbers like 0, 2, 3 is missing.', $this->route->template_output );
+	}
+
+	function test_bulk_approve_reports_a_missing_plural_form_as_a_translation_error() {
+		$set = $this->factory->translation_set->create_with_project_and_locale();
+		$this->become_validator_for_set( $set );
+
+		$original    = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'One item', 'plural' => 'Many items' ) );
+		$translation = $this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'status' => 'waiting', 'translation_0' => 'Um item' ) );
+
+		$_POST['bulk']               = array(
+			'action'      => 'approve',
+			'row-ids'     => $original->id . '-' . $translation->id,
+			'redirect_to' => '/',
+		);
+		$_REQUEST['_gp_route_nonce'] = wp_create_nonce( 'bulk-actions' );
+
+		$this->route->bulk_post( $set->project->path, $set->locale, $set->slug );
+
+		$this->assertSame( 'waiting', GP::$translation->get( $translation->id )->status );
+		$this->assertThereIsAnErrorContaining( '1 translation was not approved because it has translation errors.' );
 	}
 }

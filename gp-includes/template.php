@@ -435,7 +435,12 @@ function gp_radio_buttons( $name, $radio_buttons, $checked_key ) {
  */
 function gp_pagination( $page, $per_page, $objects ) {
 	$surrounding = 2;
-	$first       = $prev_dots = $prev_pages = $next_pages = $next_dots = $last = '';
+	$first       = '';
+	$last        = '';
+	$prev_dots   = '';
+	$next_dots   = '';
+	$prev_pages  = '';
+	$next_pages  = '';
 	$page        = intval( $page ) ? intval( $page ) : 1;
 	$pages       = ceil( $objects / $per_page );
 	if ( $page > $pages ) {

@@ -47,7 +47,12 @@ class GP_Route_Locale extends GP_Route_Main {
 
 		usort( $sets, array( $this, 'sort_sets_by_project_id' ) );
 
-		$projects_data   = $projects = $parents = $set_slugs = $set_list = array();
+		$projects      = array();
+		$projects_data = array();
+		$parents       = array();
+		$set_slugs     = array();
+		$set_list      = array();
+
 		$locale_projects = wp_list_pluck( $sets, 'project_id' );
 
 		foreach ( $sets as $set ) {

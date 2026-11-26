@@ -19,28 +19,28 @@ class GP_Validator_Permission extends GP_Permission {
 	 *
 	 * @var string $table_basename
 	 */
-	var $table_basename = 'gp_permissions';
+	public $table_basename = 'gp_permissions';
 
 	/**
 	 * List of field names for a validator permission.
 	 *
 	 * @var array $field_names
 	 */
-	var $field_names = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
+	public $field_names = array( 'id', 'user_id', 'action', 'object_type', 'object_id' );
 
 	/**
 	 * List of non-database field names.
 	 *
 	 * @var array $non_db_field_names
 	 */
-	var $non_db_field_names = array( 'project_id', 'locale_slug', 'set_slug' );
+	public $non_db_field_names = array( 'project_id', 'locale_slug', 'set_slug' );
 
 	/**
 	 * List of field names which cannot be updated.
 	 *
 	 * @var array $non_updatable_attributes
 	 */
-	var $non_updatable_attributes = array( 'id' );
+	public $non_updatable_attributes = array( 'id' );
 
 	/**
 	 * Type of the object.
@@ -97,6 +97,29 @@ class GP_Validator_Permission extends GP_Permission {
 		$rules->user_id_should_not_be( 'empty' );
 		$rules->action_should_not_be( 'empty' );
 		$rules->set_slug_should_not_be( 'empty' );
+	}
+
+	/**
+	 * Gets the error message for a failed validation rule.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $rule The validation rule that failed.
+	 * @return string|null The error message, or null to use the generic one.
+	 */
+	public function validation_error_message( $rule ) {
+		if ( 'empty' !== $rule['rule'] ) {
+			return null;
+		}
+
+		switch ( $rule['field'] ) {
+			case 'locale_slug':
+				return __( 'Select a locale for the validator.', 'glotpress' );
+			case 'set_slug':
+				return __( 'The translation set slug of the validator must not be empty.', 'glotpress' );
+		}
+
+		return null;
 	}
 
 	/**

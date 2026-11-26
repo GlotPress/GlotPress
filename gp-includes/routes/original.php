@@ -40,11 +40,11 @@ class GP_Route_Original extends GP_Route_Main {
 		$original->priority = gp_post( 'priority' );
 
 		if ( ! $original->validate() ) {
-			return $this->die_with_error( 'Invalid priority value!' );
+			return $this->die_with_error( __( 'Invalid priority value!', 'glotpress' ) );
 		}
 
 		if ( ! $original->save() ) {
-			return $this->die_with_error( 'Error in saving original!' );
+			return $this->die_with_error( __( 'Error in saving original!', 'glotpress' ) );
 		}
 	}
 }

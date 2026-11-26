@@ -18,7 +18,7 @@ function gp_url_path( $url = null ) {
 		$url = gp_url();
 	}
 
-	$parsed = parse_url( $url );
+	$parsed = wp_parse_url( $url );
 	return isset( $parsed['path'] ) ? $parsed['path'] : '';
 }
 

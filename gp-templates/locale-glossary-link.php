@@ -1,4 +1,11 @@
 <?php
+/**
+ * Templates: Locale Glossary Link
+ *
+ * @package GlotPress
+ * @subpackage Templates
+ */
+
 if ( $locale_glossary ) : ?>
 	<a href="<?php echo esc_url( gp_url_join( gp_url( '/languages' ), $locale->slug, $set_slug, 'glossary' ) ); ?>" class="glossary-link"><?php _e( 'Locale Glossary', 'glotpress' ); ?></a>
 <?php elseif ( $can_create_locale_glossary ) : ?>

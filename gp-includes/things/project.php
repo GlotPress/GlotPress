@@ -19,28 +19,37 @@ class GP_Project extends GP_Thing {
 	 *
 	 * @var string $table_basename
 	 */
-	var $table_basename = 'gp_projects';
+	public $table_basename = 'gp_projects';
+
+	/**
+	 * Object type of the meta of the project, deleted along with it.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string $meta_object_type
+	 */
+	public $meta_object_type = 'project';
 
 	/**
 	 * List of field names for a project.
 	 *
 	 * @var array $field_names
 	 */
-	var $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active' );
+	public $field_names = array( 'id', 'name', 'slug', 'path', 'description', 'parent_project_id', 'source_url_template', 'active' );
 
 	/**
 	 * List of field names which have an integer value.
 	 *
 	 * @var array $int_fields
 	 */
-	var $int_fields = array( 'id', 'parent_project_id', 'active' );
+	public $int_fields = array( 'id', 'parent_project_id', 'active' );
 
 	/**
 	 * List of field names which cannot be updated.
 	 *
 	 * @var array $non_updatable_attributes
 	 */
-	var $non_updatable_attributes = array( 'id' );
+	public $non_updatable_attributes = array( 'id' );
 
 	/**
 	 * ID of the project.
@@ -115,6 +124,29 @@ class GP_Project extends GP_Thing {
 	public function restrict_fields( $rules ) {
 		$rules->name_should_not_be( 'empty' );
 		$rules->slug_should_not_be( 'empty' );
+	}
+
+	/**
+	 * Gets the error message for a failed validation rule.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $rule The validation rule that failed.
+	 * @return string|null The error message, or null to use the generic one.
+	 */
+	public function validation_error_message( $rule ) {
+		if ( 'empty' !== $rule['rule'] ) {
+			return null;
+		}
+
+		switch ( $rule['field'] ) {
+			case 'name':
+				return __( 'The project name must not be empty.', 'glotpress' );
+			case 'slug':
+				return __( 'The project slug must not be empty.', 'glotpress' );
+		}
+
+		return null;
 	}
 
 	// Additional queries.
@@ -377,8 +409,9 @@ class GP_Project extends GP_Thing {
 	 * @return string|false The generated source URL or false if no URL is available.
 	 */
 	public function source_url( $file, $line ) {
-		$source_url = false;
-		if ( $source_url_template = $this->source_url_template() ) {
+		$source_url          = false;
+		$source_url_template = $this->source_url_template();
+		if ( $source_url_template ) {
 			$source_url = str_replace( array( '%file%', '%line%' ), array( $file, $line ), $source_url_template );
 		}
 
@@ -403,14 +436,15 @@ class GP_Project extends GP_Thing {
 	public function source_url_template() {
 		if ( isset( $this->user_source_url_template ) ) {
 			return $this->user_source_url_template;
-		} elseif ( $this->id && is_user_logged_in() && ( $templates = get_user_meta( get_current_user_id(), 'gp_source_url_templates', true ) )
-					&& isset( $templates[ $this->id ] ) ) {
-
+		} elseif ( $this->id && is_user_logged_in() ) {
+			$templates = get_user_meta( get_current_user_id(), 'gp_source_url_templates', true );
+			if ( isset( $templates[ $this->id ] ) ) {
 				$this->user_source_url_template = $templates[ $this->id ];
 				return $this->user_source_url_template;
-		} else {
-			return $this->source_url_template;
+			}
 		}
+
+		return $this->source_url_template;
 	}
 
 	/**
