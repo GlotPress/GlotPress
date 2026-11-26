@@ -173,6 +173,58 @@ class GP_Test_Thing_Translation_set extends GP_UnitTestCase {
 
 	}
 
+	function test_import_should_not_import_a_suggestion_identical_to_the_current_translation_while_another_suggestion_waits() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( 'baba' ), 'status' => 'current' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( 'abab' ), 'status' => 'waiting' ) );
+
+		$translations_for_import = new Translations();
+		$translations_for_import->add_entry( array( 'singular' => 'A string', 'translations' => array( 'baba' ) ) );
+
+		$this->assertSame( 0, $set->import( $translations_for_import, 'waiting' ) );
+	}
+
+	function test_import_should_not_import_a_suggestion_identical_to_any_waiting_translation() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( 'baba' ), 'status' => 'waiting' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( 'abab' ), 'status' => 'waiting' ) );
+
+		$translations_for_import = new Translations();
+		$translations_for_import->add_entry( array( 'singular' => 'A string', 'translations' => array( 'baba' ) ) );
+		$translations_for_import_2 = new Translations();
+		$translations_for_import_2->add_entry( array( 'singular' => 'A string', 'translations' => array( 'abab' ) ) );
+
+		$this->assertSame( 0, $set->import( $translations_for_import, 'waiting' ) );
+		$this->assertSame( 0, $set->import( $translations_for_import_2, 'waiting' ) );
+	}
+
+	function test_import_should_import_a_suggestion_that_differs_from_the_current_and_all_waiting_translations() {
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( 'baba' ), 'status' => 'current' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $original->id, 'translations' => array( 'abab' ), 'status' => 'waiting' ) );
+
+		$translations_for_import = new Translations();
+		$translations_for_import->add_entry( array( 'singular' => 'A string', 'translations' => array( 'bbaa' ) ) );
+
+		$this->assertSame( 1, $set->import( $translations_for_import, 'waiting' ) );
+	}
+
+	function test_import_should_not_compare_with_the_translation_of_another_original_with_the_same_singular() {
+		$set               = $this->factory->translation_set->create_with_project_and_locale();
+		$plural_original   = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'File', 'plural' => 'Files' ) );
+		$singular_original = $this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'File' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $singular_original->id, 'translations' => array( 'Datei' ), 'status' => 'current' ) );
+		$this->factory->translation->create( array( 'translation_set_id' => $set->id, 'original_id' => $plural_original->id, 'translations' => array( 'Datei', 'Dateien' ), 'status' => 'current' ) );
+
+		$translations_for_import = new Translations();
+		$translations_for_import->add_entry( array( 'singular' => 'File', 'translations' => array( 'Datei' ) ) );
+
+		$this->assertSame( 1, $set->import( $translations_for_import, 'waiting' ) );
+	}
+
 	function test_filter_translation_set_import_warnings() {
 		$set = $this->factory->translation_set->create_with_project_and_locale();
 		$this->factory->original->create( array( 'project_id' => $set->project->id, 'status' => '+active', 'singular' => 'A string with %s' ) );
