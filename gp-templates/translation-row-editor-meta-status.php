@@ -15,7 +15,7 @@
 		<?php
 		// Don't show the buttons if the translation status is changesrequested but the changesrequested is not enabled,
 		// because in this situation we consider the changesrequested as rejected translations.
-		if ( 'changesrequested' != $translation->translation_status || apply_filters( 'gp_enable_changesrequested_status', false ) ) : // todo: delete when we merge the gp-translation-helpers in GlotPress.
+		if ( 'changesrequested' !== $translation->translation_status || apply_filters( 'gp_enable_changesrequested_status', false ) ) : // todo: delete when we merge the gp-translation-helpers in GlotPress.
 		?>
 			<?php if ( $translation->translation_status ) : ?>
 				<?php if ( $can_approve_translation ) : ?>

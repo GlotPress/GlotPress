@@ -16,7 +16,7 @@ gp_title(
 
 $breadcrumb   = array();
 $breadcrumb[] = gp_link_get( gp_url( '/languages' ), __( 'Locales', 'glotpress' ) );
-if ( 'default' == $current_set_slug ) {
+if ( 'default' === $current_set_slug ) {
 	$breadcrumb[] = esc_html( $locale->english_name );
 } else {
 	$breadcrumb[] = gp_link_get( gp_url_join( gp_url( '/languages' ), $locale->slug ), $locale->english_name );

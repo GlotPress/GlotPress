@@ -148,7 +148,7 @@ abstract class GP_Format {
 		foreach ( $translations->entries as $key => $entry ) {
 			// we have been using read_originals_from_file to parse the file
 			// so we need to swap singular and translation.
-			if ( $entry->context == $entry->singular ) {
+			if ( $entry->context === $entry->singular ) {
 				$entry->translations = array();
 			} else {
 				$entry->translations = array( $entry->singular );
@@ -157,7 +157,7 @@ abstract class GP_Format {
 			$entry->singular = null;
 
 			foreach ( $originals as $original ) {
-				if ( $original->context == $entry->context ) {
+				if ( $original->context === $entry->context ) {
 					$entry->singular = $original->singular;
 					break;
 				}

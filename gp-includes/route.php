@@ -178,7 +178,7 @@ class GP_Route {
 			$title = esc_html__( 'Error', 'glotpress' );
 		}
 		$this->status_header( $status );
-		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
+		if ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) === 'xmlhttprequest' ) {
 			$this->exit_( $message );
 		} else {
 			$this->tmpl(

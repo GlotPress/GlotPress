@@ -146,7 +146,8 @@ class GP_Validation_Rules {
 			$suffices = "{$kind}_suffices";
 			foreach ( self::$$suffices as $suffix ) {
 				foreach ( $this->field_names as $field_name ) {
-					if ( "{$field_name}_{$suffix}" == $name ) {
+					$method_name = "{$field_name}_{$suffix}";
+					if ( $method_name === $name ) {
 						$this->rules[ $field_name ][] = array(
 							'field' => $field_name,
 							'rule'  => $args[0],

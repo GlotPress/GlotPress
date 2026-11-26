@@ -122,11 +122,11 @@ function gp_string_similarity( $str1, $str2 ) {
  */
 function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 
-	if ( 0 == $length1 ) {
+	if ( 0 === $length1 ) {
 		return $length2;
 	}
 
-	if ( 0 == $length2 ) {
+	if ( 0 === $length2 ) {
 		return $length1;
 	}
 
@@ -153,7 +153,7 @@ function gp_levenshtein( $str1, $str2, $length1, $length2 ) {
 		foreach ( $chars2 as $j => $c2 ) {
 			$insertions    = $prev_row[ $j + 1 ] + 1;
 			$deletions     = $current_row[ $j ] + 1;
-			$substitutions = $prev_row[ $j ] + ( ( $c1 != $c2 ) ? 1 : 0 );
+			$substitutions = $prev_row[ $j ] + ( ( $c1 !== $c2 ) ? 1 : 0 );
 			$current_row[] = min( $insertions, $deletions, $substitutions );
 		}
 		$prev_row = $current_row;

@@ -453,7 +453,7 @@ class GP_Route_Project extends GP_Route_Main {
 			return;
 		}
 
-		if ( 'add-validator' == gp_post( 'action' ) ) {
+		if ( 'add-validator' === gp_post( 'action' ) ) {
 			$user = get_user_by( 'login', gp_post( 'user_login' ) );
 			if ( ! $user ) {
 				$this->redirect_with_error( __( 'User wasn&#8217;t found!', 'glotpress' ), gp_url_current() );
