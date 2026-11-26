@@ -14,7 +14,7 @@
  *
  * @param int $colspan The colspan of editor column.
  */
-$colspan = apply_filters( 'gp_translation_row_editor_colspan', $can_approve ? 5 : 4 );
+$colspan = apply_filters( 'gp_translation_row_editor_colspan', $show_bulk_actions ? 5 : 4 );
 
 $singular = sprintf(
 	'<small>%s</small><br><span class="original">%s</span>',

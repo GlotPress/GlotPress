@@ -16,9 +16,9 @@ $priority_char = array(
 ?>
 
 <tr class="preview <?php gp_translation_row_classes( $translation ); ?>" id="preview-<?php echo esc_attr( $translation->row_id ); ?>" row="<?php echo esc_attr( $translation->row_id ); ?>">
-	<?php if ( $can_approve_translation ) : ?>
+	<?php if ( $show_bulk_actions && ( $can_approve_translation || $can_reject_self ) ) : ?>
 		<th scope="row" class="checkbox"><input type="checkbox" name="selected-row[]"/></th>
-	<?php elseif ( $can_approve ) : ?>
+	<?php elseif ( $show_bulk_actions ) : ?>
 		<th scope="row"></th>
 	<?php endif; ?>
 	<?php /* translators: %s: Priority of original */ ?>
