@@ -19,49 +19,49 @@ class GP_Thing {
 	 *
 	 * @var array $field_names
 	 */
-	var $field_names = array();
+	public $field_names = array();
 
 	/**
 	 * List of non-database field names.
 	 *
 	 * @var array $non_db_field_names
 	 */
-	var $non_db_field_names = array();
+	public $non_db_field_names = array();
 
 	/**
 	 * List of field names which have an integer value.
 	 *
 	 * @var array $int_fields
 	 */
-	var $int_fields = array();
+	public $int_fields = array();
 
 	/**
 	 * Validation rules for this thing.
 	 *
 	 * @var GP_Validation_Rules $validation_rules
 	 */
-	var $validation_rules = null;
+	public $validation_rules = null;
 
 	/**
 	 * Number of items per page.
 	 *
 	 * @var int $per_page
 	 */
-	var $per_page = 30;
+	public $per_page = 30;
 
 	/**
 	 * Whether to map results to GP_Thing objects.
 	 *
 	 * @var bool $map_results
 	 */
-	var $map_results = true;
+	public $map_results = true;
 
 	/**
 	 * Static variables for this class.
 	 *
 	 * @var array $static
 	 */
-	var $static = array();
+	public $static = array();
 
 	/**
 	 * Class name of the thing.
@@ -76,6 +76,15 @@ class GP_Thing {
 	 * @var string $table_basename
 	 */
 	public $table_basename;
+
+	/**
+	 * Object type of the meta of the thing, deleted along with the thing.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @var string|null $meta_object_type Null if the thing has no meta.
+	 */
+	public $meta_object_type = null;
 
 	/**
 	 * ID of the thing.
@@ -103,7 +112,7 @@ class GP_Thing {
 	 *
 	 * @var string $table
 	 */
-	public $table  = null;
+	public $table = null;
 
 	/**
 	 * Errors found during validation.
@@ -117,14 +126,14 @@ class GP_Thing {
 	 *
 	 * @var array $static_by_class
 	 */
-	static $static_by_class = array();
+	public static $static_by_class = array();
 
 	/**
 	 * Validation rules by class.
 	 *
 	 * @var array $validation_rules_by_class
 	 */
-	static $validation_rules_by_class = array();
+	public static $validation_rules_by_class = array();
 
 	/**
 	 * Constructor.
@@ -592,9 +601,73 @@ class GP_Thing {
 		if ( $conditions_sql ) {
 			$query .= " WHERE $conditions_sql";
 		}
+
+		$ids_with_meta = $this->meta_object_type ? $this->get_ids_with_meta( $conditions_sql ) : array();
+
 		$result = $this->query( $query );
+
+		// The meta is only deleted once its objects are, so a failed delete doesn't leave an object without its meta.
+		if ( false !== $result && $ids_with_meta ) {
+			$this->delete_meta_of_deleted_ids( $ids_with_meta );
+		}
+
 		$this->after_delete();
 		return $result;
+	}
+
+	/**
+	 * Gets the IDs of the rows matching the conditions which have meta.
+	 *
+	 * Only the objects that have meta are looked up, through the index on the object type and ID of the
+	 * meta table, so a delete without meta costs a single extra query.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $conditions_sql The SQL conditions of the rows, empty for all rows.
+	 * @return int[] The IDs of the rows with meta.
+	 */
+	protected function get_ids_with_meta( $conditions_sql ) {
+		global $wpdb;
+
+		$rows_sql = "SELECT id FROM $this->table" . ( $conditions_sql ? " WHERE $conditions_sql" : '' );
+
+		// The conditions are already escaped and may contain a %, so they aren't passed through prepare().
+		$object_ids = $wpdb->get_col(
+			$wpdb->prepare( "SELECT DISTINCT object_id FROM $wpdb->gp_meta WHERE object_type = %s", $this->meta_object_type ) . " AND object_id IN ( $rows_sql )" // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		);
+
+		return array_map( 'intval', $object_ids );
+	}
+
+	/**
+	 * Deletes the meta of the objects which no longer exist, and clears its cache.
+	 *
+	 * Only the meta of the objects missing from the table is deleted, so the meta of an object that wasn't deleted
+	 * after all is kept.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param int[] $object_ids The IDs of the deleted objects with meta.
+	 */
+	protected function delete_meta_of_deleted_ids( $object_ids ) {
+		global $wpdb;
+
+		foreach ( array_chunk( $object_ids, 1000 ) as $chunk ) {
+			$ids = implode( ',', array_map( 'intval', $chunk ) );
+
+			$wpdb->query(
+				$wpdb->prepare( "DELETE m FROM $wpdb->gp_meta m LEFT JOIN $this->table o ON o.id = m.object_id WHERE m.object_type = %s", $this->meta_object_type ) . " AND m.object_id IN ( $ids ) AND o.id IS NULL" // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The table name and IDs are not user input.
+			);
+
+			// Available since WordPress 6.0, and a single request for object caches that support it.
+			if ( function_exists( 'wp_cache_delete_multiple' ) ) {
+				wp_cache_delete_multiple( $chunk, $this->meta_object_type );
+			} else {
+				foreach ( $chunk as $object_id ) {
+					wp_cache_delete( $object_id, $this->meta_object_type );
+				}
+			}
+		}
 	}
 
 	/**
@@ -787,7 +860,7 @@ class GP_Thing {
 			return array_map( array( &$this, 'sql_condition_from_php_value' ), $php_value );
 		}
 		$operator = '=';
-		if ( is_integer( $php_value ) || ( null !== $php_value && ctype_digit( $php_value ) ) ) {
+		if ( is_int( $php_value ) || ( null !== $php_value && ctype_digit( $php_value ) ) ) {
 			$sql_value = $php_value;
 		} else {
 			$sql_value = "'" . esc_sql( $php_value ) . "'";
@@ -902,6 +975,21 @@ class GP_Thing {
 	 */
 	public function restrict_fields( $rules ) {
 		// Don't restrict any fields by default.
+	}
+
+	/**
+	 * Gets the error message for a failed validation rule.
+	 *
+	 * Things return a complete sentence for the fields people fill in, as a message assembled
+	 * from the field and the rule can't be translated grammatically.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $rule The validation rule that failed, with the 'field', 'rule', 'kind' and 'args' keys.
+	 * @return string|null The error message, or null to use the generic one.
+	 */
+	public function validation_error_message( $rule ) {
+		return null;
 	}
 
 	/**

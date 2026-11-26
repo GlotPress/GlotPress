@@ -725,6 +725,38 @@ class GP_Test_Template_Helper_Functions extends GP_UnitTestCase {
 		$this->assertEquals( $orig->plural_glossary_markup, $plural_expected_result );
 	}
 
+	/**
+	 * @link https://github.com/GlotPress/GlotPress/issues/1913
+	 */
+	function test_map_glossary_entries_keeps_terms_with_a_shared_root_apart() {
+		$entry = new Translation_Entry( array( 'singular' => 'Edit the edition, edits and editions.' ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select( array( 'term' => 'edit', 'part_of_speech' => 'verb', 'translation' => 'bewerken', 'glossary_id' => $glossary->id ) );
+		GP::$glossary_entry->create_and_select( array( 'term' => 'edition', 'part_of_speech' => 'noun', 'translation' => 'editie', 'glossary_id' => $glossary->id ) );
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$expected = $this->glossary_match( 'bewerken', 'verb', 'Edit' ) . ' the ' . $this->glossary_match( 'editie', 'noun', 'edition' ) . ', ' . $this->glossary_match( 'bewerken', 'verb', 'edits' ) . ' and ' . $this->glossary_match( 'editie', 'noun', 'editions' ) . '.';
+		$this->assertSame( $expected, $orig->singular_glossary_markup );
+	}
+
+	function test_map_glossary_entries_matches_a_form_of_a_term_that_is_not_in_the_glossary() {
+		$entry = new Translation_Entry( array( 'singular' => 'Edit the edition.' ) );
+
+		$set      = $this->factory->translation_set->create_with_project_and_locale();
+		$glossary = GP::$glossary->create_and_select( array( 'translation_set_id' => $set->id ) );
+
+		GP::$glossary_entry->create_and_select( array( 'term' => 'edit', 'part_of_speech' => 'verb', 'translation' => 'bewerken', 'glossary_id' => $glossary->id ) );
+
+		$orig = map_glossary_entries_to_translation_originals( $entry, $glossary );
+
+		$expected = $this->glossary_match( 'bewerken', 'verb', 'Edit' ) . ' the ' . $this->glossary_match( 'bewerken', 'verb', 'edition' ) . '.';
+		$this->assertSame( $expected, $orig->singular_glossary_markup );
+	}
+
 	/*
 	 * Matches the glossary variations and placeholders.
 	 */
