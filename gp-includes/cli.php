@@ -16,6 +16,7 @@ function gp_cli_register() {
 	require_once GP_PATH . GP_INC . 'cli/add-admin.php';
 	require_once GP_PATH . GP_INC . 'cli/branch-project.php';
 	require_once GP_PATH . GP_INC . 'cli/import-originals.php';
+	require_once GP_PATH . GP_INC . 'cli/recheck-errors.php';
 	require_once GP_PATH . GP_INC . 'cli/regenerate-paths.php';
 	require_once GP_PATH . GP_INC . 'cli/remove-multiple-currents.php';
 	require_once GP_PATH . GP_INC . 'cli/translation-set.php';
@@ -32,6 +33,7 @@ function gp_cli_register() {
 	WP_CLI::add_command( 'glotpress wipe-permissions', 'GP_CLI_Wipe_Permissions' );
 
 	// New style commands.
+	WP_CLI::add_command( 'glotpress recheck-errors', 'GP_CLI_Recheck_Errors' );
 	WP_CLI::add_command( 'glotpress translation-set', 'GP_CLI_Translation_Set' );
 
 	// CLI related filters.
