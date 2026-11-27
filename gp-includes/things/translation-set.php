@@ -395,9 +395,13 @@ class GP_Translation_Set extends GP_Thing {
 					)
 				);
 
-				$existing_translations[ $status ] = new Translations();
+				// Keyed like Translations::add_entry(), but keeps every translation of an original, as there can be several waiting ones.
+				$existing_translations[ $status ] = array();
 				foreach ( $existing_translations_list as $existing_entry ) {
-					$existing_translations[ $status ]->add_entry( $existing_entry );
+					$key = $existing_entry->key();
+					if ( false !== $key ) {
+						$existing_translations[ $status ][ $key ][] = $existing_entry;
+					}
 				}
 				unset( $existing_translations_list );
 			}
@@ -473,16 +477,26 @@ class GP_Translation_Set extends GP_Thing {
 			}
 
 			$create     = false;
-			$translated = $load_existing_translations( $entry->status )->translate_entry( $entry );
-			if ( 'current' !== $entry->status && ! $translated ) {
-				// Don't create an entry if it already exists as current.
-				$translated = $existing_translations['current']->translate_entry( $entry );
+			$key        = $entry->key();
+			$existing   = $load_existing_translations( $entry->status )[ $key ] ?? array();
+			$translated = end( $existing );
+			if ( 'current' !== $entry->status ) {
+				// Don't create an entry if it already exists as current, or as waiting for a fuzzy one.
+				$statuses = 'fuzzy' === $entry->status ? array( 'current', 'waiting' ) : array( 'current' );
+				foreach ( $statuses as $status ) {
+					$others     = $load_existing_translations( $status )[ $key ] ?? array();
+					$translated = $translated ? $translated : end( $others );
+					$existing   = array_merge( $existing, $others );
+				}
 			}
 
 			if ( $translated ) {
-				// We have the same string translated, so create a new one if they don't match.
+				// The key leaves out the plural, so another original with the same singular can share it.
+				$existing = wp_list_filter( $existing, array( 'original_id' => $translated->original_id ) );
+
+				// We have the same string translated, so create a new one if it matches none of them.
 				$entry->original_id      = $translated->original_id;
-				$translated_is_different = array_pad( $entry->translations, $locale->nplurals, null ) !== $translated->translations;
+				$translated_is_different = ! in_array( array_pad( $entry->translations, $locale->nplurals, null ), wp_list_pluck( $existing, 'translations' ), true );
 
 				/**
 				 * Filter whether to import over an existing translation on a translation set.
